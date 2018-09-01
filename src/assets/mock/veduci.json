@@ -1,0 +1,19 @@
+[
+  {
+    "id": 1,
+    "titul": "Mgr.",
+    "meno": "Mária",
+    "priezvisko": "Tóthová"
+  },
+  {
+    "id": 2,
+    "meno": "Katarína",
+    "priezvisko": "Brugošová"
+  },
+  {
+    "id": 3,
+    "titul": "Ing.",
+    "meno": "Marek",
+    "priezvisko": "Tóth"
+  }
+]

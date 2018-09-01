@@ -1,0 +1,17 @@
+<nav class="navbar navbar-expand navbar-light bg-light">
+  <div class="logo">
+    <img src="/assets/img/logo.png" />
+  </div>
+  <div>
+    <p class="text-center"><a routerLinkActive="active" routerLink="/"><span class="badge badge-info">C</span><span class="badge badge-success">V</span><span class="badge badge-warning">r</span><span class="badge badge-danger">Č</span><span class="badge badge-purple">k</span><span class="badge badge-orange">o</span><span class="badge badge-pink">v</span>
+      <br/><span class="badge badge-primary">INFORMAČNÝ SYSTÉM</span></a></p>
+  </div>
+  <div class="nav navbar-nav">
+    <!--a class="nav-item nav-link" (click)="authService.logout()" *ngIf="authService.authenticated"><i class="fa fa-user"></i></a-->
+    <a class="nav-item nav-link" href="#"><i class="fa fa-user"></i></a>
+  </div>
+</nav>
+
+<div class="container-fluid mt-5">
+  <router-outlet></router-outlet>
+</div>
