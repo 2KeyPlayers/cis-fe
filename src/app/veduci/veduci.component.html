@@ -1,11 +1,5 @@
 <div class="container-fluid">
 
-  <p class="sekcia mb-4">
-    <span class="badge badge-warning">V</span>edúci
-    <!--span class="badge badge-warning">e</span><span class="badge badge-warning">d</span><span class="badge badge-warning">ú</span><span class="badge badge-warning">c</span><span class="badge badge-warning">i</span-->
-    <a class="float-right" routerLinkActive="active" routerLink="/menu"><i class="fa fa-bars"></i></a>
-  </p>
-
   <table class="table table-hover">
     <thead class="thead-dark">
       <tr>
@@ -14,7 +8,7 @@
         <th scope="col">Meno</th>
         <th scope="col">Priezvisko</th>
         <th scope="col" class="text-right">
-          <button type="button" class="btn btn-outline" (click)="add()"><i class="fa fa-plus"></i></button>
+          <button type="button" class="add btn btn-outline" (click)="add('veduci')"><i class="fa fa-plus"></i></button>
         </th>
       </tr>
     </thead>
@@ -25,7 +19,7 @@
         <td>{{ vodca.meno }}</td>
         <td>{{ vodca.priezvisko }}</td>
         <td class="text-right">
-          <button type="button" class="btn btn-outline-success mr-1" (click)="edit(vodca.id)"><i class="fa fa-pencil"></i></button>
+          <button type="button" class="btn btn-outline-success mr-1" (click)="edit('veduci', vodca.id)"><i class="fa fa-pencil"></i></button>
           <button type="button" class="btn btn-outline-danger" (click)="delete(vodca.id)"><i class="fa fa-trash"></i></button>
         </td>
       </tr>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { BaseComponent } from '../base.component';
@@ -12,13 +13,18 @@ import { Veduci } from './../domain/veduci';
 })
 export class VeduciComponent extends BaseComponent implements OnInit {
 
-  veduci$: Observable<Array<Veduci>>;
+  veduci$: Observable<Veduci[]>;
 
-  constructor(protected dataService: DataService) {
-    super();
+  constructor(protected router: Router, protected dataService: DataService) {
+    super(router, dataService);
+    this.setTitle('Vedúci', 'warning');
   }
 
   ngOnInit() {
+    this.refresh();
+  }
+
+  refresh() {
     this.veduci$ = this.dataService.getVeduci();
   }
 

@@ -1,11 +1,5 @@
 <div class="container-fluid">
 
-  <p class="sekcia mb-4">
-    <span class="badge badge-success">Ú</span>častníci
-    <!--span class="badge badge-success">č</span><span class="badge badge-success">a</span><span class="badge badge-success">s</span><span class="badge badge-success">t</span><span class="badge badge-success">n</span><span class="badge badge-success">í</span><span class="badge badge-success">c</span><span class="badge badge-success">i</span-->
-    <a class="float-right" routerLinkActive="active" routerLink="/menu"><i class="fa fa-bars"></i></a>
-  </p>
-
   <table class="table table-hover">
     <thead class="thead-dark">
       <tr>
@@ -13,10 +7,11 @@
         <th scope="col" class="pohlavie">&nbsp;</th>
         <th scope="col">Meno</th>
         <th scope="col">Priezvisko</th>
-        <th scope="col">Dátum narodenia</th>
-        <th scope="col">Vek</th>
+        <th scope="col">Dátum narodenia (vek)</th>
+        <th scope="col">Mesto</th>
+        <th scope="col">Škola</th>
         <th scope="col" class="text-right">
-          <button type="button" class="btn btn-outline" (click)="add()"><i class="fa fa-plus"></i></button>
+          <button type="button" class="add btn btn-outline" (click)="add('ucastnik')"><i class="fa fa-plus"></i></button>
         </th>
       </tr>
     </thead>
@@ -26,10 +21,11 @@
         <td><i class="fa fa-{{ (ucastnik.pohlavie === 'M') ? 'male' : 'female' }}"></i></td>
         <td>{{ ucastnik.meno }}</td>
         <td>{{ ucastnik.priezvisko }}</td>
-        <td>{{ ucastnik.datumNarodenia | date }}</td>
-        <td>{{ age(ucastnik.datumNarodenia) }}</td>
+        <td>{{ ucastnik.datumNarodenia | date: 'd.M.yyyy' }} ({{ ucastnik.vek }})</td>
+        <td>{{ ucastnik.adresa.mesto }}</td>
+        <td>{{ ucastnik.skola }}</td>
         <td class="text-right">
-          <button type="button" class="btn btn-outline-success mr-1" (click)="edit(ucastnik.id)"><i class="fa fa-pencil"></i></button>
+          <button type="button" class="btn btn-outline-success mr-1" (click)="edit('ucastnik', ucastnik.id)"><i class="fa fa-pencil"></i></button>
           <button type="button" class="btn btn-outline-danger" (click)="delete(ucastnik.id)"><i class="fa fa-trash"></i></button>
         </td>
       </tr>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { BaseComponent } from '../base.component';
@@ -12,13 +13,18 @@ import { Miesto } from './../domain/miesto';
 })
 export class MiestaComponent extends BaseComponent implements OnInit {
 
-  miesta$: Observable<Array<Miesto>>;
+  miesta$: Observable<Miesto[]>;
 
-  constructor(protected dataService: DataService) {
-    super();
+  constructor(protected router: Router, protected dataService: DataService) {
+    super(router, dataService);
+    this.setTitle('Miesta', 'info');
   }
 
   ngOnInit() {
+    this.refresh();
+  }
+
+  refresh() {
     this.miesta$ = this.dataService.getMiesta();
   }
 

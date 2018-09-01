@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
-import { BaseComponent } from '../base.component';
 import { DataService } from './../service/data.service';
+import { BaseComponent } from '../base.component';
 
 @Component({
   selector: 'app-menu',
@@ -10,11 +11,16 @@ import { DataService } from './../service/data.service';
 })
 export class MenuComponent extends BaseComponent implements OnInit {
 
-  constructor() {
-    super();
-  }
+  loading: boolean;
 
+  constructor(protected router: Router, protected dataService: DataService) {
+    super(router, dataService);
+    this.setTitle(null, null);
+    this.loading = true;
+  }
+  
   ngOnInit() {
+    this.loading = false;
   }
 
 }

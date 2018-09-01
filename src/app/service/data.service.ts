@@ -1,42 +1,105 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Injectable } from "@angular/core";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Observable, of } from "rxjs";
+import { catchError, tap, map } from "rxjs/operators";
 
-import { Miesto } from './../domain/miesto';
-import { Ucastnik } from './../domain/ucastnik';
-import { ZaujmovyUtvar } from './../domain/zaujmovy-utvar';
-import { Veduci } from '../domain/veduci';
+import { Miesto } from "./../domain/miesto";
+import { Ucastnik } from "./../domain/ucastnik";
+import { ZaujmovyUtvar } from "./../domain/zaujmovy-utvar";
+import { Veduci } from "../domain/veduci";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class DataService {
 
-  miesta: Array<Miesto>;
-  ucastnici: Array<Ucastnik>;
-  veduci: Array<Veduci>;
-  zaujmoveUtvary: Array<ZaujmovyUtvar>;
+  nadpis: string;
+  typNadpisu: string;
 
-  constructor(private httpClient: HttpClient) {
- 
+  miesta: Miesto[];
+  ucastnici: Ucastnik[];
+  veduci: Veduci[];
+  zaujmoveUtvary: ZaujmovyUtvar[];
+
+  constructor(private httpClient: HttpClient) {}
+
+  // Nadpis
+
+  setNadpis(nadpis: string, typ: string) {
+    this.nadpis = nadpis;
+    this.typNadpisu = typ;
   }
 
-  public getMiesta(): Observable<Array<Miesto>> {
-    return this.httpClient.get<Array<Miesto>>('/assets/mock/miesta.json');
+  // Miesta
+
+  public getMiesta(): Observable<Miesto[]> {
+    return this.httpClient.get<Miesto[]>("/assets/mock/miesta.json").pipe(
+      map((miesta: Miesto[]) => this.miesta = miesta.map(miesto => new Miesto(miesto))),
+      tap(miesta => {
+        this.log("miesta nacitane")
+      }),
+      catchError(this.handleError("getMiesta", []))
+    );
   }
 
-  public getUcastnici(): Observable<Array<Ucastnik>> {
-    return this.httpClient.get<Array<Ucastnik>>('/assets/mock/ucastnici.json');
+  // Ucastnici
+
+  public getUcastnici(): Observable<Ucastnik[]> {
+    return this.httpClient.get<Ucastnik[]>("/assets/mock/ucastnici.json").pipe(
+      map((ucastnici: Ucastnik[]) => this.ucastnici = ucastnici.map(ucastnik => new Ucastnik(ucastnik))),
+      tap(ucastnici => {
+        this.log("ucastnici nacitani");
+      }),
+      catchError(this.handleError("getUcastnici", []))
+    );
   }
 
-  public getVeduci(): Observable<Array<Veduci>> {
-    return this.httpClient.get<Array<Veduci>>('/assets/mock/veduci.json');
+  // Veduci
+
+  public getVeduci(): Observable<Veduci[]> {
+    return this.httpClient.get<Veduci[]>("/assets/mock/veduci.json").pipe(
+      map((veduci: Veduci[]) => this.veduci = veduci.map(vodca => new Veduci(vodca))),
+      tap(veduci => {
+        this.log("veduci nacitani");
+      }),
+      catchError(this.handleError("getVeduci", []))
+    );
   }
 
-  public getZaujmoveUtvary(): Observable<Array<ZaujmovyUtvar>> {
-    return this.httpClient.get<Array<ZaujmovyUtvar>>('/assets/mock/zaujmove-utvary.json');
-  }    
+  // Zaujmove utvary
+
+  public getZaujmoveUtvary(): Observable<ZaujmovyUtvar[]> {
+    return this.httpClient.get<ZaujmovyUtvar[]>("/assets/mock/zaujmove-utvary.json").pipe(
+      map((zaujmoveUtvary: ZaujmovyUtvar[]) => this.zaujmoveUtvary = zaujmoveUtvary.map(zaujmovyUtvar => new ZaujmovyUtvar(zaujmovyUtvar))),
+      tap(zaujmoveUtvary => {
+        this.log("zaujmove utvary nacitane");
+      }),
+      catchError(this.handleError("getZaujmoveUtvary", []))
+    );
+  }
+
+  /**
+   * Handle Http operation that failed.
+   * Let the app continue.
+   * @param operation - name of the operation that failed
+   * @param result - optional value to return as the observable result
+   */
+  private handleError<T>(operation = "operation", result?: T) {
+    return (error: any): Observable<T> => {
+      // TODO: send the error to remote logging infrastructure
+      console.error(error); // log to console instead
+
+      // TODO: better job of transforming error for user consumption
+      this.log(`${operation} failed: ${error.message}`);
+
+      // Let the app keep running by returning an empty result
+      return of(result as T);
+    };
+  }
+
+  private log(message: string) {
+    console.log(message);
+  }
 
   // public getAll(): Observable<Array<User>> {
   //   return this.http.get<Array<User>>('http://localhost:8081/ims-users/resources/users');
@@ -82,6 +145,4 @@ export class DataService {
   //     { responseType: 'text' }
   //   );
   // }
-
-
 }

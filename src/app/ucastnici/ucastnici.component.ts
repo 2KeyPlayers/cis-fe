@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { BaseComponent } from '../base.component';
@@ -12,22 +13,19 @@ import { Ucastnik } from '../domain/ucastnik';
 })
 export class UcastniciComponent extends BaseComponent implements OnInit {
 
-  ucastnici$: Observable<Array<Ucastnik>>;
+  ucastnici$: Observable<Ucastnik[]>;
 
-  constructor(protected dataService: DataService) {
-    super();
+  constructor(protected router: Router, protected dataService: DataService) {
+    super(router, dataService);
+    this.setTitle('Účastníci', 'success');
   }
 
   ngOnInit() {
-    this.ucastnici$ = this.dataService.getUcastnici();
+    this.refresh();
   }
 
-  age(date: Date): string | number {
-    if (date) {
-      let rozdiel = Math.abs(Date.now() - new Date(date).getTime());
-      return Math.floor((rozdiel / (1000 * 3600 * 24)) / 365);
-    }
-    return '-';
+  refresh() {
+    this.ucastnici$ = this.dataService.getUcastnici();
   }
 
 }

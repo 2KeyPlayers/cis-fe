@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { BaseComponent } from '../base.component';
@@ -12,14 +13,18 @@ import { ZaujmovyUtvar } from './../domain/zaujmovy-utvar';
 })
 export class ZaujmoveUtvaryComponent extends BaseComponent implements OnInit {
 
-  zaujmoveUtvary$: Observable<Array<ZaujmovyUtvar>>;
+  zaujmoveUtvary$: Observable<ZaujmovyUtvar[]>;
 
-  constructor(protected dataService: DataService) {
-    super();
+  constructor(protected router: Router, protected dataService: DataService) {
+    super(router, dataService);
+    this.setTitle('Záujmové útvary', 'danger');
   }
 
   ngOnInit() {
-    this.zaujmoveUtvary$ = this.dataService.getZaujmoveUtvary();
+    this.refresh();
   }
 
+  refresh() {
+    this.zaujmoveUtvary$ = this.dataService.getZaujmoveUtvary();
+  }
 }

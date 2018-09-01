@@ -1,18 +1,12 @@
 <div class="container-fluid">
 
-  <p class="sekcia mb-4">
-    <span class="badge badge-info">M</span>iesta
-    <!--span class="badge badge-info">i</span><span class="badge badge-info">e</span><span class="badge badge-info">s</span><span class="badge badge-info">t</span><span class="badge badge-info">a</span-->
-    <a class="float-right" routerLinkActive="active" routerLink="/menu"><i class="fa fa-bars"></i></a>
-  </p>
-
   <table class="table table-hover">
     <thead class="thead-dark">
       <tr>
         <th scope="col" class="index">#</th>
         <th scope="col">Názov</th>
         <th scope="col" class="text-right">
-          <button type="button" class="btn btn-outline" (click)="add()"><i class="fa fa-plus"></i></button>
+          <button type="button" class="add btn btn-outline" (click)="add('miesto')"><i class="fa fa-plus"></i></button>
         </th>
       </tr>
     </thead>
@@ -21,7 +15,7 @@
         <th scope="row">{{ (i + 1) }}</th>
         <td>{{ miesto.nazov }}</td>
         <td class="text-right">
-          <button type="button" class="btn btn-outline-success mr-1" (click)="edit(miesto.id)"><i class="fa fa-pencil"></i></button>
+          <button type="button" class="btn btn-outline-success mr-1" (click)="edit('miesto', miesto.id)"><i class="fa fa-pencil"></i></button>
           <button type="button" class="btn btn-outline-danger" (click)="delete(miesto.id)"><i class="fa fa-trash"></i></button>
         </td>
       </tr>

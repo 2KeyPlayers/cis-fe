@@ -25,6 +25,8 @@ import { ZaujmovyUtvar } from './zaujmovy-utvar';
 */
 export class Ucastnik {
 
+  cast: string = 'Ucastnik';
+
   id: number;
   pohlavie: Pohlavie;
   meno: string;
@@ -32,11 +34,24 @@ export class Ucastnik {
   datumNarodenia: Date;
   skola: string;
   trieda: string;
-  bydlisko: Adresa;
+  adresa: Adresa;
   zastupca: string;
   telefon: string;
 
   zaujmoveUtvary: ZaujmovyUtvar[];
+
+  constructor(data: any) {
+    this.id = data.id;
+    this.pohlavie = data.pohlavie;
+    this.meno = data.meno;
+    this.priezvisko = data.priezvisko;
+    this.datumNarodenia = new Date(data.datumNarodenia);
+    this.skola = data.skola;
+    this.trieda = data.trieda;
+    this.adresa = new Adresa(data.adresa);
+    this.zastupca = data.zastupca;
+    this.telefon = data.telefon;
+  }
 
   get vek(): number {
     if (this.datumNarodenia) {
@@ -68,6 +83,13 @@ class Adresa {
   ulica: string;
   cislo: number;
   mesto: string;
-  psc: string;
+  psc?: string;
+
+  constructor(data: any) {
+    this.ulica = data.ulica;
+    this.cislo = data.cislo;
+    this.mesto = data.mesto;
+    this.psc = data.pcs;
+  }
 
 }

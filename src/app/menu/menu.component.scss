@@ -1,14 +1,13 @@
 a {
   text-decoration: none;
 }
-a:hover {
-
-}
-a:focus {
-
-}
 .card {
   border-color: #fff;
+}
+.card:hover {
+  -webkit-box-shadow: 0 4px 4px -2px #999999;
+  -moz-box-shadow: 0 4px 4px -2px #999999;
+  box-shadow: 0 4px 4px -2px #999999;
 }
 .card-body i {
   font-size: 6rem;

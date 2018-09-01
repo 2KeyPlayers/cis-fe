@@ -1,11 +1,5 @@
 <div class="container-fluid">
 
-  <p class="sekcia mb-4">
-    <span class="badge badge-danger">Z</span>áujmové &nbsp; <span class="badge badge-danger">Ú</span>tvary
-    <!--span class="badge badge-danger">t</span><span class="badge badge-danger">v</span><span class="badge badge-danger">a</span><span class="badge badge-danger">r</span><span class="badge badge-danger">y</span-->
-    <a class="float-right" routerLinkActive="active" routerLink="/menu"><i class="fa fa-bars"></i></a>
-  </p>
-
   <table class="table table-hover">
     <thead class="thead-dark">
       <tr>
@@ -14,7 +8,7 @@
         <th scope="col">Názov</th>
         <th scope="col">Vedúci</th>
         <th scope="col" class="text-right">
-          <button type="button" class="btn btn-outline" (click)="add()"><i class="fa fa-plus"></i></button>
+          <button type="button" class="add btn btn-outline" (click)="add('zaujmovy-utvar')"><i class="fa fa-plus"></i></button>
         </th>
       </tr>
     </thead>
@@ -25,7 +19,7 @@
         <td>{{ zaujmovyUtvar.nazov }}</td>
         <td>{{ zaujmovyUtvar.veduci }}</td>
         <td class="text-right">
-          <button type="button" class="btn btn-outline-success mr-1" (click)="edit(zaujmovyUtvar.id)"><i class="fa fa-pencil"></i></button>
+          <button type="button" class="btn btn-outline-success mr-1" (click)="edit('zaujmovy-utvar', zaujmovyUtvar.id)"><i class="fa fa-pencil"></i></button>
           <button type="button" class="btn btn-outline-danger" (click)="delete(zaujmovyUtvar.id)"><i class="fa fa-trash"></i></button>
         </td>
       </tr>

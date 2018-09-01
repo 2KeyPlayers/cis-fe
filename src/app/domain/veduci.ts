@@ -13,4 +13,10 @@ export class Veduci {
   meno: string;
   priezvisko: string;
 
+  constructor(data: any) {
+    this.id = data.id;
+    this.titul = data.titul;
+    this.meno = data.meno;
+    this.priezvisko = data.priezvisko;
+  }
 }
