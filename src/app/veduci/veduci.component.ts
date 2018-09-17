@@ -13,7 +13,7 @@ import { Veduci } from './../domain/veduci';
 })
 export class VeduciComponent extends BaseComponent implements OnInit {
 
-  veduci$: Observable<Veduci[]>;
+  veduci: Veduci[];
 
   constructor(protected router: Router, protected dataService: DataService) {
     super(router, dataService);
@@ -21,11 +21,7 @@ export class VeduciComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.refresh();
-  }
-
-  refresh() {
-    this.veduci$ = this.dataService.getVeduci();
+    this.veduci = this.dataService.veduci;
   }
 
 }

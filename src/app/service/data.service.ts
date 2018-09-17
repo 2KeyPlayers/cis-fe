@@ -1,17 +1,26 @@
-import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Observable, of } from "rxjs";
-import { catchError, tap, map } from "rxjs/operators";
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, of, forkJoin } from 'rxjs';
+import { catchError, tap, map } from 'rxjs/operators';
 
-import { Miesto } from "./../domain/miesto";
-import { Ucastnik } from "./../domain/ucastnik";
-import { ZaujmovyUtvar } from "./../domain/zaujmovy-utvar";
-import { Veduci } from "../domain/veduci";
+import { Miesto } from './../domain/miesto';
+import { Ucastnik } from './../domain/ucastnik';
+import { ZaujmovyUtvar } from './../domain/zaujmovy-utvar';
+import { Veduci } from '../domain/veduci';
+
+export enum AppStatus {
+  OK = 0,
+  LOADING = 1,
+  FAILED = 2
+}
+
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class DataService {
+
+  status: AppStatus;
 
   nadpis: string;
   typNadpisu: string;
@@ -21,7 +30,9 @@ export class DataService {
   veduci: Veduci[];
   zaujmoveUtvary: ZaujmovyUtvar[];
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) {
+    this.status = AppStatus.OK;
+  }
 
   // Nadpis
 
@@ -32,49 +43,105 @@ export class DataService {
 
   // Miesta
 
-  public getMiesta(): Observable<Miesto[]> {
-    return this.httpClient.get<Miesto[]>("/assets/mock/miesta.json").pipe(
+  public getMiesta(aktualizujStatus: boolean = true): Observable<Miesto[]> {
+    this.status = AppStatus.LOADING;
+
+    return this.httpClient.get<Miesto[]>('assets/mock/miesta.json').pipe(
       map((miesta: Miesto[]) => this.miesta = miesta.map(miesto => new Miesto(miesto))),
       tap(miesta => {
-        this.log("miesta nacitane")
+        if (aktualizujStatus) {
+          this.status = AppStatus.OK;
+        }
+        this.log('miesta nacitane');
       }),
-      catchError(this.handleError("getMiesta", []))
-    );
-  }
-
-  // Ucastnici
-
-  public getUcastnici(): Observable<Ucastnik[]> {
-    return this.httpClient.get<Ucastnik[]>("/assets/mock/ucastnici.json").pipe(
-      map((ucastnici: Ucastnik[]) => this.ucastnici = ucastnici.map(ucastnik => new Ucastnik(ucastnik))),
-      tap(ucastnici => {
-        this.log("ucastnici nacitani");
-      }),
-      catchError(this.handleError("getUcastnici", []))
+      catchError(this.handleError('getMiesta', []))
     );
   }
 
   // Veduci
 
-  public getVeduci(): Observable<Veduci[]> {
-    return this.httpClient.get<Veduci[]>("/assets/mock/veduci.json").pipe(
+  public getVeduci(aktualizujStatus: boolean = true): Observable<Veduci[]> {
+    this.status = AppStatus.LOADING;
+
+    return this.httpClient.get<Veduci[]>('assets/mock/veduci.json').pipe(
       map((veduci: Veduci[]) => this.veduci = veduci.map(vodca => new Veduci(vodca))),
       tap(veduci => {
-        this.log("veduci nacitani");
+        if (aktualizujStatus) {
+          this.status = AppStatus.OK;
+        }
+        this.log('veduci nacitani');
       }),
-      catchError(this.handleError("getVeduci", []))
+      catchError(this.handleError('getVeduci', []))
     );
+  }
+
+  public findVeduci(id: number): Veduci {
+    return this.veduci.find(vodca => vodca.id == id);
   }
 
   // Zaujmove utvary
 
-  public getZaujmoveUtvary(): Observable<ZaujmovyUtvar[]> {
-    return this.httpClient.get<ZaujmovyUtvar[]>("/assets/mock/zaujmove-utvary.json").pipe(
+  public getZaujmoveUtvary(aktualizujStatus: boolean = true): Observable<ZaujmovyUtvar[]> {
+    this.status = AppStatus.LOADING;
+
+    return this.httpClient.get<ZaujmovyUtvar[]>('assets/mock/zaujmove-utvary.json').pipe(
       map((zaujmoveUtvary: ZaujmovyUtvar[]) => this.zaujmoveUtvary = zaujmoveUtvary.map(zaujmovyUtvar => new ZaujmovyUtvar(zaujmovyUtvar))),
       tap(zaujmoveUtvary => {
-        this.log("zaujmove utvary nacitane");
+        if (aktualizujStatus) {
+          this.status = AppStatus.OK;
+        }
+        this.log('zaujmove utvary nacitane');
       }),
-      catchError(this.handleError("getZaujmoveUtvary", []))
+      catchError(this.handleError('getZaujmoveUtvary', []))
+    );
+  }
+
+  private appendVeducich() {
+    this.zaujmoveUtvary.map(zaujmovyUtvar => {
+      let veduci = this.findVeduci(zaujmovyUtvar.veduci.id);
+      zaujmovyUtvar.veduci = veduci;
+    });
+  }
+
+  // Ucastnici
+
+  public getUcastnici(aktualizujStatus: boolean = true): Observable<Ucastnik[]> {
+    this.status = AppStatus.LOADING;
+
+    return this.httpClient.get<Ucastnik[]>('assets/mock/ucastnici.json').pipe(
+      map((ucastnici: Ucastnik[]) => this.ucastnici = ucastnici.map(ucastnik => new Ucastnik(ucastnik))),
+      tap(ucastnici => {
+        if (aktualizujStatus) {
+          this.status = AppStatus.OK;
+        }
+        this.log('ucastnici nacitani');
+      }),
+      catchError(this.handleError('getUcastnici', []))
+    );
+  }
+
+  public loadData(): Observable<boolean> {
+    this.status = AppStatus.LOADING;
+
+    return forkJoin(
+      this.getMiesta(false),
+      this.getVeduci(false),
+      this.getZaujmoveUtvary(false),
+      this.getUcastnici(false)
+    ).pipe(
+      catchError(this.handleError('loadData', false)),
+      map(vysledok => {
+        this.status = AppStatus.OK;
+
+        // this.miesta = vysledok[0].map(miesto => new Miesto(miesto));
+        // this.veduci = vysledok[1].map(vodca => new Veduci(vodca));
+        // this.zaujmoveUtvary = vysledok[2].map(zaujmovyUtvar => new ZaujmovyUtvar(zaujmovyUtvar));
+        // this.ucastnici = vysledok[3].map(ucastnik => new Ucastnik(ucastnik));
+        
+        this.appendVeducich();
+
+        return true;
+      })
     );
   }
 
@@ -84,7 +151,9 @@ export class DataService {
    * @param operation - name of the operation that failed
    * @param result - optional value to return as the observable result
    */
-  private handleError<T>(operation = "operation", result?: T) {
+  private handleError<T>(operation = 'operation', result?: T) {
+    this.status = AppStatus.FAILED;
+
     return (error: any): Observable<T> => {
       // TODO: send the error to remote logging infrastructure
       console.error(error); // log to console instead

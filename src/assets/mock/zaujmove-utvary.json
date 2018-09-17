@@ -2,7 +2,9 @@
   {
     "id": 1,
     "nazov": "Dielnička",
-    "veduci": 1,
+    "veduci": {
+      "id": 1
+    },
     "kedyKde": [
       { "den": "Pon", "cas": "14:00", "miesto": 1 },
       { "den": "Str", "cas": "15:00", "miesto": 2 }
@@ -11,7 +13,9 @@
   {
     "id": 2,
     "nazov": "Zumbáčik",
-    "veduci": 2,
+    "veduci": {
+      "id": 2
+    },
     "kedyKde": [
       { "den": "Uto", "cas": "11:00", "miesto": 3 }
     ]
@@ -19,7 +23,9 @@
   {
     "id": 3,
     "nazov": "Basketbal",
-    "veduci": 3,
+    "veduci": {
+      "id": 3
+    },
     "kedyKde": [
       { "den": "Sob", "cas": "15:00", "miesto": 4 }
     ]

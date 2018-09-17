@@ -13,7 +13,7 @@ import { ZaujmovyUtvar } from './../domain/zaujmovy-utvar';
 })
 export class ZaujmoveUtvaryComponent extends BaseComponent implements OnInit {
 
-  zaujmoveUtvary$: Observable<ZaujmovyUtvar[]>;
+  zaujmoveUtvary: ZaujmovyUtvar[];
 
   constructor(protected router: Router, protected dataService: DataService) {
     super(router, dataService);
@@ -21,10 +21,6 @@ export class ZaujmoveUtvaryComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.refresh();
-  }
-
-  refresh() {
-    this.zaujmoveUtvary$ = this.dataService.getZaujmoveUtvary();
+    this.zaujmoveUtvary = this.dataService.zaujmoveUtvary;
   }
 }

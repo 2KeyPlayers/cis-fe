@@ -1,11 +1,3 @@
-/*
-{
-  "id": 1,
-  "titul": "Mgr.",
-  "meno": "Janko",
-  "priezvisko": "Hrasko",
-}
-*/
 export class Veduci {
 
   id: number;
@@ -19,4 +11,9 @@ export class Veduci {
     this.meno = data.meno;
     this.priezvisko = data.priezvisko;
   }
+
+  get celeMeno(): string {
+    return `${this.meno} ${this.priezvisko}`;
+  }
+
 }

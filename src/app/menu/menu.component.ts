@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { DataService } from './../service/data.service';
+import { DataService, AppStatus } from './../service/data.service';
 import { BaseComponent } from '../base.component';
 
 @Component({
@@ -11,16 +11,23 @@ import { BaseComponent } from '../base.component';
 })
 export class MenuComponent extends BaseComponent implements OnInit {
 
-  loading: boolean;
-
   constructor(protected router: Router, protected dataService: DataService) {
     super(router, dataService);
     this.setTitle(null, null);
-    this.loading = true;
   }
   
   ngOnInit() {
-    this.loading = false;
+    this.dataService.loadData().subscribe(ok => {
+      this.log('data nacitane');
+    });
+  }
+
+  get loading(): boolean {
+    return this.dataService.status == AppStatus.LOADING;
+  }
+
+  get failed(): boolean {
+    return this.dataService.status == AppStatus.FAILED;
   }
 
 }

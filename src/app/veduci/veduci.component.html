@@ -13,7 +13,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let vodca of veduci$ | async; let i = index" [attr.data-index]="i" class="table-light">
+      <tr *ngFor="let vodca of veduci; let i = index" [attr.data-index]="i" class="table-light">
         <th scope="row" class="index">{{ (i + 1) }}</th>
         <td>{{ vodca.titul }}</td>
         <td>{{ vodca.meno }}</td>

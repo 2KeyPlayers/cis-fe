@@ -11,7 +11,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let miesto of miesta$ | async; let i = index" [attr.data-index]="i" class="table-light">
+      <tr *ngFor="let miesto of miesta; let i = index" [attr.data-index]="i" class="table-light">
         <th scope="row">{{ (i + 1) }}</th>
         <td>{{ miesto.nazov }}</td>
         <td class="text-right">

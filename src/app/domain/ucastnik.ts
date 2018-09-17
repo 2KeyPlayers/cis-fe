@@ -1,28 +1,5 @@
 import { ZaujmovyUtvar } from './zaujmovy-utvar';
 
-/*
-{
-  "id": 1,
-  "pohlavie": "M",
-  "meno": "Janko",
-  "priezvisko": "Hrasko",
-  "datumNarodenia": "01-01-1980",
-  "skola": "II. ZS",
-  "trieda": "I.A",
-  "adresa": {
-    "ulica": "NLS",
-    "cislo": "14",
-    "mesto": "MnB",
-    "psc": "04501"
-  }
-  "zastupca": "Jurko Hrasko",
-  "telefon": "+421912345678",
-  "zaujmoveUtvary": [
-    { "id": 1 },
-    { "id": 2 }
-  ]
-}
-*/
 export class Ucastnik {
 
   cast: string = 'Ucastnik';
@@ -67,6 +44,10 @@ export class Ucastnik {
 
   get zena(): boolean {
     return this.pohlavie === Pohlavie.Z;
+  }
+
+  get celeMeno(): string {
+    return `${this.meno} ${this.priezvisko}`;
   }
 
 }

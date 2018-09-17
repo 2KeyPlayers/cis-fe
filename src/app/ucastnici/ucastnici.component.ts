@@ -13,7 +13,7 @@ import { Ucastnik } from '../domain/ucastnik';
 })
 export class UcastniciComponent extends BaseComponent implements OnInit {
 
-  ucastnici$: Observable<Ucastnik[]>;
+  ucastnici: Ucastnik[];
 
   constructor(protected router: Router, protected dataService: DataService) {
     super(router, dataService);
@@ -21,11 +21,7 @@ export class UcastniciComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.refresh();
-  }
-
-  refresh() {
-    this.ucastnici$ = this.dataService.getUcastnici();
+    this.ucastnici = this.dataService.ucastnici;
   }
 
 }

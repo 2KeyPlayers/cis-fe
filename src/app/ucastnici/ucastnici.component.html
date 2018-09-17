@@ -16,7 +16,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let ucastnik of ucastnici$ | async; let i = index" [attr.data-index]="i" class="table-light">
+      <tr *ngFor="let ucastnik of ucastnici; let i = index" [attr.data-index]="i" class="table-light">
         <th scope="row" class="index">{{ (i + 1) }}</th>
         <td><i class="fa fa-{{ (ucastnik.pohlavie === 'M') ? 'male' : 'female' }}"></i></td>
         <td>{{ ucastnik.meno }}</td>

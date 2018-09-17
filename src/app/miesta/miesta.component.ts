@@ -13,7 +13,7 @@ import { Miesto } from './../domain/miesto';
 })
 export class MiestaComponent extends BaseComponent implements OnInit {
 
-  miesta$: Observable<Miesto[]>;
+  miesta: Miesto[];
 
   constructor(protected router: Router, protected dataService: DataService) {
     super(router, dataService);
@@ -21,11 +21,7 @@ export class MiestaComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.refresh();
-  }
-
-  refresh() {
-    this.miesta$ = this.dataService.getMiesta();
+    this.miesta = this.dataService.miesta;
   }
 
 }
