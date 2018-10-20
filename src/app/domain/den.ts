@@ -1,4 +1,4 @@
-export enum Den {
+export enum EDen {
 
   Pon = "Pondelok",
   Uto = "Utorok",

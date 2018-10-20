@@ -1,13 +1,13 @@
 <div class="container-fluid">
 
   <table class="table table-hover">
-    <thead class="thead-dark">
+    <thead>
       <tr>
-        <th scope="col">#</th>
+        <th scope="col" class="index">#</th>
         <!--th scope="col">&nbsp;</th-->
         <th scope="col">Názov</th>
         <th scope="col">Vedúci</th>
-        <th scope="col" class="text-right">
+        <th scope="col" class="buttons">
           <button type="button" class="add btn btn-outline" (click)="add('zaujmovy-utvar')"><i class="fa fa-plus"></i></button>
         </th>
       </tr>
@@ -18,9 +18,12 @@
         <!--td><i class="fa fa-{{ zaujmovyUtvar.ikona ? zaujmovyUtvar.ikona : 'star-o' }}"></i></td-->
         <td>{{ zaujmovyUtvar.nazov }}</td>
         <td>{{ zaujmovyUtvar.veduci.celeMeno }}</td>
-        <td class="text-right">
-          <button type="button" class="btn btn-outline-success mr-1" (click)="edit('zaujmovy-utvar', zaujmovyUtvar.id)"><i class="fa fa-pencil"></i></button>
-          <button type="button" class="btn btn-outline-danger" (click)="delete(zaujmovyUtvar.id)"><i class="fa fa-trash"></i></button>
+        <td class="buttons">
+          <div>
+            <button type="button" class="btn btn-outline-success mr-1" (click)="edit('zaujmovy-utvar', zaujmovyUtvar.id)"><i
+                class="fa fa-pencil"></i></button>
+            <button type="button" class="btn btn-outline-danger" (click)="delete(zaujmovyUtvar.id)"><i class="fa fa-trash"></i></button>
+          </div>
         </td>
       </tr>
     </tbody>

@@ -1,15 +1,24 @@
-export class Veduci {
+export interface IVeduci {
 
-  id: number;
+  $id: string;
   titul?: string;
   meno: string;
   priezvisko: string;
 
-  constructor(data: any) {
-    this.id = data.id;
-    this.titul = data.titul;
-    this.meno = data.meno;
-    this.priezvisko = data.priezvisko;
+}
+
+export class Veduci implements IVeduci {
+
+  $id: string;
+  titul?: string;
+  meno: string;
+  priezvisko: string;
+
+  constructor(veduci: IVeduci, id?: string) {
+    this.$id = (id ? id : veduci.$id);
+    this.titul = veduci.titul;
+    this.meno = veduci.meno;
+    this.priezvisko = veduci.priezvisko;
   }
 
   get celeMeno(): string {

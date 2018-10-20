@@ -1,6 +1,12 @@
-// thead {
-//   color: #fff;
-// }
-// table thead th {
-//   background-color: #17a2b8;
-// }
+table thead th,
+table thead td {
+  background-color: #17a2b8;
+}
+.add {
+  color: #17a2b8;
+}
+.add:hover {
+  color: #fff;
+  background-color: #17a2b8;
+  border-color: #fff;
+}

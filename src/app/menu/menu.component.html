@@ -2,47 +2,51 @@
   <div class="row">
 
     <div class="col-sm-6 col-lg-3">
-      <a routerLinkActive="active" routerLink="/ucastnici">
-        <div class="card text-white bg-success mb-3">
-          <div class="card-header">Účastníci</div>
-          <div class="card-body text-center">
-            <i class="fa fa-users"></i>
-          </div>
+      <div class="card text-white bg-success mb-3">
+        <div class="card-header">Účastníci</div>
+        <div class="card-body text-center">
+          <button routerLink="/ucastnici" class="btn btn-success btn-block" [disabled]="error">
+            <i class="fa fa-users" *ngIf="!loading"></i>
+            <div class="spinner" *ngIf="loading"></div>
+          </button>
         </div>
-      </a>
+      </div>
     </div>
 
     <div class="col-sm-6 col-lg-3">
-      <a routerLinkActive="active" routerLink="/zaujmove-utvary">
-        <div class="card text-white bg-danger mb-3">
-          <div class="card-header">Záujmové útvary</div>
-          <div class="card-body text-center">
-            <i class="fa fa-list"></i>
-          </div>
+      <div class="card text-white bg-danger mb-3">
+        <div class="card-header">Záujmové útvary</div>
+        <div class="card-body text-center">
+          <button routerLink="/zaujmove-utvary" class="btn btn-danger btn-block" [disabled]="error">
+            <i class="fa fa-list" *ngIf="!loading"></i>
+            <div class="spinner" *ngIf="loading"></div>
+          </button>
         </div>
-      </a>
+      </div>
     </div>
 
     <div class="col-sm-6 col-lg-3">
-      <a routerLinkActive="active" routerLink="/veduci">
-        <div class="card text-white bg-warning mb-3">
-          <div class="card-header">Vedúci</div>
-          <div class="card-body text-center">
-            <i class="fa fa-graduation-cap"></i>
-          </div>
+      <div class="card text-white bg-warning mb-3">
+        <div class="card-header">Vedúci</div>
+        <div class="card-body text-center">
+          <button routerLink="/veduci" class="btn btn-warning btn-block" [disabled]="error">
+            <i class="fa fa-graduation-cap" *ngIf="!loading"></i>
+            <div class="spinner" *ngIf="loading"></div>
+          </button>
         </div>
-      </a>
+      </div>
     </div>
 
     <div class="col-sm-6 col-lg-3">
-      <a routerLinkActive="active" routerLink="/miesta">
-        <div class="card text-white bg-info mb-3">
-          <div class="card-header">Miesta</div>
-          <div class="card-body text-center">
-            <i class="fa fa-building"></i>
-          </div>
+      <div class="card text-white bg-info mb-3">
+        <div class="card-header">Miesta</div>
+        <div class="card-body text-center">
+          <button routerLink="/miesta" class="btn btn-info btn-block" [disabled]="error">
+            <i class="fa fa-building" *ngIf="!loading"></i>
+            <div class="spinner" *ngIf="loading"></div>
+          </button>
         </div>
-      </a>
+      </div>
     </div>
 
   </div>

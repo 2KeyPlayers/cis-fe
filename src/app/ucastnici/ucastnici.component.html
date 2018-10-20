@@ -1,16 +1,17 @@
 <div class="container-fluid">
 
   <table class="table table-hover">
-    <thead class="thead-dark">
+    <thead>
       <tr>
-        <th scope="col">#</th>
+        <th scope="col" class="index">#</th>
+        <th scope="col" class="cislo">Číslo</th>
         <th scope="col" class="pohlavie">&nbsp;</th>
         <th scope="col">Meno</th>
         <th scope="col">Priezvisko</th>
         <th scope="col">Dátum narodenia (vek)</th>
         <th scope="col">Mesto</th>
         <th scope="col">Škola</th>
-        <th scope="col" class="text-right">
+        <th scope="col" class="buttons">
           <button type="button" class="add btn btn-outline" (click)="add('ucastnik')"><i class="fa fa-plus"></i></button>
         </th>
       </tr>
@@ -18,13 +19,14 @@
     <tbody>
       <tr *ngFor="let ucastnik of ucastnici; let i = index" [attr.data-index]="i" class="table-light">
         <th scope="row" class="index">{{ (i + 1) }}</th>
+        <td>{{ ucastnik.id }}</td>
         <td><i class="fa fa-{{ (ucastnik.pohlavie === 'M') ? 'male' : 'female' }}"></i></td>
         <td>{{ ucastnik.meno }}</td>
         <td>{{ ucastnik.priezvisko }}</td>
         <td>{{ ucastnik.datumNarodenia | date: 'd.M.yyyy' }} ({{ ucastnik.vek }})</td>
         <td>{{ ucastnik.adresa.mesto }}</td>
         <td>{{ ucastnik.skola }}</td>
-        <td class="text-right">
+        <td class="buttons">
           <button type="button" class="btn btn-outline-success mr-1" (click)="edit('ucastnik', ucastnik.id)"><i class="fa fa-pencil"></i></button>
           <button type="button" class="btn btn-outline-danger" (click)="delete(ucastnik.id)"><i class="fa fa-trash"></i></button>
         </td>

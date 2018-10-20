@@ -1,11 +1,26 @@
-import { ZaujmovyUtvar } from './zaujmovy-utvar';
+import { ZaujmovyUtvar, IZaujmovyUtvar } from './zaujmovy-utvar';
 
-export class Ucastnik {
+export interface IUcastnik {
 
-  cast: string = 'Ucastnik';
+  $id?: string;
+  pohlavie: EPohlavie;
+  meno: string;
+  priezvisko: string;
+  datumNarodenia: Date;
+  skola: string;
+  trieda: string;
+  adresa: Adresa;
+  zastupca: string;
+  telefon: string;
 
-  id: number;
-  pohlavie: Pohlavie;
+  zaujmoveUtvary: IZaujmovyUtvar[];
+
+}
+
+export class Ucastnik implements IUcastnik {
+
+  $id: string;
+  pohlavie: EPohlavie;
   meno: string;
   priezvisko: string;
   datumNarodenia: Date;
@@ -17,17 +32,17 @@ export class Ucastnik {
 
   zaujmoveUtvary: ZaujmovyUtvar[];
 
-  constructor(data: any) {
-    this.id = data.id;
-    this.pohlavie = data.pohlavie;
-    this.meno = data.meno;
-    this.priezvisko = data.priezvisko;
-    this.datumNarodenia = new Date(data.datumNarodenia);
-    this.skola = data.skola;
-    this.trieda = data.trieda;
-    this.adresa = new Adresa(data.adresa);
-    this.zastupca = data.zastupca;
-    this.telefon = data.telefon;
+  constructor(ucastnik: IUcastnik, id?: string) {
+    this.$id = (id ? id : ucastnik.$id);
+    this.pohlavie = ucastnik.pohlavie;
+    this.meno = ucastnik.meno;
+    this.priezvisko = ucastnik.priezvisko;
+    this.datumNarodenia = new Date(ucastnik.datumNarodenia);
+    this.skola = ucastnik.skola;
+    this.trieda = ucastnik.trieda;
+    this.adresa = new Adresa(ucastnik.adresa);
+    this.zastupca = ucastnik.zastupca;
+    this.telefon = ucastnik.telefon;
   }
 
   get vek(): number {
@@ -39,11 +54,11 @@ export class Ucastnik {
   }
 
   get muz(): boolean {
-    return this.pohlavie === Pohlavie.M;
+    return this.pohlavie === EPohlavie.M;
   }
 
   get zena(): boolean {
-    return this.pohlavie === Pohlavie.Z;
+    return this.pohlavie === EPohlavie.Z;
   }
 
   get celeMeno(): string {
@@ -52,7 +67,7 @@ export class Ucastnik {
 
 }
 
-enum Pohlavie {
+enum EPohlavie {
 
   M,
   Z
@@ -66,11 +81,11 @@ class Adresa {
   mesto: string;
   psc?: string;
 
-  constructor(data: any) {
-    this.ulica = data.ulica;
-    this.cislo = data.cislo;
-    this.mesto = data.mesto;
-    this.psc = data.pcs;
+  constructor(adresa: any) {
+    this.ulica = adresa.ulica;
+    this.cislo = adresa.cislo;
+    this.mesto = adresa.mesto;
+    this.psc = adresa.pcs;
   }
 
 }

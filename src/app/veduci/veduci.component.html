@@ -1,13 +1,13 @@
 <div class="container-fluid">
 
   <table class="table table-hover">
-    <thead class="thead-dark">
+    <thead>
       <tr>
-        <th scope="col">#</th>
+        <th scope="col" class="index">#</th>
         <th scope="col" class="titul">Titul</th>
         <th scope="col">Meno</th>
         <th scope="col">Priezvisko</th>
-        <th scope="col" class="text-right">
+        <th scope="col" class="buttons">
           <button type="button" class="add btn btn-outline" (click)="add('veduci')"><i class="fa fa-plus"></i></button>
         </th>
       </tr>
@@ -18,7 +18,7 @@
         <td>{{ vodca.titul }}</td>
         <td>{{ vodca.meno }}</td>
         <td>{{ vodca.priezvisko }}</td>
-        <td class="text-right">
+        <td class="buttons">
           <button type="button" class="btn btn-outline-success mr-1" (click)="edit('veduci', vodca.id)"><i class="fa fa-pencil"></i></button>
           <button type="button" class="btn btn-outline-danger" (click)="delete(vodca.id)"><i class="fa fa-trash"></i></button>
         </td>

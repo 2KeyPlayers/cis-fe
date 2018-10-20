@@ -1,0 +1,12 @@
+<div class="container">
+  <form [formGroup]="formular" (ngSubmit)="submit()">
+    <input type="hidden" formControlName="$id" />
+    <div class="form-group">
+      <label for="nazov">Názov miesta</label>
+      <input type="text" class="form-control" id="nazov" formControlName="nazov" placeholder="Miesto" />
+      <small id="popisNazvu" class="form-text text-danger" *ngIf="formular.get('nazov').touched && formular.get('nazov').hasError('required')">Názov musí byť zadaný.</small>
+      <!-- <small id="popisNazvu" class="form-text text-danger" *ngIf="formular.get('nazov').touched && formular.get('nazov').hasError('alreadyExists')">Zadaný názov už existuje.</small> -->
+    </div>
+    <button type="submit" class="btn btn-outline-info" [disabled]="loading" value="Pridať"></button>
+  </form>
+</div>

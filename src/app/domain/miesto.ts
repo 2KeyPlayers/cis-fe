@@ -1,11 +1,18 @@
-export class Miesto {
+export interface IMiesto {
 
-  id: number;
+  $id?: string;
   nazov: string;
 
-  constructor(data: any) {
-    this.id = data.id;
-    this.nazov = data.nazov;
+}
+
+export class Miesto implements IMiesto {
+
+  $id: string;
+  nazov: string;
+
+  constructor(miesto: IMiesto, id?: string) {
+    this.$id = (id ? id : miesto.$id);
+    this.nazov = miesto.nazov;
   }
 
 }

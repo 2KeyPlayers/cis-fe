@@ -38,22 +38,45 @@ $headings-font-weight: 300 !default;
   background-color: #17a2b8;
 }
 
-table {
+.table {
   font-size: 1.3rem;
 }
-table th.index {
+.table th.index {
   width: 60px;
 }
-table td {
+.table th.buttons, .table td.buttons {
+  width: 120px;
+}
+.table td {
   font-weight: 300;
 }
+.table thead th, table thead td {
+  color: #fff;
+  background-color: #212529;
+  border: 2px solid #fff;
+}
+.table th, .table td {
+  border: 2px solid #fff;
+}
 
+.table .buttons {
+  text-align: center;
+}
+.table td.buttons button {
+  display: none;
+}
+.table tr:hover button {
+  display: inline;
+}
+
+.btn-outline-success, .btn-outline-danger {
+  background-color: #fff;
+}
 .title {
   font-size: 1.2rem;
 }
 .add {
   font-size: .7rem;
-  margin-right: 1.6rem;
   color: #212529;
   background-color: #fff;
 }

@@ -12,16 +12,19 @@ import { Veduci } from './../domain/veduci';
   styleUrls: ['./veduci.component.scss']
 })
 export class VeduciComponent extends BaseComponent implements OnInit {
-
   veduci: Veduci[];
-
+  
   constructor(protected router: Router, protected dataService: DataService) {
     super(router, dataService);
     this.setTitle('Vedúci', 'warning');
   }
-
+  
   ngOnInit() {
     this.veduci = this.dataService.veduci;
   }
+  
+  // performDelete(id: number): Observable<any> {
+  //   return this.dataService.deleteVeduci(id);
+  // }
 
 }

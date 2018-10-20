@@ -1,32 +1,51 @@
-import { Miesto } from './miesto';
-import { Den } from './den';
-import { Veduci } from './veduci';
+import { Miesto, IMiesto } from './miesto';
+import { EDen } from './den';
+import { Veduci, IVeduci } from './veduci';
 
-export class ZaujmovyUtvar {
+export interface IZaujmovyUtvar {
 
-  id: number;
+  $id: string;
   ikona?: string;
   nazov: string;
-  veduci: Veduci;
+  veduci: IVeduci;
+  kedyKde: Array<IKedyKde>;
+  
+}
+
+export class ZaujmovyUtvar implements IZaujmovyUtvar {
+
+  $id: string;
+  ikona?: string;
+  nazov: string;
+  veduci: IVeduci;
   kedyKde: Array<KedyKde>;
 
-  constructor(data: any) {
-    this.id = data.id;
-    this.ikona = data.ikona;
-    this.nazov = data.nazov;
-    this.veduci = new Veduci(data.veduci);
-    if (data.kedyKde) {
-      this.kedyKde = data.kedyKde.map(kk => new KedyKde(kk));
+  constructor(zaujmovyUtvar: IZaujmovyUtvar, id?: string) {
+    this.$id = (id ? id : zaujmovyUtvar.$id);
+    this.ikona = zaujmovyUtvar.ikona;
+    this.nazov = zaujmovyUtvar.nazov;
+    this.veduci = new Veduci(zaujmovyUtvar.veduci);
+    if (zaujmovyUtvar.kedyKde) {
+      this.kedyKde = zaujmovyUtvar.kedyKde.map(kk => new KedyKde(kk));
     }
   }
 
 }
 
-class KedyKde {
+interface IKedyKde {
 
-  den: Den;
+  id?: string;
+  den: EDen;
   cas: string;
-  miesto: Miesto;
+  miesto: IMiesto;
+
+}
+
+class KedyKde implements IKedyKde {
+
+  den: EDen;
+  cas: string;
+  miesto: IMiesto;
 
   constructor(data: any) {
     this.den = data.den;

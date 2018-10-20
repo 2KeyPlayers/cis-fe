@@ -2,13 +2,34 @@ a {
   text-decoration: none;
 }
 .card {
+  height: 200px;
   border-color: #fff;
 }
-.card:hover {
+/*.card:hover {
   -webkit-box-shadow: 0 4px 4px -2px #999999;
   -moz-box-shadow: 0 4px 4px -2px #999999;
   box-shadow: 0 4px 4px -2px #999999;
-}
+}*/
 .card-body i {
   font-size: 6rem;
+}
+
+.spinner {
+  display: inline-block;
+  width: 5rem;
+  height: 5rem;
+  border: 8px solid transparent;
+  border-top-color: #fff;
+  border-bottom-color: #fff;
+  border-radius: 50%;
+  animation: rotation 0.8s ease infinite;
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
