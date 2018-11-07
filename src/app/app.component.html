@@ -1,21 +1,77 @@
-<nav class="navbar navbar-expand navbar-light bg-light">
-  <div class="logo">
-    <a href="http://www.cvcmoldava.edu.sk"><img src="assets/img/logo.png" /></a>
-  </div>
-  <div>
-    <p class="text-center">
-      <a routerLinkActive="active" routerLink="/" *ngIf="!title"><span class="badge badge-info">C</span><span class="badge badge-success">V</span><span class="badge badge-warning">r</span><span class="badge badge-danger">Č</span><span class="badge badge-purple">k</span><span class="badge badge-orange">o</span><span class="badge badge-pink">v</span><br/>
-      <span class="badge badge-primary">INFORMAČNÝ SYSTÉM</span></a>
-      <span class="title badge badge-{{ titleType }}" *ngIf="title">{{ title }}</span>
-    </p>
-  </div>
-  <div class="nav navbar-nav">
-    <a class="nav-item nav-link" routerLinkActive="active" routerLink="/menu" *ngIf="title"><i class="fa fa-bars"></i></a>
-    <!--a class="nav-item nav-link" (click)="authService.logout()" *ngIf="authService.authenticated"><i class="fa fa-user"></i></a-->
-    <a class="nav-item nav-link" href="#"><i class="fa fa-user"></i></a>
-  </div>
-</nav>
+<script>
+  $(document).ready(function () {
 
-<div class="container-fluid mt-5">
+    // fix main menu to page on passing
+    $('.main.menu').visibility({
+      type: 'fixed'
+    });
+    // $('.overlay').visibility({
+    //   type: 'fixed',
+    //   offset: 80
+    // });
+
+    // lazy load images
+    /*$('.image').visibility({
+      type: 'image',
+      transition: 'vertical flip in',
+      duration: 500
+    });*/
+
+    // show dropdown on hover
+    // $('.main.menu  .ui.dropdown').dropdown({
+    //   on: 'hover'
+    // });
+
+  });
+</script>
+
+<div class="ui fixed borderless three item main menu">
+  <div class="left item">
+    <a class="logo" href="http://www.cvcmoldava.edu.sk"><img src="assets/img/logo.png" /></a>
+  </div>
+  <div class="middle item">
+    <h1 class="ui header" *ngIf="!title">
+      <div class="ui blue horizontal label">C</div>
+      <div class="ui green horizontal label">V</div>
+      <div class="ui yellow horizontal label">r</div>
+      <div class="ui red horizontal label">Č</div>
+      <div class="ui purple horizontal label">k</div>
+      <div class="ui orange horizontal label">o</div>
+      <div class="ui pink horizontal label">v</div>
+    </h1>
+    <div class="ui black horizontal label" *ngIf="!title">INFORMAČNÝ SYSTÉM</div>
+    <!-- <h1 class="ui header" *ngIf="title">
+      <div [class]="'ui huge horizontal label'">{{ title | uppercase }}</div>
+    </h1> -->
+    <button class="ui labeled icon button" routerLink="/menu" *ngIf="title">
+      <i class="bars icon"></i>
+      {{ title | uppercase }}
+    </button>
+  </div>
+  <div class="right item">
+    <!--a class="ui right floated dropdown item" (click)="authService.logout()" *ngIf="authService.authenticated"><i class="fa fa-user"></i></a-->
+    <a class="ui basic icon button" href="#"><i class="big user icon"></i></a>
+  </div>
+  <!-- <a href="#" class="ui right floated dropdown item">
+      Dropdown <i class="dropdown icon"></i>
+      <div class="menu">
+        <div class="item">Link Item</div>
+        <div class="item">Link Item</div>
+        <div class="divider"></div>
+        <div class="header">Header Item</div>
+        <div class="item">
+          <i class="dropdown icon"></i>
+          Sub Menu
+          <div class="menu">
+            <div class="item">Link Item</div>
+            <div class="item">Link Item</div>
+          </div>
+        </div>
+        <div class="item">Link Item</div>
+      </div>
+    </a> -->
+</div>
+
+<div class="ui main container">
   <router-outlet></router-outlet>
 </div>

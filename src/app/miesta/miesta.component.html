@@ -1,25 +1,40 @@
-<div class="container-fluid">
-
-  <table class="table table-hover">
-    <thead>
-      <tr>
-        <th scope="col" class="index">#</th>
-        <th scope="col">Názov</th>
-        <th scope="col" class="buttons">
-          <button type="button" class="add btn btn-outline" (click)="add('miesto')"><i class="fa fa-plus"></i></button>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let miesto of miesta; let i = index" [attr.data-index]="i" class="table-light">
-        <th scope="row">{{ (i + 1) }}</th>
-        <td>{{ miesto.nazov }}</td>
-        <td class="buttons">
-          <button type="button" class="btn btn-outline-success mr-1" (click)="edit('miesto', miesto.$id)"><i class="fa fa-pencil"></i></button>
-          <button type="button" class="btn btn-outline-danger" (click)="delete(miesto.$id)"><i class="fa fa-trash"></i></button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-</div>
+<table class="ui blue striped selectable celled table">
+  <thead>
+    <tr>
+      <th class="collapsing">#</th>
+      <th>Názov</th>
+      <th>
+        <div class="ui right floated small blue right labeled icon button" (click)="add('miesto')">
+          <i class="right building icon"></i>
+          Pridať
+        </div>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td colspan="3" class="center aligned text" *ngIf="miesta?.length == 0">Žiadne miesta</td>
+    </tr>
+    <tr *ngFor="let miesto of miesta; let i = index" [attr.data-index]="i" class="table-light">
+      <td class="collapsing">{{ (i + 1) }}</td>
+      <td>{{ miesto.nazov }}</td>
+      <td class="right aligned collapsing">
+        <div class="ui icon buttons">
+          <button class="ui basic green icon button" (click)="edit('miesto', miesto.$id)"><i class="pencil icon"></i></button>
+          <button class="ui basic red icon button" (click)="delete(miesto.$id)"><i class="trash icon"></i></button>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <th colspan="2">
+      Počet: {{ miesta?.length }}
+    </th>
+    <th>
+      <div class="ui right floated small blue right labeled icon button" (click)="add('miesto')">
+        <i class="right building icon"></i>
+        Pridať
+      </div>
+    </th>
+  </tfoot>
+</table>

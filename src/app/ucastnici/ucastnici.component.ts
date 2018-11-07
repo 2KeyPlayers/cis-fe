@@ -12,16 +12,24 @@ import { Ucastnik } from '../domain/ucastnik';
   styleUrls: ['./ucastnici.component.scss']
 })
 export class UcastniciComponent extends BaseComponent implements OnInit {
-
+  
   ucastnici: Ucastnik[];
-
+  
   constructor(protected router: Router, protected dataService: DataService) {
     super(router, dataService);
-    this.setTitle('Účastníci', 'success');
+    this.setTitle('Účastníci', 'green');
+  }
+  
+  ngOnInit() {
+    this.getData();
+  }
+  
+  protected getData() {
+    this.ucastnici = this.dataService.ucastnici;
   }
 
-  ngOnInit() {
-    this.ucastnici = this.dataService.ucastnici;
+  protected performDelete(id: string): Promise<void> {
+    return this.dataService.deleteUcastnik(id);
   }
 
 }

@@ -16,15 +16,19 @@ export class VeduciComponent extends BaseComponent implements OnInit {
   
   constructor(protected router: Router, protected dataService: DataService) {
     super(router, dataService);
-    this.setTitle('Vedúci', 'warning');
+    this.setTitle('Vedúci', 'yellow');
   }
   
   ngOnInit() {
-    this.veduci = this.dataService.veduci;
+    this.getData();
   }
   
-  // performDelete(id: number): Observable<any> {
-  //   return this.dataService.deleteVeduci(id);
-  // }
+  protected getData() {
+    this.veduci = this.dataService.veduci;
+  }
+
+  protected performDelete(id: string): Promise<void> {
+    return this.dataService.deleteVeduci(id);
+  }
 
 }

@@ -17,10 +17,19 @@ export class ZaujmoveUtvaryComponent extends BaseComponent implements OnInit {
 
   constructor(protected router: Router, protected dataService: DataService) {
     super(router, dataService);
-    this.setTitle('Záujmové útvary', 'danger');
+    this.setTitle('Záujmové útvary', 'red');
   }
 
   ngOnInit() {
+    this.getData();
+  }
+  
+  protected getData() {
     this.zaujmoveUtvary = this.dataService.zaujmoveUtvary;
   }
+
+  protected performDelete(id: string): Promise<void> {
+    return this.dataService.deleteZaujmovyUtvar(id);
+  }
+
 }

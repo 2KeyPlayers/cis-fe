@@ -1,32 +1,44 @@
-<div class="container-fluid">
-
-  <table class="table table-hover">
-    <thead>
-      <tr>
-        <th scope="col" class="index">#</th>
-        <!--th scope="col">&nbsp;</th-->
-        <th scope="col">Názov</th>
-        <th scope="col">Vedúci</th>
-        <th scope="col" class="buttons">
-          <button type="button" class="add btn btn-outline" (click)="add('zaujmovy-utvar')"><i class="fa fa-plus"></i></button>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let zaujmovyUtvar of zaujmoveUtvary; let i = index" [attr.data-index]="i" class="table-light">
-        <th scope="row" class="index">{{ (i + 1) }}</th>
-        <!--td><i class="fa fa-{{ zaujmovyUtvar.ikona ? zaujmovyUtvar.ikona : 'star-o' }}"></i></td-->
-        <td>{{ zaujmovyUtvar.nazov }}</td>
-        <td>{{ zaujmovyUtvar.veduci.celeMeno }}</td>
-        <td class="buttons">
-          <div>
-            <button type="button" class="btn btn-outline-success mr-1" (click)="edit('zaujmovy-utvar', zaujmovyUtvar.id)"><i
-                class="fa fa-pencil"></i></button>
-            <button type="button" class="btn btn-outline-danger" (click)="delete(zaujmovyUtvar.id)"><i class="fa fa-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-</div>
+<table class="ui red striped selectable celled table">
+  <thead>
+    <tr>
+      <th class="collapsing">#</th>
+      <!-- <th class="collapsing">&nbsp;</th> -->
+      <th>Názov</th>
+      <th>Vedúci</th>
+      <th>
+        <div class="ui right floated small red right labeled icon button" (click)="add('zaujmovy-utvar')">
+          <i class="right list icon"></i>
+          Pridať
+        </div>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td colspan="4" class="center aligned text" *ngIf="zaujmoveUtvary?.length == 0">Žiadne záujmové útvary</td>
+    </tr>
+    <tr *ngFor="let zaujmovyUtvar of zaujmoveUtvary; let i = index" [attr.data-index]="i" class="table-light">
+      <td class="collapsing">{{ (i + 1) }}</td>
+      <!--td><i class="fa fa-{{ zaujmovyUtvar.ikona ? zaujmovyUtvar.ikona : 'star-o' }}"></i></td-->
+      <td>{{ zaujmovyUtvar.nazov }}</td>
+      <td>{{ zaujmovyUtvar.veduci.celeMeno }}</td>
+      <td class="right aligned collapsing">
+        <div class="ui icon buttons">
+          <button class="ui basic green icon button" (click)="edit('zaujmovy-utvar', zaujmovyUtvar.$id)"><i class="pencil icon"></i></button>
+          <button class="ui basic red icon button" (click)="delete(zaujmovyUtvar.$id)"><i class="trash icon"></i></button>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <th colspan="3">
+      Počet: {{ zaujmoveUtvary?.length }}
+    </th>
+    <th>
+      <div class="ui right floated small red right labeled icon button" (click)="add('zaujmovy-utvar')">
+        <i class="right list icon"></i>
+        Pridať
+      </div>
+    </th>
+  </tfoot>
+</table>

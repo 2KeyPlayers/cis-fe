@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { BaseComponent } from './base.component';
 import { DataService } from './service/data.service';
 
+// import * as $ from 'jquery';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',

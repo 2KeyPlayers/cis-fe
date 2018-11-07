@@ -4,84 +4,22 @@
 // Your variable overrides go here, e.g.:
 // $h1-font-size: 3rem;
 
-$font-family-sans-serif: Roboto, Calibri, Candara, Arial, sans-serif !default;
-$headings-font-family:   'Peralta', cursive !default;
-$font-size-base: 1rem !default;
-$headings-font-weight: 300 !default;
-
-@import "~bootswatch/dist/sketchy/variables";
-@import "~bootstrap/scss/bootstrap";
-@import "~bootswatch/dist/sketchy/bootswatch";
-
-.badge-pink {
-  color: #fff;
-  background-color: #e83e8c;
-}
-.badge-purple {
-  color: #fff;
-  background-color: #6f42c1;
-}
-.badge-orange {
-  color: #fff;
-  background-color: #fd7e14;
-}
-.badge-indigo {
-  color: #fff;
-  background-color: #6610f2;
-}
-.badge-teal {
-  color: #fff;
-  background-color: #20c997;
-}
-.badge-cyan {
-  color: #fff;
-  background-color: #17a2b8;
+.ui.segment {
+  box-shadow: none;
 }
 
-.table {
-  font-size: 1.3rem;
+.ui.celled.table tr th:last-child, .ui.celled.table tr td:last-child {
+  border-left: none;
 }
-.table th.index {
-  width: 60px;
+.ui.table tfoot th {
+  font-weight: 700;
 }
-.table th.buttons, .table td.buttons {
-  width: 120px;
-}
-.table td {
-  font-weight: 300;
-}
-.table thead th, table thead td {
-  color: #fff;
-  background-color: #212529;
-  border: 2px solid #fff;
-}
-.table th, .table td {
-  border: 2px solid #fff;
-}
-
-.table .buttons {
-  text-align: center;
-}
-.table td.buttons button {
+.ui.table tr td .icon.buttons {
   display: none;
 }
-.table tr:hover button {
-  display: inline;
+.ui.table tr:hover td .icon.buttons {
+  display: inline-flex;
 }
-
-.btn-outline-success, .btn-outline-danger {
-  background-color: #fff;
-}
-.title {
-  font-size: 1.2rem;
-}
-.add {
-  font-size: .7rem;
-  color: #212529;
-  background-color: #fff;
-}
-.add:hover {
-  color: #fff;
-  background-color: #212529;
-  border-color: #fff;
+.ui.table tr {
+  line-height: 2.6em;
 }

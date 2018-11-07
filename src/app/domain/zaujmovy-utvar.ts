@@ -8,7 +8,8 @@ export interface IZaujmovyUtvar {
   ikona?: string;
   nazov: string;
   veduci: IVeduci;
-  kedyKde: Array<IKedyKde>;
+  // idVeduceho: string;
+  // kedyKde?: Array<IKedyKde>;
   
 }
 
@@ -18,39 +19,49 @@ export class ZaujmovyUtvar implements IZaujmovyUtvar {
   ikona?: string;
   nazov: string;
   veduci: IVeduci;
-  kedyKde: Array<KedyKde>;
+  // idVeduceho: string;
+  // kedyKde?: Array<KedyKde>;
 
   constructor(zaujmovyUtvar: IZaujmovyUtvar, id?: string) {
     this.$id = (id ? id : zaujmovyUtvar.$id);
     this.ikona = zaujmovyUtvar.ikona;
     this.nazov = zaujmovyUtvar.nazov;
-    this.veduci = new Veduci(zaujmovyUtvar.veduci);
-    if (zaujmovyUtvar.kedyKde) {
-      this.kedyKde = zaujmovyUtvar.kedyKde.map(kk => new KedyKde(kk));
+    if (zaujmovyUtvar.veduci) {
+      this.veduci = new Veduci(zaujmovyUtvar.veduci);
     }
+    // if (zaujmovyUtvar.idVeduceho) {
+    //   this.veduci = {
+    //     $id : this.idVeduceho,
+    //     meno: null,
+    //     priezvisko: null
+    //   }
+    // }
+    // if (zaujmovyUtvar.kedyKde) {
+    //   this.kedyKde = zaujmovyUtvar.kedyKde.map(kk => new KedyKde(kk));
+    // }
   }
 
 }
 
-interface IKedyKde {
+// interface IKedyKde {
 
-  id?: string;
-  den: EDen;
-  cas: string;
-  miesto: IMiesto;
+//   id?: string;
+//   den: EDen;
+//   cas: string;
+//   miesto: IMiesto;
 
-}
+// }
 
-class KedyKde implements IKedyKde {
+// class KedyKde implements IKedyKde {
 
-  den: EDen;
-  cas: string;
-  miesto: IMiesto;
+//   den: EDen;
+//   cas: string;
+//   miesto: IMiesto;
 
-  constructor(data: any) {
-    this.den = data.den;
-    this.cas = data.cas;
-    this.miesto = new Miesto(data.miesto);
-  }
+//   constructor(data: any) {
+//     this.den = data.den;
+//     this.cas = data.cas;
+//     this.miesto = new Miesto(data.miesto);
+//   }
 
-}
+// }

@@ -1,37 +1,52 @@
-<div class="container-fluid">
-
-  <table class="table table-hover">
-    <thead>
-      <tr>
-        <th scope="col" class="index">#</th>
-        <th scope="col" class="cislo">Číslo</th>
-        <th scope="col" class="pohlavie">&nbsp;</th>
-        <th scope="col">Meno</th>
-        <th scope="col">Priezvisko</th>
-        <th scope="col">Dátum narodenia (vek)</th>
-        <th scope="col">Mesto</th>
-        <th scope="col">Škola</th>
-        <th scope="col" class="buttons">
-          <button type="button" class="add btn btn-outline" (click)="add('ucastnik')"><i class="fa fa-plus"></i></button>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let ucastnik of ucastnici; let i = index" [attr.data-index]="i" class="table-light">
-        <th scope="row" class="index">{{ (i + 1) }}</th>
-        <td>{{ ucastnik.id }}</td>
-        <td><i class="fa fa-{{ (ucastnik.pohlavie === 'M') ? 'male' : 'female' }}"></i></td>
-        <td>{{ ucastnik.meno }}</td>
-        <td>{{ ucastnik.priezvisko }}</td>
-        <td>{{ ucastnik.datumNarodenia | date: 'd.M.yyyy' }} ({{ ucastnik.vek }})</td>
-        <td>{{ ucastnik.adresa.mesto }}</td>
-        <td>{{ ucastnik.skola }}</td>
-        <td class="buttons">
-          <button type="button" class="btn btn-outline-success mr-1" (click)="edit('ucastnik', ucastnik.id)"><i class="fa fa-pencil"></i></button>
-          <button type="button" class="btn btn-outline-danger" (click)="delete(ucastnik.id)"><i class="fa fa-trash"></i></button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-</div>
+<table class="ui green striped selectable celled table">
+  <thead>
+    <tr>
+      <!-- <th class="collapsing">#</th> -->
+      <th class="collapsing">Číslo</th>
+      <th>&nbsp;</th>
+      <th>Meno</th>
+      <th>Priezvisko</th>
+      <th class="collapsing">D.n. (vek)</th>
+      <th>Mesto</th>
+      <th>Škola</th>
+      <th>
+        <div class="ui right floated small green right labeled icon button" (click)="add('ucastnik')">
+          <i class="right users icon"></i>
+          Pridať
+        </div>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td colspan="8" class="center aligned text" *ngIf="ucastnici?.length == 0">Žiadni účastníci</td>
+    </tr>
+    <tr *ngFor="let ucastnik of ucastnici; let i = index" [attr.data-index]="i" class="table-light">
+      <!-- <td class="collapsing">{{ (i + 1) }}</td> -->
+      <td>{{ ucastnik.$id }}</td>
+      <td class="collapsing"><i class="{{ (ucastnik.pohlavie === 'M') ? 'male' : 'female' }} icon"></i></td>
+      <td>{{ ucastnik.meno }}</td>
+      <td>{{ ucastnik.priezvisko }}</td>
+      <td>{{ ucastnik.datumNarodenia | date: 'd.M.yyyy' }} ({{ ucastnik.vek }})</td>
+      <td>{{ ucastnik.adresa.mesto }}</td>
+      <td>{{ ucastnik.skola }}</td>
+      <td class="right aligned collapsing">
+        <div class="ui icon buttons">
+          <button class="ui basic green icon button" (click)="edit('ucastnik', ucastnik.$id)"><i class="pencil icon"></i></button>
+          <button class="ui basic red icon button" (click)="delete(ucastnik.$id)"><i class="trash icon"></i></button>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <th colspan="7">
+      Počet: {{ ucastnici?.length }}
+    </th>
+    <th>
+      <div class="ui right floated small green right labeled icon button" (click)="add('ucastnik')">
+        <i class="right users icon"></i>
+        Pridať
+      </div>
+    </th>
+  </tfoot>
+</table>

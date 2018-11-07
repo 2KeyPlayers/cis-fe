@@ -1,21 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import { Veduci } from 'src/app/domain/veduci';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Location } from '@angular/common';
 
 import { DataService } from '../../service/data.service';
 import { BaseComponent } from '../../base.component';
-import { IMiesto } from 'src/app/domain/miesto';
-import { MiestoValidator } from 'src/app/validation/miesto.validator';
+import { IZaujmovyUtvar } from './../../domain/zaujmovy-utvar';
+import { ZaujmovyUtvarValidator } from 'src/app/validation/zaujmovy-utvar.validator';
+
+declare var jQuery: any;
 
 @Component({
   selector: 'app-miesto',
-  templateUrl: './miesto.component.html',
-  styleUrls: ['./miesto.component.scss']
+  templateUrl: './zaujmovy-utvar.component.html',
+  styleUrls: ['./zaujmovy-utvar.component.scss']
 })
-export class MiestoComponent extends BaseComponent implements OnInit {
+export class ZaujmovyUtvarComponent extends BaseComponent implements OnInit {
+  @ViewChild('vodca') vodca: ElementRef;
+  
   formular: FormGroup;
   submitnuty: boolean;
+
+  veduci: Veduci[];
 
   constructor(
     protected fb: FormBuilder,
@@ -25,7 +32,7 @@ export class MiestoComponent extends BaseComponent implements OnInit {
     protected dataService: DataService
   ) {
     super(router, dataService);
-    this.setTitle('Miesta', 'blue');
+    this.setTitle('Záujmové útvary', 'red');
 
     this.formular = this.fb.group(
       {
@@ -35,16 +42,21 @@ export class MiestoComponent extends BaseComponent implements OnInit {
           [
             Validators.required,
             Validators.minLength(3)
-            // MiestoValidator.createDuplicateValidator(this.dataService, id)
           ]
-        ]
+        ],
+        veduci: [null, Validators.required]
       },
-      { validator: MiestoValidator.createDuplicateValidator(this.dataService) }
+      { validator: ZaujmovyUtvarValidator.createDuplicateValidator(this.dataService) }
     );
   }
 
   ngOnInit() {
-   this.initData();
+    // init dropdown
+    jQuery(this.vodca.nativeElement).dropdown();
+    
+    this.dataService.sortVeduci();
+    this.veduci = this.dataService.veduci;
+    this.initData();
   }
 
   get f() {
@@ -53,21 +65,23 @@ export class MiestoComponent extends BaseComponent implements OnInit {
 
   protected getData(): any {
     let id: string = this.activatedRoute.snapshot.paramMap.get('id');
-    let miesto: IMiesto = {
+    let zaujmovyUtvar: IZaujmovyUtvar = {
       $id: null,
-      nazov: ''
+      nazov: '',
+      veduci: null
     };
 
     if (id != 'plus') {
-      miesto = this.dataService.findMiesto(id);
-      if (miesto) {
+      zaujmovyUtvar = this.dataService.findZaujmovyUtvar(id);
+      if (zaujmovyUtvar) {
         this.formular.setValue({
-          $id: miesto.$id,
-          nazov: miesto.nazov
+          $id: zaujmovyUtvar.$id,
+          nazov: zaujmovyUtvar.nazov,
+          veduci: zaujmovyUtvar.veduci ? zaujmovyUtvar.veduci.$id : null
         });
       }
     }
-    return miesto;
+    return zaujmovyUtvar;
   }
 
   submit() {
@@ -77,23 +91,24 @@ export class MiestoComponent extends BaseComponent implements OnInit {
         this.formular.get('$id').value == null ||
         this.formular.get('$id').value == ''
       ) {
-        this.log('pridavam miesto: ' + this.formular.get('nazov').value);
-        this.dataService.insertMiesto(this.formular.value).then(_ => {
-          swal(`Miesto úspešne pridané.`, {
+        this.log('pridavam zaujmovy utvar: ' + this.formular.get('nazov').value);
+        this.dataService.insertZaujmovyUtvar(this.formular.value).then(_ => {
+          swal(`Záujmový útvar úspešne pridaný.`, {
             icon: 'success'
           }).then(_ => {
             this.formular.reset();
             this.formular.setValue({
               $id: null,
-              nazov: ''
+              nazov: '',
+              veduci: null
             });
             this.submitnuty = false;
           });
         });
       } else {
-        this.log('aktualizujem miesto: ' + this.formular.get('nazov').value);
+        this.log('aktualizujem zaujmovy utvar: ' + this.formular.get('nazov').value);
         this.dataService.updateMiesto(this.formular.value).then(_ => {
-          swal('Miesto úspešne upravené.', {
+          swal('Záujmový útvar úspešne upravený.', {
             icon: 'success'
           }).then(_ => {
             this.submitnuty = false;

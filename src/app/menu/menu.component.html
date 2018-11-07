@@ -1,53 +1,109 @@
-<div class="container">
-  <div class="row">
-
-    <div class="col-sm-6 col-lg-3">
-      <div class="card text-white bg-success mb-3">
-        <div class="card-header">Účastníci</div>
-        <div class="card-body text-center">
-          <button routerLink="/ucastnici" class="btn btn-success btn-block" [disabled]="error">
-            <i class="fa fa-users" *ngIf="!loading"></i>
-            <div class="spinner" *ngIf="loading"></div>
-          </button>
+<div class="ui four column grid">
+  <div class="column">
+    <div class="ui fluid card">
+      <div class="center aligned content">
+        <div class="green header">
+          <h3 class="ui green header">Účastníci</h3>
+        </div>
+        <div class="center aligned description">
+          <i class="green users massive icon"></i>
         </div>
       </div>
-    </div>
-
-    <div class="col-sm-6 col-lg-3">
-      <div class="card text-white bg-danger mb-3">
-        <div class="card-header">Záujmové útvary</div>
-        <div class="card-body text-center">
-          <button routerLink="/zaujmove-utvary" class="btn btn-danger btn-block" [disabled]="error">
-            <i class="fa fa-list" *ngIf="!loading"></i>
-            <div class="spinner" *ngIf="loading"></div>
-          </button>
+      <div class="ui animated bottom attached green button" (click)="goTo('ucastnici')" *ngIf="!loading && !error">
+        <div class="visible content">
+          <i class="right arrow icon"></i>
+        </div>
+        <div class="hidden content">
+          <i class="right arrow icon"></i>
         </div>
       </div>
-    </div>
-
-    <div class="col-sm-6 col-lg-3">
-      <div class="card text-white bg-warning mb-3">
-        <div class="card-header">Vedúci</div>
-        <div class="card-body text-center">
-          <button routerLink="/veduci" class="btn btn-warning btn-block" [disabled]="error">
-            <i class="fa fa-graduation-cap" *ngIf="!loading"></i>
-            <div class="spinner" *ngIf="loading"></div>
-          </button>
-        </div>
+      <div class="ui bottom attached green button" *ngIf="error">
+        <i class="exclamation triangle icon"></i>
+      </div>
+      <div class="ui green bottom attached loading button" *ngIf="loading">
+        Nahrávam
       </div>
     </div>
+  </div>
 
-    <div class="col-sm-6 col-lg-3">
-      <div class="card text-white bg-info mb-3">
-        <div class="card-header">Miesta</div>
-        <div class="card-body text-center">
-          <button routerLink="/miesta" class="btn btn-info btn-block" [disabled]="error">
-            <i class="fa fa-building" *ngIf="!loading"></i>
-            <div class="spinner" *ngIf="loading"></div>
-          </button>
+  <div class="column">
+    <div class="ui fluid card">
+      <div class="center aligned content">
+        <div class="red header">
+          <h3 class="ui red header">Záujmové útvary</h3>
+        </div>
+        <div class="center aligned description">
+          <i class="red list massive icon"></i>
         </div>
       </div>
+      <div class="ui animated bottom attached red button" (click)="goTo('zaujmove-utvary')" *ngIf="!loading && !error">
+        <div class="visible content">
+          <i class="right arrow icon"></i>
+        </div>
+        <div class="hidden content">
+          <i class="right arrow icon"></i>
+        </div>
+      </div>
+      <div class="ui bottom attached red button" *ngIf="error">
+        <i class="exclamation triangle icon"></i>
+      </div>
+      <div class="ui red bottom attached loading button" *ngIf="loading">
+        Nahrávam
+      </div>
     </div>
+  </div>
 
+  <div class="column">
+    <div class="ui fluid card">
+      <div class="center aligned content">
+        <div class="yellow header">
+          <h3 class="ui yellow header">Vedúci</h3>
+        </div>
+        <div class="center aligned description">
+          <i class="yellow graduation cap massive icon"></i>
+        </div>
+      </div>
+      <div class="ui animated bottom attached yellow button" (click)="goTo('veduci')" *ngIf="!loading && !error">
+        <div class="visible content">
+          <i class="right arrow icon"></i>
+        </div>
+        <div class="hidden content">
+          <i class="right arrow icon"></i>
+        </div>
+      </div>
+      <div class="ui bottom attached yellow button" *ngIf="error">
+        <i class="exclamation triangle icon"></i>
+      </div>
+      <div class="ui yellow bottom attached loading button" *ngIf="loading">
+        Nahrávam
+      </div>
+    </div>
+  </div>
+
+  <div class="column">
+    <div class="ui fluid card">
+      <div class="center aligned content">
+        <div class="blue header">
+          <h3 class="ui blue header">Miesta</h3>
+        </div>
+        <div class="center aligned description">
+          <i class="blue building massive icon"></i>
+        </div>
+      </div>
+      <div class="ui animated bottom attached blue button" (click)="goTo('miesta')" *ngIf="!loading && !error">
+        <div class="visible content">
+          <i class="right arrow icon"></i>
+        </div>
+        <div class="hidden content">
+          <i class="right arrow icon"></i>
+        </div>
+      </div>
+      <div class="ui bottom attached blue button" *ngIf="error">
+        <i class="exclamation triangle icon"></i>
+      </div>
+      <div class="ui blue bottom attached loading button" *ngIf="loading">
+        Nahrávam
+      </div>
+    </div>
   </div>
 </div>

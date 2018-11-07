@@ -1,29 +1,44 @@
-<div class="container-fluid">
-
-  <table class="table table-hover">
-    <thead>
-      <tr>
-        <th scope="col" class="index">#</th>
-        <th scope="col" class="titul">Titul</th>
-        <th scope="col">Meno</th>
-        <th scope="col">Priezvisko</th>
-        <th scope="col" class="buttons">
-          <button type="button" class="add btn btn-outline" (click)="add('veduci')"><i class="fa fa-plus"></i></button>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let vodca of veduci; let i = index" [attr.data-index]="i" class="table-light">
-        <th scope="row" class="index">{{ (i + 1) }}</th>
-        <td>{{ vodca.titul }}</td>
-        <td>{{ vodca.meno }}</td>
-        <td>{{ vodca.priezvisko }}</td>
-        <td class="buttons">
-          <button type="button" class="btn btn-outline-success mr-1" (click)="edit('veduci', vodca.id)"><i class="fa fa-pencil"></i></button>
-          <button type="button" class="btn btn-outline-danger" (click)="delete(vodca.id)"><i class="fa fa-trash"></i></button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-</div>
+<table class="ui yellow striped selectable celled table">
+  <thead>
+    <tr>
+      <th class="collapsing">#</th>
+      <th class="collapsing">Titul</th>
+      <th>Meno</th>
+      <th>Priezvisko</th>
+      <th>
+        <div class="ui right floated small yellow right labeled icon button" (click)="add('veduci')">
+          <i class="right graduation cap icon"></i>
+          Pridať
+        </div>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td colspan="5" class="center aligned text" *ngIf="veduci?.length == 0">Žiadni vedúci</td>
+    </tr>
+    <tr *ngFor="let vodca of veduci; let i = index" [attr.data-index]="i" class="table-light">
+      <td class="collapsing">{{ (i + 1) }}</td>
+      <td>{{ vodca.titul }}</td>
+      <td>{{ vodca.meno }}</td>
+      <td>{{ vodca.priezvisko }}</td>
+      <td class="right aligned collapsing">
+        <div class="ui icon buttons">
+          <button class="ui basic green icon button" (click)="edit('veduci', vodca.$id)"><i class="pencil icon"></i></button>
+          <button class="ui basic red icon button" (click)="delete(vodca.$id)"><i class="trash icon"></i></button>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <th colspan="4">
+      Počet: {{ veduci?.length }}
+    </th>
+    <th>
+      <div class="ui right floated small yellow right labeled icon button" (click)="add('veduci')">
+        <i class="right graduation cap icon"></i>
+        Pridať
+      </div>
+    </th>
+  </tfoot>
+</table>

@@ -79,7 +79,7 @@ class Adresa {
   ulica: string;
   cislo: number;
   mesto: string;
-  psc?: string;
+  psc: string;
 
   constructor(adresa: any) {
     this.ulica = adresa.ulica;
