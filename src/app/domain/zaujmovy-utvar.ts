@@ -1,5 +1,5 @@
-import { Miesto, IMiesto } from './miesto';
-import { EDen } from './den';
+// import { Miesto, IMiesto } from './miesto';
+// import { EDen } from './den';
 import { Veduci, IVeduci } from './veduci';
 
 export interface IZaujmovyUtvar {

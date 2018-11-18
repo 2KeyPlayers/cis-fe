@@ -11,7 +11,9 @@ export abstract class BaseComponent {
   constructor(protected router: Router, protected dataService: DataService) { }
 
   goTo(location: string) {
-    this.router.navigate([`/${location}`]);
+    if (this.dataService.ok) {
+      this.router.navigate([`/${location}`]);
+    }
   }
 
   // Status

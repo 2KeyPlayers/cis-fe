@@ -1,6 +1,6 @@
 <div class="ui four column grid">
   <div class="column">
-    <div class="ui fluid card">
+    <div class="ui fluid link card" (click)="goTo('ucastnici')">
       <div class="center aligned content">
         <div class="green header">
           <h3 class="ui green header">Účastníci</h3>
@@ -9,7 +9,16 @@
           <i class="green users massive icon"></i>
         </div>
       </div>
-      <div class="ui animated bottom attached green button" (click)="goTo('ucastnici')" *ngIf="!loading && !error">
+      <!-- <div class="ui bottom attached green center aligned message" *ngIf="!loading && !error">
+        <i class="right arrow icon"></i>
+      </div>
+      <div class="ui bottom attached green center aligned message" *ngIf="error">
+        <i class="exclamation triangle icon"></i>
+      </div>
+      <div class="ui green bottom attached center aligned message" *ngIf="loading">
+        Nahrávam...
+      </div> -->
+      <!-- <div class="ui animated bottom attached green button" *ngIf="!loading && !error">
         <div class="visible content">
           <i class="right arrow icon"></i>
         </div>
@@ -22,21 +31,30 @@
       </div>
       <div class="ui green bottom attached loading button" *ngIf="loading">
         Nahrávam
-      </div>
+      </div> -->
     </div>
   </div>
 
   <div class="column">
-    <div class="ui fluid card">
+    <div class="ui fluid link card" (click)="goTo('zaujmove-utvary')">
       <div class="center aligned content">
         <div class="red header">
           <h3 class="ui red header">Záujmové útvary</h3>
         </div>
         <div class="center aligned description">
-          <i class="red list massive icon"></i>
+          <i class="red smile outline massive icon"></i>
         </div>
       </div>
-      <div class="ui animated bottom attached red button" (click)="goTo('zaujmove-utvary')" *ngIf="!loading && !error">
+      <!-- <div class="ui bottom attached red center aligned message" *ngIf="!loading && !error">
+        <i class="right arrow icon"></i>
+      </div>
+      <div class="ui bottom attached red center aligned message" *ngIf="error">
+        <i class="exclamation triangle icon"></i>
+      </div>
+      <div class="ui red bottom attached center aligned message" *ngIf="loading">
+        Nahrávam...
+      </div> -->
+      <!-- <div class="ui animated bottom attached red button" *ngIf="!loading && !error">
         <div class="visible content">
           <i class="right arrow icon"></i>
         </div>
@@ -49,12 +67,12 @@
       </div>
       <div class="ui red bottom attached loading button" *ngIf="loading">
         Nahrávam
-      </div>
+      </div> -->
     </div>
   </div>
 
   <div class="column">
-    <div class="ui fluid card">
+    <div class="ui fluid link card" (click)="goTo('veduci')">
       <div class="center aligned content">
         <div class="yellow header">
           <h3 class="ui yellow header">Vedúci</h3>
@@ -63,7 +81,16 @@
           <i class="yellow graduation cap massive icon"></i>
         </div>
       </div>
-      <div class="ui animated bottom attached yellow button" (click)="goTo('veduci')" *ngIf="!loading && !error">
+      <!-- <div class="ui bottom attached yellow center aligned message" *ngIf="!loading && !error">
+        <i class="right arrow icon"></i>
+      </div>
+      <div class="ui bottom attached yellow center aligned message" *ngIf="error">
+        <i class="exclamation triangle icon"></i>
+      </div>
+      <div class="ui yellow bottom attached center aligned message" *ngIf="loading">
+        Nahrávam...
+      </div> -->
+      <!-- <div class="ui animated bottom attached yellow button" *ngIf="!loading && !error">
         <div class="visible content">
           <i class="right arrow icon"></i>
         </div>
@@ -76,21 +103,30 @@
       </div>
       <div class="ui yellow bottom attached loading button" *ngIf="loading">
         Nahrávam
-      </div>
+      </div> -->
     </div>
   </div>
 
   <div class="column">
-    <div class="ui fluid card">
+    <div class="ui fluid link card" (click)="goTo('miesta')">
       <div class="center aligned content">
         <div class="blue header">
           <h3 class="ui blue header">Miesta</h3>
         </div>
         <div class="center aligned description">
-          <i class="blue building massive icon"></i>
+          <i class="blue home massive icon"></i>
         </div>
       </div>
-      <div class="ui animated bottom attached blue button" (click)="goTo('miesta')" *ngIf="!loading && !error">
+      <!-- <div class="ui bottom attached blue center aligned message" *ngIf="!loading && !error">
+        <i class="right arrow icon"></i>
+      </div>
+      <div class="ui bottom attached blue center aligned message" *ngIf="error">
+        <i class="exclamation triangle icon"></i>
+      </div>
+      <div class="ui blue bottom attached center aligned message" *ngIf="loading">
+        Nahrávam...
+      </div> -->
+      <!-- <div class="ui animated bottom attached blue button" *ngIf="!loading && !error">
         <div class="visible content">
           <i class="right arrow icon"></i>
         </div>
@@ -103,7 +139,7 @@
       </div>
       <div class="ui blue bottom attached loading button" *ngIf="loading">
         Nahrávam
-      </div>
+      </div> -->
     </div>
   </div>
 </div>

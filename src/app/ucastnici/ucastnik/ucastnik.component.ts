@@ -1,4 +1,3 @@
-import { Utils } from './../../domain/utils';
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
@@ -6,8 +5,11 @@ import { Location } from '@angular/common';
 
 import { IUcastnik } from '../../domain/ucastnik';
 import { EPohlavie } from './../../domain/ucastnik';
+import { ZaujmovyUtvar } from './../../domain/zaujmovy-utvar';
+import { Kruzok } from './../../domain/kruzok';
 
 import { DataService } from '../../service/data.service';
+import { Utils } from './../../domain/utils';
 import { BaseComponent } from '../../base.component';
 import { UcastnikValidator } from 'src/app/validation/ucastnik.validator';
 
@@ -22,12 +24,17 @@ export class UcastnikComponent extends BaseComponent implements OnInit {
   @ViewChild('kalendar') kalendar: ElementRef;
   @ViewChild('adresa') adresa: ElementRef;
   @ViewChild('ostatne') ostatne: ElementRef;
+  @ViewChild('utvary') utvary: ElementRef;
+  @ViewChild('utvar') utvar: ElementRef;
 
   formular: FormGroup;
   submitnuty: boolean;
 
   pohlavie: EPohlavie;
   datumNarodenia: string;
+
+  zaujmoveUtvary: ZaujmovyUtvar[];
+  kruzky: Kruzok[];
 
   constructor(
     protected fb: FormBuilder,
@@ -58,15 +65,20 @@ export class UcastnikComponent extends BaseComponent implements OnInit {
           }
         ),
         zastupca: [null, Validators.required],
-        telefon: [null, Validators.required]
+        telefon: [null, Validators.required],
+        utvar: [null]
       },
       {
         validator: UcastnikValidator.createDuplicateValidator(this.dataService)
       }
     );
+
+    this.kruzky = new Array<Kruzok>();
   }
 
   ngOnInit() {
+    this.dataService.sortZaujmoveUtvary();
+    this.zaujmoveUtvary = this.dataService.zaujmoveUtvary;
     this.initData();
 
     // init calendar
@@ -105,12 +117,13 @@ export class UcastnikComponent extends BaseComponent implements OnInit {
     if (!this.formular.get('id').value) {
       jQuery(this.ostatne.nativeElement).accordion('open', 0);
     }
+    jQuery(this.utvary.nativeElement).accordion();
+    jQuery(this.utvary.nativeElement).accordion('open', 0);
 
     // init dropdown
-    // jQuery(this.pohlavie.nativeElement).dropdown({
-    //   clearable: true
-    // });
-    // jQuery(this.pohlavie.nativeElement).dropdown('set selected', this.formular.get('pohlavie').value);
+    jQuery(this.utvar.nativeElement).dropdown({
+      clearable: true
+    });
   }
 
   get f() {
@@ -159,11 +172,11 @@ export class UcastnikComponent extends BaseComponent implements OnInit {
             psc: ucastnik.adresa.psc
           },
           zastupca: ucastnik.zastupca,
-          telefon: ucastnik.telefon
+          telefon: ucastnik.telefon,
+          utvar: ''
         });
       }
     } else {
-      this.log('hladam nasledujuce cislo');
       let nasledujuceCislo = this.dataService.getNasledujuceCisloUcastnika();
       this.log('nasledujuce cislo: ' + nasledujuceCislo);
       this.formular.patchValue({
@@ -187,6 +200,31 @@ export class UcastnikComponent extends BaseComponent implements OnInit {
     let cislo: string = this.formular.get('cislo').value;
     this.formular.patchValue({
       cislo: this.dataService.zmenCisloUcasnika(cislo, 1)
+    });
+  }
+
+  addKruzok() {
+    if (this.formular.get('utvar').value) {
+      let utvar = this.dataService.findZaujmovyUtvar(this.formular.get('utvar').value);
+      let kruzok = new Kruzok(utvar.id, utvar.nazov);
+      if (!this.kruzky.includes(kruzok)) {
+        this.log('pridavam kruzok: ' + kruzok.nazov);
+        this.kruzky.push(kruzok);
+        jQuery(this.utvar.nativeElement).dropdown('clear');
+      }
+    }
+  }
+  deleteKruzok(index: number) {
+    this.log('mazem kruzok: ' + index);
+    swal({
+      text: 'Naozaj vymazať?',
+      icon: 'warning',
+      buttons: [ 'Nie', 'Áno' ],
+      dangerMode: true
+    }).then((confirmed) => {
+      if (confirmed) {
+        this.kruzky.splice(index, 1);
+      }
     });
   }
 
@@ -232,9 +270,10 @@ export class UcastnikComponent extends BaseComponent implements OnInit {
                 psc: ''
               },
               zastupca: '',
-              telefon: ''
+              telefon: '',
+              utvar: ''
             });
-            // jQuery(this.pohlavie.nativeElement).dropdown('clear');
+            jQuery(this.utvar.nativeElement).dropdown('clear');
             this.submitnuty = false;
           });
         });

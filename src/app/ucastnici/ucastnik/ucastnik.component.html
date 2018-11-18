@@ -57,7 +57,7 @@
         </div>
       </div>
     </div>
-    <div #adresa formGroupName="adresa" class="ui accordion field">
+    <div #adresa formGroupName="adresa" class="ui accordion">
       <div class="title">
         <i class="icon dropdown"></i>
         Adresa
@@ -100,7 +100,7 @@
         </div>
       </div>
     </div>
-    <div #ostatne class="ui accordion field">
+    <div #ostatne class="ui accordion">
       <div class="title">
         <i class="icon dropdown"></i>
         Ostatné
@@ -133,6 +133,47 @@
               <div class="ui corner label">
                 <i class="asterisk icon"></i>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div #utvary class="ui accordion field">
+      <div class="title">
+        <i class="icon dropdown"></i>
+        Záujmové útvary
+      </div>
+      <div class="content">
+        <div class="ui middle aligned divided very relaxed list">
+          <div class="item" *ngFor="let kruzok of kruzky; let i = index">
+            <div class="header" style="margin-bottom:.5em">{{ kruzok.nazov }}</div>
+            <div class="right floated content">
+              <div class="ui icon button"><i class="trash icon"></i></div>
+            </div>
+            <div class="content">
+              <button type="button" class="ui button" (click)="kruzok.zmenVyskuPoplatu()">{{ kruzok.vyskaPoplatku }}&euro;</button>
+              <div class="ui compact buttons">
+                <div [class]="'ui ' + kruzok.farbaPoplatku(0) + ' button'" (click)="kruzok.zmenPoplatok(0)">Okt</div>
+                <div [class]="'ui ' + kruzok.farbaPoplatku(1) + ' button'" (click)="kruzok.zmenPoplatok(1)">Nov</div>
+                <div [class]="'ui ' + kruzok.farbaPoplatku(2) + ' button'" (click)="kruzok.zmenPoplatok(2)">Dec</div>
+                <div [class]="'ui ' + kruzok.farbaPoplatku(3) + ' button'" (click)="kruzok.zmenPoplatok(3)">Jan</div>
+                <div [class]="'ui ' + kruzok.farbaPoplatku(4) + ' button'" (click)="kruzok.zmenPoplatok(4)">Feb</div>
+                <div [class]="'ui ' + kruzok.farbaPoplatku(5) + ' button'" (click)="kruzok.zmenPoplatok(5)">Mar</div>
+                <div [class]="'ui ' + kruzok.farbaPoplatku(6) + ' button'" (click)="kruzok.zmenPoplatok(6)">Apr</div>
+                <div [class]="'ui ' + kruzok.farbaPoplatku(7) + ' button'" (click)="kruzok.zmenPoplatok(7)">Máj</div>
+                <div [class]="'ui ' + kruzok.farbaPoplatku(8) + ' button'" (click)="kruzok.zmenPoplatok(8)">Jún</div>
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="right floated content">
+              <div class="ui icon button" (click)="addKruzok()"><i class="plus icon"></i></div>
+            </div>
+            <div class="content">
+              <select #utvar class="ui selection dropdown" formControlName="utvar">
+                <option value="">Záujmový útvary</option>
+                <option value="{{zu.id}}" *ngFor="let zu of zaujmoveUtvary">{{zu.nazov}}</option>
+              </select>
             </div>
           </div>
         </div>

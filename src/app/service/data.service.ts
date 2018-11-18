@@ -96,15 +96,17 @@ export class DataService implements OnInit {
   }
 
   public sortMiesta() {
-    this.miesta.sort((m1, m2) => {
-      if (m1.nazov > m2.nazov) {
-        return 1;
-      } else if (m1.nazov < m2.nazov) {
-        return -1;
-      } else {
-        return 0;
-      }
-    });
+    if (this.miesta) {
+      this.miesta.sort((m1, m2) => {
+        if (m1.nazov > m2.nazov) {
+          return 1;
+        } else if (m1.nazov < m2.nazov) {
+          return -1;
+        } else {
+          return 0;
+        }
+      });
+    }
   }
 
   public findMiesto(id: string): Miesto {
@@ -288,15 +290,17 @@ export class DataService implements OnInit {
   }
 
   public sortZaujmoveUtvary() {
-    this.zaujmoveUtvary.sort((zu1, zu2) => {
-      if (zu1.nazov > zu2.nazov) {
-        return 1;
-      } else if (zu1.nazov < zu2.nazov) {
-        return -1;
-      } else {
-        return 0;
-      }
-    });
+    if (this.zaujmoveUtvary) {
+      this.zaujmoveUtvary.sort((zu1, zu2) => {
+        if (zu1.nazov > zu2.nazov) {
+          return 1;
+        } else if (zu1.nazov < zu2.nazov) {
+          return -1;
+        } else {
+          return 0;
+        }
+      });
+    }
   }
 
   public findZaujmovyUtvar(id: string): ZaujmovyUtvar {
@@ -386,28 +390,30 @@ export class DataService implements OnInit {
   }
 
   public sortUcastnici() {
-    this.ucastnici.sort((u1, u2) => {
-      if (u1.cislo > u2.cislo) {
-        return 1;
-      } else if (u1.cislo < u2.cislo) {
-        return -1;
-      } else {
-        return 0;
-      }
-      // if (u1.priezvisko > u2.priezvisko) {
-      //   return 1;
-      // } else if (u1.priezvisko < u2.priezvisko) {
-      //   return -1;
-      // } else {
-      //   if (u1.meno > u2.meno) {
-      //     return 1;
-      //   } else if (u1.meno < u2.meno) {
-      //     return -1;
-      //   } else {
-      //     return 0;
-      //   }
-      // }
-    });
+    if (this.ucastnici) {
+      this.ucastnici.sort((u1, u2) => {
+        if (u1.cislo > u2.cislo) {
+          return 1;
+        } else if (u1.cislo < u2.cislo) {
+          return -1;
+        } else {
+          return 0;
+        }
+        // if (u1.priezvisko > u2.priezvisko) {
+        //   return 1;
+        // } else if (u1.priezvisko < u2.priezvisko) {
+        //   return -1;
+        // } else {
+        //   if (u1.meno > u2.meno) {
+        //     return 1;
+        //   } else if (u1.meno < u2.meno) {
+        //     return -1;
+        //   } else {
+        //     return 0;
+        //   }
+        // }
+      });
+    }
   }
 
   public getNasledujuceCisloUcastnika(): string {
