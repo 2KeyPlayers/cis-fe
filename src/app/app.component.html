@@ -1,10 +1,10 @@
-<script>
+<!-- <script>
   $(document).ready(function () {
 
     // fix main menu to page on passing
-    $('.main.menu').visibility({
-      type: 'fixed'
-    });
+    // $('.main.menu').visibility({
+    //   type: 'fixed'
+    // });
     // $('.overlay').visibility({
     //   type: 'fixed',
     //   offset: 80
@@ -23,7 +23,7 @@
     // });
 
   });
-</script>
+</script> -->
 
 <div class="ui fixed borderless three item main menu">
   <div class="left item">
@@ -44,7 +44,7 @@
       <div [class]="'ui huge horizontal label'">{{ title | uppercase }}</div>
     </h1> -->
     <button class="ui labeled icon button" routerLink="/menu" *ngIf="title">
-      <i class="bars icon"></i>
+      <i class="up arrow icon"></i>
       {{ title | uppercase }}
     </button>
   </div>

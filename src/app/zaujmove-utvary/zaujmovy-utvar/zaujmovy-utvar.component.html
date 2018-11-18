@@ -2,9 +2,9 @@
   <div class="ui attached message">
     <!-- <i class="list icon"></i> -->
   </div>
-  <form [formGroup]="formular" (ngSubmit)="submit()" class="ui blue form attached fluid segment">
+  <form [formGroup]="formular" (ngSubmit)="submit()" class="ui red form attached fluid segment">
   <!-- [class]="formular.pristine ? 'ui form' : (formular.valid ? 'ui form success' : 'ui form error')"> -->
-    <input type="hidden" formControlName="$id" />
+    <input type="hidden" formControlName="id" />
     <div class="field">
       <label>Názov</label>
       <div class="ui corner labeled input">
@@ -16,23 +16,27 @@
     </div>
     <div class="field">
       <label>Vedúci</label>
-      <select #vodca class="ui dropdown" formControlName="veduci">
+      <select #vodca class="ui selection dropdown" formControlName="veduci">
         <option value="">Vedúci</option>
-        <option value="{{vodca.$id}}" *ngFor="let vodca of veduci">{{vodca.celeMeno}}</option>
+        <option value="{{sef.id}}" *ngFor="let sef of vodcovia">{{sef.celeMeno}}</option>
       </select>
     </div>
-    <button class="ui blue button" type="submit" [disabled]="loading">
-      <ng-container *ngIf="!f.$id.value">Pridať</ng-container>
-      <ng-container *ngIf="f.$id.value">Upraviť</ng-container>
+    <button class="ui red button" type="submit" [disabled]="loading">
+      <ng-container *ngIf="!f.id.value">Pridať</ng-container>
+      <ng-container *ngIf="f.id.value">Upraviť</ng-container>
     </button>
     <button class="ui button" type="button" (click)="goBack()">
       Späť
     </button>
   </form>
-  <div class="ui bottom attached error message" *ngIf="submitnuty && formular.invalid">
+  <div class="ui bottom attached error icon message" *ngIf="submitnuty && formular.invalid">
     <i class="exclamation icon"></i>
-    <ng-container *ngIf="f.nazov.errors && f.nazov.errors.required">Názov musí byť zadaný.</ng-container>
-    <ng-container *ngIf="f.nazov.errors && f.nazov.touched && f.nazov.errors.minlength">Názov musí obsahovať minimálne 3 znaky.</ng-container>
-    <ng-container *ngIf="formular.errors && formular.errors.duplicate">Zadaný názov už existuje.</ng-container>
+    <div class="content">
+      <ul class="list">
+        <li *ngIf="f.nazov.errors && f.nazov.errors.required">Názov musí byť zadaný.</li>
+        <li *ngIf="f.nazov.errors && f.nazov.touched && f.nazov.errors.minlength">Názov musí obsahovať minimálne 3 znaky.</li>
+        <li *ngIf="formular.errors && formular.errors.duplicate">Zadaný názov už existuje.</li>
+      </ul>
+    </div>
   </div>
 </div>

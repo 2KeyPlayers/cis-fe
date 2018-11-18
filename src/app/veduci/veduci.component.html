@@ -22,10 +22,10 @@
       <td>{{ vodca.titul }}</td>
       <td>{{ vodca.meno }}</td>
       <td>{{ vodca.priezvisko }}</td>
-      <td class="right aligned collapsing">
+      <td class="center aligned collapsing">
         <div class="ui icon buttons">
-          <button class="ui basic green icon button" (click)="edit('veduci', vodca.$id)"><i class="pencil icon"></i></button>
-          <button class="ui basic red icon button" (click)="delete(vodca.$id)"><i class="trash icon"></i></button>
+          <button class="ui yellow icon button" (click)="edit('veduci', vodca.id)"><i class="pencil icon"></i></button>
+          <button class="ui yellow icon button" (click)="delete(vodca.id)"><i class="trash icon"></i></button>
         </div>
       </td>
     </tr>

@@ -1,33 +1,33 @@
 [
   {
-    "$id": "1",
+    "id": "1",
     "nazov": "Dielnička",
     "veduci": {
-      "$id": "1"
+      "id": "1"
     },
     "kedyKde": [
-      { "den": "Pon", "cas": "14:00", "miesto": { "$id": "1" } },
-      { "den": "Str", "cas": "15:00", "miesto": { "$id": "2" } }
+      { "den": "Pon", "cas": "14:00", "miesto": { "id": "1" } },
+      { "den": "Str", "cas": "15:00", "miesto": { "id": "2" } }
     ]
   },
   {
-    "$id": "2",
+    "id": "2",
     "nazov": "Zumbáčik",
     "veduci": {
-      "$id": "2"
+      "id": "2"
     },
     "kedyKde": [
-      { "den": "Uto", "cas": "11:00", "miesto": { "$id": "3" } }
+      { "den": "Uto", "cas": "11:00", "miesto": { "id": "3" } }
     ]
   },
   {
-    "$id": "3",
+    "id": "3",
     "nazov": "Basketbal",
     "veduci": {
-      "$id": "3"
+      "id": "3"
     },
     "kedyKde": [
-      { "den": "Sob", "cas": "15:00", "miesto": { "$id": "4" } }
+      { "den": "Sob", "cas": "15:00", "miesto": { "id": "4" } }
     ]
   }
 ]

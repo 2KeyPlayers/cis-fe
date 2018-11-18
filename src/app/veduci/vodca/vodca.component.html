@@ -1,25 +1,20 @@
-<!-- <script>
-  $(document).ready(function () {
-    $('.ui.dropdown').dropdown();
-  });
-</script> -->
 <div class="ui text container">
   <div class="ui attached message">
     <!-- <i class="graduation cap icon"></i> -->
   </div>
-  <form [formGroup]="formular" (ngSubmit)="submit()" class="ui blue form attached fluid segment">
+  <form [formGroup]="formular" (ngSubmit)="submit()" class="ui yellow form attached fluid segment">
     <!-- [class]="formular.pristine ? 'ui form' : (formular.valid ? 'ui form success' : 'ui form error')"> -->
-    <input type="hidden" formControlName="$id" />
+    <input type="hidden" formControlName="id" />
     <div class="field">
       <label>Titul</label>
-      <!-- <input type="text" id="titul" formControlName="titul" placeholder="Titul vedúceho" /> -->
-      <!-- <select #titul class="ui dropdown" formControlName="titul">
+      <!-- <input type="text" id="titul" formControlName="titul" placeholder="Titul" /> -->
+      <select #titulis class="ui selection dropdown" formControlName="titul">
         <option value="">Titul</option>
         <option value="Mgr.">Mgr.</option>
         <option value="Ing.">Ing.</option>
         <option value="Bc.">Bc.</option>
-      </select> -->
-      <div #titul class="ui dropdown selection">
+      </select>
+      <!-- <div #titulis class="ui selection dropdown">
         <input type="hidden" name="titul" formControlName="titul">
         <div class="default text">Titul</div>
         <i class="dropdown icon"></i>
@@ -28,7 +23,7 @@
           <div class="item" data-value="Ing.">Ing.</div>
           <div class="item" data-value="Bc.">Bc.</div>
         </div>
-      </div>
+      </div> -->
     </div>
     <div class="field">
       <label>Meno</label>
@@ -48,18 +43,22 @@
         </div>
       </div>
     </div>
-    <button class="ui blue button" type="submit" [disabled]="loading">
-      <ng-container *ngIf="!f.$id.value">Pridať</ng-container>
-      <ng-container *ngIf="f.$id.value">Upraviť</ng-container>
+    <button class="ui yellow button" type="submit" [disabled]="loading">
+      <ng-container *ngIf="!f.id.value">Pridať</ng-container>
+      <ng-container *ngIf="f.id.value">Upraviť</ng-container>
     </button>
     <button class="ui button" type="button" (click)="goBack()">
       Späť
     </button>
   </form>
-  <div class="ui bottom attached error message" *ngIf="submitnuty && formular.invalid">
+  <div class="ui bottom attached error icon message" *ngIf="submitnuty && formular.invalid">
     <i class="exclamation icon"></i>
-    <ng-container *ngIf="f.meno.errors && f.meno.errors.required">Meno musí byť zadané.</ng-container>
-    <ng-container *ngIf="f.priezvisko.errors && f.priezvisko.errors.required">Priezvisko musí byť zadané.</ng-container>
-    <ng-container *ngIf="formular.errors && formular.errors.duplicate">Zadaný vedúci už existuje.</ng-container>
+    <div class="content">
+      <ul class="list">
+        <li *ngIf="f.meno.errors && f.meno.errors.required">Meno musí byť zadané.</li>
+        <li *ngIf="f.priezvisko.errors && f.priezvisko.errors.required">Priezvisko musí byť zadané.</li>
+        <li *ngIf="formular.errors && formular.errors.duplicate">Zadaný vedúci už existuje.</li>
+      </ul>
+    </div>
   </div>
 </div>

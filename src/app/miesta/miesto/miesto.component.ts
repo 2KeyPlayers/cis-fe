@@ -25,11 +25,11 @@ export class MiestoComponent extends BaseComponent implements OnInit {
     protected dataService: DataService
   ) {
     super(router, dataService);
-    this.setTitle('Miesta', 'blue');
+    this.setTitle('Miesto', 'blue');
 
     this.formular = this.fb.group(
       {
-        $id: [null],
+        id: [null],
         nazov: [
           null,
           [
@@ -54,7 +54,7 @@ export class MiestoComponent extends BaseComponent implements OnInit {
   protected getData(): any {
     let id: string = this.activatedRoute.snapshot.paramMap.get('id');
     let miesto: IMiesto = {
-      $id: null,
+      id: null,
       nazov: ''
     };
 
@@ -62,7 +62,7 @@ export class MiestoComponent extends BaseComponent implements OnInit {
       miesto = this.dataService.findMiesto(id);
       if (miesto) {
         this.formular.setValue({
-          $id: miesto.$id,
+          id: miesto.id,
           nazov: miesto.nazov
         });
       }
@@ -74,8 +74,8 @@ export class MiestoComponent extends BaseComponent implements OnInit {
     this.submitnuty = true;
     if (this.formular.valid) {
       if (
-        this.formular.get('$id').value == null ||
-        this.formular.get('$id').value == ''
+        this.formular.get('id').value == null ||
+        this.formular.get('id').value == ''
       ) {
         this.log('pridavam miesto: ' + this.formular.get('nazov').value);
         this.dataService.insertMiesto(this.formular.value).then(_ => {
@@ -84,7 +84,7 @@ export class MiestoComponent extends BaseComponent implements OnInit {
           }).then(_ => {
             this.formular.reset();
             this.formular.setValue({
-              $id: null,
+              id: null,
               nazov: ''
             });
             this.submitnuty = false;

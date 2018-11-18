@@ -7,7 +7,7 @@ export class MiestoValidator {
   static createDuplicateValidator(dataService:  DataService) {
     // return (control: FormGroup) => {
     return (control: AbstractControl) => {
-      const id = control.get('$id');
+      const id = control.get('id');
       const nazov = control.get('nazov');
 
       return dataService.checkMiesto(id.value, nazov.value) ? null : { duplicate: true };

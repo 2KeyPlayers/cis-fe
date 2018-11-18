@@ -52,7 +52,7 @@ export abstract class BaseComponent {
     let data = this.getData();
     this.log('initData: ' + data);
     if (!data) {
-      this.log('presmeruvavam na /');
+      this.log('ziadne data, presmeruvavam na /');
       this.router.navigate(['/']);
     }
   }

@@ -1,6 +1,6 @@
 export interface IVeduci {
 
-  $id: string;
+  id: string;
   titul?: string;
   meno: string;
   priezvisko: string;
@@ -9,13 +9,13 @@ export interface IVeduci {
 
 export class Veduci implements IVeduci {
 
-  $id: string;
+  id: string;
   titul?: string;
   meno: string;
   priezvisko: string;
 
   constructor(veduci: IVeduci, id?: string) {
-    this.$id = (id ? id : veduci.$id);
+    this.id = (id ? id : veduci.id);
     this.titul = veduci.titul;
     this.meno = veduci.meno;
     this.priezvisko = veduci.priezvisko;

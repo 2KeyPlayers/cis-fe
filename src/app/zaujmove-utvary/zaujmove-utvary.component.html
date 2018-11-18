@@ -22,10 +22,10 @@
       <!--td><i class="fa fa-{{ zaujmovyUtvar.ikona ? zaujmovyUtvar.ikona : 'star-o' }}"></i></td-->
       <td>{{ zaujmovyUtvar.nazov }}</td>
       <td>{{ zaujmovyUtvar.veduci.celeMeno }}</td>
-      <td class="right aligned collapsing">
+      <td class="center aligned collapsing">
         <div class="ui icon buttons">
-          <button class="ui basic green icon button" (click)="edit('zaujmovy-utvar', zaujmovyUtvar.$id)"><i class="pencil icon"></i></button>
-          <button class="ui basic red icon button" (click)="delete(zaujmovyUtvar.$id)"><i class="trash icon"></i></button>
+          <button class="ui red icon button" (click)="edit('zaujmovy-utvar', zaujmovyUtvar.id)"><i class="pencil icon"></i></button>
+          <button class="ui red icon button" (click)="delete(zaujmovyUtvar.id)"><i class="trash icon"></i></button>
         </div>
       </td>
     </tr>

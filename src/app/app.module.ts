@@ -17,6 +17,7 @@ import { ZaujmovyUtvarComponent } from './zaujmove-utvary/zaujmovy-utvar/zaujmov
 import { VeduciComponent } from './veduci/veduci.component';
 import { VodcaComponent } from './veduci/vodca/vodca.component';
 import { UcastniciComponent } from './ucastnici/ucastnici.component';
+import { UcastnikComponent } from './ucastnici/ucastnik/ucastnik.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { UcastniciComponent } from './ucastnici/ucastnici.component';
     UcastniciComponent,
     MiestoComponent,
     VodcaComponent,
-    ZaujmovyUtvarComponent
+    ZaujmovyUtvarComponent,
+    UcastnikComponent
   ],
   imports: [
     BrowserModule,

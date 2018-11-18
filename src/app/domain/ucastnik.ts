@@ -1,31 +1,34 @@
+import { Utils } from './utils';
 import { ZaujmovyUtvar, IZaujmovyUtvar } from './zaujmovy-utvar';
 
 export interface IUcastnik {
 
-  $id?: string;
+  id?: string;
+  cislo: string;
   pohlavie: EPohlavie;
   meno: string;
   priezvisko: string;
-  datumNarodenia: Date;
-  skola: string;
-  trieda: string;
+  datumNarodenia: string;
+  skola?: string;
+  trieda?: string;
   adresa: Adresa;
   zastupca: string;
   telefon: string;
 
-  zaujmoveUtvary: IZaujmovyUtvar[];
+  zaujmoveUtvary?: IZaujmovyUtvar[];
 
 }
 
 export class Ucastnik implements IUcastnik {
 
-  $id: string;
+  id: string;
+  cislo: string;
   pohlavie: EPohlavie;
   meno: string;
   priezvisko: string;
-  datumNarodenia: Date;
-  skola: string;
-  trieda: string;
+  datumNarodenia: string;
+  skola?: string;
+  trieda?: string;
   adresa: Adresa;
   zastupca: string;
   telefon: string;
@@ -33,11 +36,12 @@ export class Ucastnik implements IUcastnik {
   zaujmoveUtvary: ZaujmovyUtvar[];
 
   constructor(ucastnik: IUcastnik, id?: string) {
-    this.$id = (id ? id : ucastnik.$id);
+    this.id = (id ? id : ucastnik.id);
+    this.cislo = ucastnik.cislo;
     this.pohlavie = ucastnik.pohlavie;
     this.meno = ucastnik.meno;
     this.priezvisko = ucastnik.priezvisko;
-    this.datumNarodenia = new Date(ucastnik.datumNarodenia);
+    this.datumNarodenia = ucastnik.datumNarodenia;
     this.skola = ucastnik.skola;
     this.trieda = ucastnik.trieda;
     this.adresa = new Adresa(ucastnik.adresa);
@@ -47,7 +51,8 @@ export class Ucastnik implements IUcastnik {
 
   get vek(): number {
     if (this.datumNarodenia) {
-      let rozdiel = Math.abs(Date.now() - this.datumNarodenia.getTime());
+      let datum: Date = Utils.stringToDate(this.datumNarodenia);
+      let rozdiel: number = Math.abs(Date.now() - datum.getTime());
       return Math.floor((rozdiel / (1000 * 3600 * 24)) / 365);
     }
     return null;
@@ -67,7 +72,7 @@ export class Ucastnik implements IUcastnik {
 
 }
 
-enum EPohlavie {
+export enum EPohlavie {
 
   M,
   Z
@@ -76,16 +81,16 @@ enum EPohlavie {
 
 class Adresa {
 
-  ulica: string;
+  ulica?: string;
   cislo: number;
   mesto: string;
   psc: string;
 
-  constructor(adresa: any) {
+  constructor(adresa: Adresa) {
     this.ulica = adresa.ulica;
     this.cislo = adresa.cislo;
     this.mesto = adresa.mesto;
-    this.psc = adresa.pcs;
+    this.psc = adresa.psc;
   }
 
 }

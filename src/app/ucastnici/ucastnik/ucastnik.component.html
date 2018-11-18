@@ -1,0 +1,164 @@
+<div class="ui text container">
+  <div class="ui attached message">
+    <!-- <i class="graduation cap icon"></i> -->
+  </div>
+  <form [formGroup]="formular" class="ui green form attached fluid segment">
+    <!-- [class]="formular.pristine ? 'ui form' : (formular.valid ? 'ui form success' : 'ui form error')"> -->
+    <input type="hidden" formControlName="id" />
+    <div class="fields">
+      <div class="six wide field">
+        <label>#</label>
+        <div class="ui action input">
+          <input type="text" id="cislo" formControlName="cislo" readonly />
+          <div class="ui icon button" (click)="znizCislo()"><i class="minus icon"></i></div>
+          <div class="ui icon button" (click)="pridajCislo()"><i class="plus icon"></i></div>
+        </div>
+      </div>
+      <div class="four wide field">
+        <label>Pohlavie</label>
+        <input type="hidden" formControlName="pohlavie" />
+        <div class="ui fluid buttons">
+          <button type="button" [class]="'ui ' + (pohlavie == 'M' ? 'blue' : '') + ' icon button'" (click)="setPohlavie('M')"><i class="male icon" style="margin: 0 .5em"></i></button>
+          <div class="or" data-text="&nbsp;"></div>
+          <button type="button" [class]="'ui ' + (pohlavie == 'Z' ? 'pink' : '') + ' icon button'" (click)="setPohlavie('Z')"><i class="female icon" style="margin: 0 .5em"></i></button>
+        </div>
+      </div>
+      <div class="six wide field">
+        <label>Dátum narodenia</label>
+        <input type="hidden" formControlName="datumNarodenia" />
+        <div #kalendar class="ui calendar">
+          <div class="ui corner labeled left icon input">
+            <i class="calendar icon"></i>
+            <input type="text" placeholder="Dátum narodenia" (change)="setDatumNarodenia($event)">
+            <div class="ui corner label">
+              <i class="asterisk icon"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="two fields">
+      <div class="field">
+        <label>Meno</label>
+        <div class="ui corner labeled input">
+          <input type="text" id="meno" formControlName="meno" placeholder="Meno" />
+          <div class="ui corner label">
+            <i class="asterisk icon"></i>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Priezvisko</label>
+        <div class="ui corner labeled input">
+          <input type="text" id="priezvisko" formControlName="priezvisko" placeholder="Priezvisko" />
+          <div class="ui corner label">
+            <i class="asterisk icon"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div #adresa formGroupName="adresa" class="ui accordion field">
+      <div class="title">
+        <i class="icon dropdown"></i>
+        Adresa
+      </div>
+      <div class="content">
+        <div class="fields">
+          <div class="twelve wide field">
+            <label>Ulica</label>
+            <input type="text" id="ulica" formControlName="ulica" placeholder="Ulica" />
+          </div>
+          <div class="four wide field">
+            <label>Číslo</label>
+            <div class="ui corner labeled input">
+              <input type="text" id="cislo" formControlName="cislo" placeholder="Číslo" />
+              <div class="ui corner label">
+                <i class="asterisk icon"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="fields">
+          <div class="ten wide field">
+            <label>Mesto</label>
+            <div class="ui corner labeled input">
+              <input type="text" id="mesto" formControlName="mesto" placeholder="Mesto" />
+              <div class="ui corner label">
+                <i class="asterisk icon"></i>
+              </div>
+            </div>
+          </div>
+          <div class="six wide field">
+            <label>PSČ</label>
+            <div class="ui corner labeled input">
+              <input type="text" id="psc" formControlName="psc" placeholder="PSČ" />
+              <div class="ui corner label">
+                <i class="asterisk icon"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div #ostatne class="ui accordion field">
+      <div class="title">
+        <i class="icon dropdown"></i>
+        Ostatné
+      </div>
+      <div class="content">
+        <div class="fields">
+          <div class="twelve wide field">
+            <label>Škola</label>
+            <input type="text" id="skola" formControlName="skola" placeholder="Škola" />
+          </div>
+          <div class="four wide field">
+            <label>Trieda</label>
+            <input type="text" id="trieda" formControlName="trieda" placeholder="Trieda" />
+          </div>
+        </div>
+        <div class="fields">
+          <div class="ten wide field">
+            <label>Zástupca</label>
+            <div class="ui corner labeled input">
+              <input type="text" id="zastupca" formControlName="zastupca" placeholder="Zástupca" />
+              <div class="ui corner label">
+                <i class="asterisk icon"></i>
+              </div>
+            </div>
+          </div>
+          <div class="six wide field">
+            <label>Telefón</label>
+            <div class="ui corner labeled input">
+              <input type="text" id="telefon" formControlName="telefon" placeholder="09XX YYY ZZZ" />
+              <div class="ui corner label">
+                <i class="asterisk icon"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="ui green button" type="submit" (click)="submit()" [disabled]="loading">
+      <ng-container *ngIf="!f.id.value">Pridať</ng-container>
+      <ng-container *ngIf="f.id.value">Upraviť</ng-container>
+    </button>
+    <button class="ui button" type="button" (click)="goBack()">
+      Späť
+    </button>
+  </form>
+  <div class="ui bottom attached error icon message" *ngIf="submitnuty && formular.invalid">
+    <i class="exclamation icon"></i>
+    <div class="content">
+      <ul class="list">
+        <li *ngIf="f.pohlavie.errors && f.pohlavie.errors.required">Pohlavie musí byť zvolené.</li>
+        <li *ngIf="f.datumNarodenia.errors && f.datumNarodenia.errors.required">Dátum narodenia musí byť zadaný.</li>
+        <li *ngIf="f.meno.errors && f.meno.errors.required">Meno musí byť zadané.</li>
+        <li *ngIf="f.priezvisko.errors && f.priezvisko.errors.required">Priezvisko musí byť zadané.</li>
+        <li *ngIf="f.zastupca.errors && f.zastupca.errors.required">Zástupca musí byť zadané.</li>
+        <li *ngIf="f.telefon.errors && f.telefon.errors.required">Telefón musí byť zadaný.</li>
+        <li *ngIf="formular.errors && formular.errors.duplicateCislo">Zadané číslo už existuje.</li>
+        <li *ngIf="formular.errors && formular.errors.duplicateMeno">Zadaný účastník už existuje.</li>
+      </ul>
+    </div>
+  </div>
+</div>

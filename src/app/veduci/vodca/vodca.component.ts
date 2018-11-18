@@ -16,7 +16,7 @@ declare var jQuery: any;
   styleUrls: ['./vodca.component.scss']
 })
 export class VodcaComponent extends BaseComponent implements OnInit {
-  @ViewChild('titul') titul: ElementRef;
+  @ViewChild('titulis') titulis: ElementRef;
   
   formular: FormGroup;
   submitnuty: boolean;
@@ -33,7 +33,7 @@ export class VodcaComponent extends BaseComponent implements OnInit {
 
     this.formular = this.fb.group(
       {
-        $id: [null],
+        id: [null],
         titul: [null],
         meno: [null, Validators.required],
         priezvisko: [null, Validators.required]
@@ -46,11 +46,12 @@ export class VodcaComponent extends BaseComponent implements OnInit {
     this.initData();
 
     // init dropdown
-    jQuery(this.titul.nativeElement).dropdown({
+    jQuery(this.titulis.nativeElement).dropdown({
       clearable: true
       // transition: 'scale'
+      // 'set selected': this.formular.get('titul').value
     });
-    jQuery(this.titul.nativeElement).dropdown('set selected', this.formular.get('titul').value);
+    jQuery(this.titulis.nativeElement).dropdown('set selected', this.formular.get('titul').value);
   }
 
   get f() {
@@ -60,7 +61,7 @@ export class VodcaComponent extends BaseComponent implements OnInit {
   protected getData(): any {
     let id: string = this.activatedRoute.snapshot.paramMap.get('id');
     let veduci: IVeduci = {
-      $id: null,
+      id: null,
       titul: '',
       meno: '',
       priezvisko: ''
@@ -70,8 +71,8 @@ export class VodcaComponent extends BaseComponent implements OnInit {
       veduci = this.dataService.findVeduci(id);
       if (veduci) {
         this.formular.setValue({
-          $id: veduci.$id,
-          titul: veduci.titul,
+          id: veduci.id,
+          titul: veduci.titul ? veduci.titul : '',
           meno: veduci.meno,
           priezvisko: veduci.priezvisko
         });
@@ -84,26 +85,27 @@ export class VodcaComponent extends BaseComponent implements OnInit {
     this.submitnuty = true;
     if (this.formular.valid) {
       if (
-        this.formular.get('$id').value == null ||
-        this.formular.get('$id').value == ''
+        this.formular.get('id').value == null ||
+        this.formular.get('id').value == ''
       ) {
-        this.log('pridavam veduceho: ' + this.formular.get('meno').value + ' ' + this.formular.get('priezvisko').value);
+        this.log('pridavam veduceho: ' + this.formular.get('titul').value + ' ' + this.formular.get('meno').value + ' ' + this.formular.get('priezvisko').value);
         this.dataService.insertVeduci(this.formular.value).then(_ => {
           swal(`Vedúci úspešne pridaný.`, {
             icon: 'success'
           }).then(_ => {
             this.formular.reset();
             this.formular.setValue({
-              $id: null,
+              id: null,
               titul: '',
               meno: '',
               priezvisko: ''
             });
+            jQuery(this.titulis.nativeElement).dropdown('clear');
             this.submitnuty = false;
           });
         });
       } else {
-        this.log('aktualizujem veduceho: ' + this.formular.get('meno').value + ' ' + this.formular.get('priezvisko').value);
+        this.log('aktualizujem veduceho: ' + this.formular.get('titul').value + ' ' + this.formular.get('meno').value + ' ' + this.formular.get('priezvisko').value);
         this.dataService.updateVeduci(this.formular.value).then(_ => {
           swal('Vedúci úspešne upravený.', {
             icon: 'success'

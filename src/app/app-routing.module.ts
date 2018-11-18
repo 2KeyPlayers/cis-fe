@@ -13,12 +13,13 @@ import { ZaujmoveUtvaryComponent } from './zaujmove-utvary/zaujmove-utvary.compo
 import { ZaujmovyUtvarComponent } from './zaujmove-utvary/zaujmovy-utvar/zaujmovy-utvar.component';
 
 import { UcastniciComponent } from './ucastnici/ucastnici.component';
+import { UcastnikComponent } from './ucastnici/ucastnik/ucastnik.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'menu', pathMatch: 'full' },
   { path: 'menu',                  component: MenuComponent },
   { path: 'ucastnici',             component: UcastniciComponent },
-  // { path: 'ucastnik/:id',          component: UcastnikComponent },
+  { path: 'ucastnik/:id',          component: UcastnikComponent },
   { path: 'zaujmove-utvary',       component: ZaujmoveUtvaryComponent },
   { path: 'zaujmovy-utvar/:id',    component: ZaujmovyUtvarComponent },
   { path: 'veduci',                component: VeduciComponent },

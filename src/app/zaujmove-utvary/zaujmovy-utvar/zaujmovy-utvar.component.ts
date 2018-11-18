@@ -1,5 +1,5 @@
 import { Veduci } from 'src/app/domain/veduci';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Location } from '@angular/common';
@@ -16,13 +16,13 @@ declare var jQuery: any;
   templateUrl: './zaujmovy-utvar.component.html',
   styleUrls: ['./zaujmovy-utvar.component.scss']
 })
-export class ZaujmovyUtvarComponent extends BaseComponent implements OnInit {
+export class ZaujmovyUtvarComponent extends BaseComponent implements OnInit, AfterViewChecked {
   @ViewChild('vodca') vodca: ElementRef;
   
   formular: FormGroup;
   submitnuty: boolean;
 
-  veduci: Veduci[];
+  vodcovia: Veduci[];
 
   constructor(
     protected fb: FormBuilder,
@@ -32,11 +32,11 @@ export class ZaujmovyUtvarComponent extends BaseComponent implements OnInit {
     protected dataService: DataService
   ) {
     super(router, dataService);
-    this.setTitle('Záujmové útvary', 'red');
+    this.setTitle('Záujmový útvar', 'red');
 
     this.formular = this.fb.group(
       {
-        $id: [null],
+        id: [null],
         nazov: [
           null,
           [
@@ -50,13 +50,17 @@ export class ZaujmovyUtvarComponent extends BaseComponent implements OnInit {
     );
   }
 
-  ngOnInit() {
+  ngOnInit() {    
+    this.dataService.sortVeduci();
+    this.vodcovia = this.dataService.veduci;
+    this.initData();
+
     // init dropdown
     jQuery(this.vodca.nativeElement).dropdown();
-    
-    this.dataService.sortVeduci();
-    this.veduci = this.dataService.veduci;
-    this.initData();
+  }
+
+  ngAfterViewChecked() {
+    jQuery(this.vodca.nativeElement).dropdown('set selected', this.formular.get('veduci').value);
   }
 
   get f() {
@@ -66,18 +70,21 @@ export class ZaujmovyUtvarComponent extends BaseComponent implements OnInit {
   protected getData(): any {
     let id: string = this.activatedRoute.snapshot.paramMap.get('id');
     let zaujmovyUtvar: IZaujmovyUtvar = {
-      $id: null,
+      id: null,
       nazov: '',
-      veduci: null
+      veduci: {
+        id: null
+      }
     };
 
     if (id != 'plus') {
       zaujmovyUtvar = this.dataService.findZaujmovyUtvar(id);
       if (zaujmovyUtvar) {
+        this.log('nastavujem veduceho: ' + zaujmovyUtvar.veduci.id);
         this.formular.setValue({
-          $id: zaujmovyUtvar.$id,
+          id: zaujmovyUtvar.id,
           nazov: zaujmovyUtvar.nazov,
-          veduci: zaujmovyUtvar.veduci ? zaujmovyUtvar.veduci.$id : null
+          veduci: zaujmovyUtvar.veduci.id ? zaujmovyUtvar.veduci.id : ''
         });
       }
     }
@@ -88,8 +95,8 @@ export class ZaujmovyUtvarComponent extends BaseComponent implements OnInit {
     this.submitnuty = true;
     if (this.formular.valid) {
       if (
-        this.formular.get('$id').value == null ||
-        this.formular.get('$id').value == ''
+        this.formular.get('id').value == null ||
+        this.formular.get('id').value == ''
       ) {
         this.log('pridavam zaujmovy utvar: ' + this.formular.get('nazov').value);
         this.dataService.insertZaujmovyUtvar(this.formular.value).then(_ => {
@@ -98,16 +105,17 @@ export class ZaujmovyUtvarComponent extends BaseComponent implements OnInit {
           }).then(_ => {
             this.formular.reset();
             this.formular.setValue({
-              $id: null,
+              id: null,
               nazov: '',
               veduci: null
             });
+            jQuery(this.vodca.nativeElement).dropdown('clear');
             this.submitnuty = false;
           });
         });
       } else {
         this.log('aktualizujem zaujmovy utvar: ' + this.formular.get('nazov').value);
-        this.dataService.updateMiesto(this.formular.value).then(_ => {
+        this.dataService.updateZaujmovyUtvar(this.formular.value).then(_ => {
           swal('Záujmový útvar úspešne upravený.', {
             icon: 'success'
           }).then(_ => {

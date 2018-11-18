@@ -1,6 +1,6 @@
 [
   {
-    "$id": "001",
+    "id": "001",
     "pohlavie": "M",
     "meno": "Janko",
     "priezvisko": "Hraško",
@@ -16,12 +16,12 @@
     "zastupca": "Juraj Hraško",
     "telefon": "+421912345678",
     "zaujmoveUtvary": [
-      { "$id": "1" },
-      { "$id": "2" }
+      { "id": "1" },
+      { "id": "2" }
     ]
   },
   {
-    "$id": "002",
+    "id": "002",
     "pohlavie": "Z",
     "meno": "Marienka",
     "priezvisko": "Hrašková",
@@ -37,7 +37,7 @@
     "zastupca": "Juraj Hraško",
     "telefon": "+421912345678",
     "zaujmoveUtvary": [
-      { "$id": "2" }
+      { "id": "2" }
     ]
   }
 ]

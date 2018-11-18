@@ -111,7 +111,7 @@ export class DataService implements OnInit {
     if (!this.miesta) {
       return null;
     }
-    return this.miesta.find(miesto => miesto.$id == id);
+    return this.miesta.find(miesto => miesto.id == id);
   }
 
   public checkMiesto(id: string, nazov: string): boolean {
@@ -122,7 +122,7 @@ export class DataService implements OnInit {
     if (!miesto) {
       return true;
     } else {
-      return miesto.$id == id;
+      return miesto.id == id;
     }
   }
 
@@ -142,18 +142,18 @@ export class DataService implements OnInit {
 
   public async updateMiesto(miesto: Miesto): Promise<void> {
     // return this.httpClient.put<Miesto>('/miesto/nove', miesto, httpOptions).pipe(
-    return this.miestaRef.update(miesto.$id, {
+    return this.miestaRef.update(miesto.id, {
       nazov: miesto.nazov
     })
     .then(_ => {
-      this.log('miesto upravene: ' + miesto.$id);
+      this.log('miesto upravene: ' + miesto.id);
     })
     .catch(error => this.log(error));
   }
 
   public async deleteMiesto(id: string): Promise<void> {
     //TODO: !!!
-    // this.miesta = this.miesta.filter(miesto => miesto.$id != id);
+    // this.miesta = this.miesta.filter(miesto => miesto.id != id);
     // this.log('miesto odstranene: ' + id);
     // return new Promise((resolve, reject) => {
     //   setTimeout(() => {
@@ -163,7 +163,7 @@ export class DataService implements OnInit {
     // });
     return this.miestaRef.remove(id)
       .then(_ => {
-        this.miesta = this.miesta.filter(miesto => miesto.$id != id);
+        this.miesta = this.miesta.filter(miesto => miesto.id != id);
         this.log('miesto odstranene: ' + id);
       })
       .catch(error => this.log(error));
@@ -193,28 +193,30 @@ export class DataService implements OnInit {
   }
 
   public sortVeduci() {
-    this.veduci.sort((v1, v2) => {
-      if (v1.priezvisko > v2.priezvisko) {
-        return 1;
-      } else if (v1.priezvisko < v2.priezvisko) {
-        return -1;
-      } else {
-        if (v1.meno > v2.meno) {
+    if (this.veduci) {
+      this.veduci.sort((v1, v2) => {
+        if (v1.priezvisko > v2.priezvisko) {
           return 1;
-        } else if (v1.meno < v2.meno) {
+        } else if (v1.priezvisko < v2.priezvisko) {
           return -1;
         } else {
-          return 0;
+          if (v1.meno > v2.meno) {
+            return 1;
+          } else if (v1.meno < v2.meno) {
+            return -1;
+          } else {
+            return 0;
+          }
         }
-      }
-    });
+      });
+    }
   }
 
   public findVeduci(id: string): Veduci {
     if (!this.veduci) {
       return null;
     }
-    return this.veduci.find(vodca => vodca.$id == id);
+    return this.veduci.find(vodca => vodca.id == id);
   }
 
   public checkVeduci(id: string, meno: string, priezvisko: string): boolean {
@@ -225,7 +227,7 @@ export class DataService implements OnInit {
     if (!vodca) {
       return true;
     } else {
-      return vodca.$id == id;
+      return vodca.id == id;
     }
   }
 
@@ -242,13 +244,13 @@ export class DataService implements OnInit {
   }
 
   public async updateVeduci(veduci: Veduci): Promise<void> {
-    return this.veduciRef.update(veduci.$id, {
+    return this.veduciRef.update(veduci.id, {
       titul: veduci.titul,
       meno: veduci.meno,
       priezvisko: veduci.priezvisko
     })
     .then(_ => {
-      this.log('veduci upraveny: ' + veduci.$id);
+      this.log('veduci upraveny: ' + veduci.id);
     })
     .catch(error => this.log(error));
   }
@@ -256,7 +258,7 @@ export class DataService implements OnInit {
   public async deleteVeduci(id: string): Promise<void> {
     return this.veduciRef.remove(id)
       .then(_ => {
-        this.veduci = this.veduci.filter(vodca => vodca.$id != id);
+        this.veduci = this.veduci.filter(vodca => vodca.id != id);
         this.log('veduci odstraneny: ' + id);
       })
       .catch(error => this.log(error));
@@ -301,7 +303,7 @@ export class DataService implements OnInit {
     if (!this.zaujmoveUtvary) {
       return null;
     }
-    return this.zaujmoveUtvary.find(zaujmovyUtvar => zaujmovyUtvar.$id == id);
+    return this.zaujmoveUtvary.find(zaujmovyUtvar => zaujmovyUtvar.id == id);
   }
 
   public checkZaujmovyUtvar(id: string, nazov: string): boolean {
@@ -312,7 +314,7 @@ export class DataService implements OnInit {
     if (!zaujmovyUtvar) {
       return true;
     } else {
-      return zaujmovyUtvar.$id == id;
+      return zaujmovyUtvar.id == id;
     }
   }
 
@@ -321,7 +323,9 @@ export class DataService implements OnInit {
       .push({
         // ikona: zaujmovyUtvar.ikona,
         nazov: zaujmovyUtvar.nazov,
-        idVeduceho: zaujmovyUtvar.veduci
+        veduci: {
+          id: zaujmovyUtvar.veduci
+        }
       })
       .then(data => {
         this.log('zaujmovy utvar pridany: ' + data.key);
@@ -329,13 +333,15 @@ export class DataService implements OnInit {
   }
 
   public async updateZaujmovyUtvar(zaujmovyUtvar: ZaujmovyUtvar): Promise<void> {
-    return this.zaujmoveUtvaryRef.update(zaujmovyUtvar.$id, {
+    return this.zaujmoveUtvaryRef.update(zaujmovyUtvar.id, {
       // ikona: zaujmovyUtvar.ikona,
       nazov: zaujmovyUtvar.nazov,
-      veduci: zaujmovyUtvar.veduci
-    })
+      veduci: {
+        id: zaujmovyUtvar.veduci
+      }
+  })
     .then(_ => {
-      this.log('zaujmovy utvar upraveny: ' + zaujmovyUtvar.$id);
+      this.log('zaujmovy utvar upraveny: ' + zaujmovyUtvar.id);
     })
     .catch(error => this.log(error));
   }
@@ -343,7 +349,7 @@ export class DataService implements OnInit {
   public async deleteZaujmovyUtvar(id: string): Promise<void> {
     return this.zaujmoveUtvaryRef.remove(id)
       .then(_ => {
-        this.zaujmoveUtvary = this.zaujmoveUtvary.filter(zaujmovyUtvar => zaujmovyUtvar.$id != id);
+        this.zaujmoveUtvary = this.zaujmoveUtvary.filter(zaujmovyUtvar => zaujmovyUtvar.id != id);
         this.log('zaujmovy utvar odstraneny: ' + id);
       })
       .catch(error => this.log(error));
@@ -351,7 +357,7 @@ export class DataService implements OnInit {
 
   private appendVeducich() {
     this.zaujmoveUtvary.map(zaujmovyUtvar => {
-      let veduci = this.findVeduci(zaujmovyUtvar.veduci.$id);
+      let veduci = this.findVeduci(zaujmovyUtvar.veduci.id);
       zaujmovyUtvar.veduci = veduci;
     });
   }
@@ -381,29 +387,61 @@ export class DataService implements OnInit {
 
   public sortUcastnici() {
     this.ucastnici.sort((u1, u2) => {
-      if (u1.priezvisko > u2.priezvisko) {
+      if (u1.cislo > u2.cislo) {
         return 1;
-      } else if (u1.priezvisko < u2.priezvisko) {
+      } else if (u1.cislo < u2.cislo) {
         return -1;
       } else {
-        if (u1.meno > u2.meno) {
-          return 1;
-        } else if (u1.meno < u2.meno) {
-          return -1;
-        } else {
-          return 0;
-        }
+        return 0;
       }
+      // if (u1.priezvisko > u2.priezvisko) {
+      //   return 1;
+      // } else if (u1.priezvisko < u2.priezvisko) {
+      //   return -1;
+      // } else {
+      //   if (u1.meno > u2.meno) {
+      //     return 1;
+      //   } else if (u1.meno < u2.meno) {
+      //     return -1;
+      //   } else {
+      //     return 0;
+      //   }
+      // }
     });
+  }
+
+  public getNasledujuceCisloUcastnika(): string {
+    if (!this.ucastnici) {
+      return '001';
+    }
+    let cislo: string = Math.max.apply(Math, this.ucastnici.map(ucastnik => ucastnik.cislo));
+    return this.zmenCisloUcasnika(cislo, 1);
+  }
+
+  public zmenCisloUcasnika(cisloUcasnika: string, hodnota: number): string {
+    let cislo: number = Number(cisloUcasnika);
+    cislo = cislo + hodnota;
+    return cislo.toString().padStart(3, '0');
   }
 
   public findUcastnik(id: string): Ucastnik {
     if (!this.ucastnici) {
       return null;
     }
-    return this.ucastnici.find(ucastnik => ucastnik.$id == id);
+    return this.ucastnici.find(ucastnik => ucastnik.id == id);
   }
 
+  public checkUcastnikoveCislo(id: string, cislo: string): boolean {
+    if (!this.ucastnici) {
+      return true;
+    }
+    let ucastnik = this.ucastnici.find(ucastnik => ucastnik.cislo == cislo);
+    if (!ucastnik) {
+      return true;
+    }
+    return ucastnik.id == id;
+  }
+  
   public checkUcastnik(id: string, meno: string, priezvisko: string, datum?: string): boolean {
     if (!this.ucastnici) {
       return true;
@@ -412,19 +450,23 @@ export class DataService implements OnInit {
     if (!ucastnik) {
       return true;
     } else {
-      return ucastnik.$id == id;
+      if (ucastnik.datumNarodenia != datum) {
+        return true;
+      }
+      return ucastnik.id == id;
     }
   }
 
   public insertUcastnik(ucastnik: Ucastnik): PromiseLike<void> {
     return this.ucastniciRef
       .push({
+        cislo: ucastnik.cislo,
         pohlavie: ucastnik.pohlavie,
         meno: ucastnik.meno,
         priezvisko: ucastnik.priezvisko,
         datumNarodenia: ucastnik.datumNarodenia,
         skola: ucastnik.skola,
-        trieda: ucastnik.skola,
+        trieda: ucastnik.trieda,
         adresa: {
           ulica: ucastnik.adresa.ulica,
           cislo: ucastnik.adresa.cislo,
@@ -440,13 +482,14 @@ export class DataService implements OnInit {
   }
 
   public async updateUcastnik(ucastnik: Ucastnik): Promise<void> {
-    return this.ucastniciRef.update(ucastnik.$id, {
+    return this.ucastniciRef.update(ucastnik.id, {
+      cislo: ucastnik.cislo,
       pohlavie: ucastnik.pohlavie,
       meno: ucastnik.meno,
       priezvisko: ucastnik.priezvisko,
       datumNarodenia: ucastnik.datumNarodenia,
       skola: ucastnik.skola,
-      trieda: ucastnik.skola,
+      trieda: ucastnik.trieda,
       adresa: {
         ulica: ucastnik.adresa.ulica,
         cislo: ucastnik.adresa.cislo,
@@ -457,7 +500,7 @@ export class DataService implements OnInit {
       telefon: ucastnik.telefon
     })
     .then(_ => {
-      this.log('ucastnik upraveny: ' + ucastnik.$id);
+      this.log('ucastnik upraveny: ' + ucastnik.id);
     })
     .catch(error => this.log(error));
   }
@@ -465,7 +508,7 @@ export class DataService implements OnInit {
   public async deleteUcastnik(id: string): Promise<void> {
     return this.ucastniciRef.remove(id)
       .then(_ => {
-        this.ucastnici = this.ucastnici.filter(ucastnik => ucastnik.$id != id);
+        this.ucastnici = this.ucastnici.filter(ucastnik => ucastnik.id != id);
         this.log('ucastnik odstraneny: ' + id);
       })
       .catch(error => this.log(error));
@@ -473,7 +516,7 @@ export class DataService implements OnInit {
 
   private appendZaujmoveUtvary() {
     this.zaujmoveUtvary.map(zaujmovyUtvar => {
-      let veduci = this.findVeduci(zaujmovyUtvar.veduci.$id);
+      let veduci = this.findVeduci(zaujmovyUtvar.veduci.id);
       zaujmovyUtvar.veduci = veduci;
     });
   }
@@ -565,7 +608,7 @@ export class DataService implements OnInit {
   // }
 
   // public update(issue: Issue): Observable<any> {
-  //   return this.http.put(`http://localhost:8082/ims-issues/resources/issues/${issue.$id}`, issue);
+  //   return this.http.put(`http://localhost:8082/ims-issues/resources/issues/${issue.id}`, issue);
   // }
 
   // public delete(id: number): Observable<any> {

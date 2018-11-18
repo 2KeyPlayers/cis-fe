@@ -23,3 +23,7 @@
 .ui.table tr {
   line-height: 2.6em;
 }
+
+.ui.calendar .ui.table tr td, .ui.calendar .ui.table tr th {
+  padding: 0;
+}

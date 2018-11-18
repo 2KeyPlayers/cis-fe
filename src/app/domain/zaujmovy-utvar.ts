@@ -4,10 +4,10 @@ import { Veduci, IVeduci } from './veduci';
 
 export interface IZaujmovyUtvar {
 
-  $id: string;
+  id: string;
   ikona?: string;
   nazov: string;
-  veduci: IVeduci;
+  veduci: any;
   // idVeduceho: string;
   // kedyKde?: Array<IKedyKde>;
   
@@ -15,7 +15,7 @@ export interface IZaujmovyUtvar {
 
 export class ZaujmovyUtvar implements IZaujmovyUtvar {
 
-  $id: string;
+  id: string;
   ikona?: string;
   nazov: string;
   veduci: IVeduci;
@@ -23,7 +23,7 @@ export class ZaujmovyUtvar implements IZaujmovyUtvar {
   // kedyKde?: Array<KedyKde>;
 
   constructor(zaujmovyUtvar: IZaujmovyUtvar, id?: string) {
-    this.$id = (id ? id : zaujmovyUtvar.$id);
+    this.id = (id ? id : zaujmovyUtvar.id);
     this.ikona = zaujmovyUtvar.ikona;
     this.nazov = zaujmovyUtvar.nazov;
     if (zaujmovyUtvar.veduci) {
@@ -31,7 +31,7 @@ export class ZaujmovyUtvar implements IZaujmovyUtvar {
     }
     // if (zaujmovyUtvar.idVeduceho) {
     //   this.veduci = {
-    //     $id : this.idVeduceho,
+    //     id : this.idVeduceho,
     //     meno: null,
     //     priezvisko: null
     //   }

@@ -1,17 +1,15 @@
 <table class="ui green striped selectable celled table">
   <thead>
     <tr>
-      <!-- <th class="collapsing">#</th> -->
-      <th class="collapsing">Číslo</th>
-      <th>&nbsp;</th>
+      <th class="collapsing">#</th>
       <th>Meno</th>
       <th>Priezvisko</th>
-      <th class="collapsing">D.n. (vek)</th>
+      <th>Vek</th>
       <th>Mesto</th>
       <th>Škola</th>
       <th>
         <div class="ui right floated small green right labeled icon button" (click)="add('ucastnik')">
-          <i class="right users icon"></i>
+          <i class="right user icon"></i>
           Pridať
         </div>
       </th>
@@ -19,32 +17,33 @@
   </thead>
   <tbody>
     <tr>
-      <td colspan="8" class="center aligned text" *ngIf="ucastnici?.length == 0">Žiadni účastníci</td>
+      <td colspan="7" class="center aligned text" *ngIf="ucastnici?.length == 0">Žiadni účastníci</td>
     </tr>
     <tr *ngFor="let ucastnik of ucastnici; let i = index" [attr.data-index]="i" class="table-light">
       <!-- <td class="collapsing">{{ (i + 1) }}</td> -->
-      <td>{{ ucastnik.$id }}</td>
-      <td class="collapsing"><i class="{{ (ucastnik.pohlavie === 'M') ? 'male' : 'female' }} icon"></i></td>
+      <td class="collapsing">{{ ucastnik.cislo }}</td>
+      <!-- <td class="collapsing"><i class="{{ (ucastnik.pohlavie === 'M') ? 'male' : 'female' }} icon"></i></td> -->
       <td>{{ ucastnik.meno }}</td>
       <td>{{ ucastnik.priezvisko }}</td>
-      <td>{{ ucastnik.datumNarodenia | date: 'd.M.yyyy' }} ({{ ucastnik.vek }})</td>
+      <!-- <td >{{ ucastnik.vek }}</td> -->
+      <td class="collapsing" [attr.data-tooltip]="ucastnik.datumNarodenia"><i class="{{ (ucastnik.pohlavie === 'M') ? 'male' : 'female' }} icon"></i> {{ ucastnik.vek }}</td>
       <td>{{ ucastnik.adresa.mesto }}</td>
-      <td>{{ ucastnik.skola }}</td>
-      <td class="right aligned collapsing">
+      <td [attr.data-tooltip]="ucastnik.trieda" data-position="top left">{{ ucastnik.skola }}</td>
+      <td class="center aligned collapsing">
         <div class="ui icon buttons">
-          <button class="ui basic green icon button" (click)="edit('ucastnik', ucastnik.$id)"><i class="pencil icon"></i></button>
-          <button class="ui basic red icon button" (click)="delete(ucastnik.$id)"><i class="trash icon"></i></button>
+          <button class="ui green icon button" (click)="edit('ucastnik', ucastnik.id)"><i class="pencil icon"></i></button>
+          <button class="ui green icon button" (click)="delete(ucastnik.id)"><i class="trash icon"></i></button>
         </div>
       </td>
     </tr>
   </tbody>
   <tfoot>
-    <th colspan="7">
+    <th colspan="6">
       Počet: {{ ucastnici?.length }}
     </th>
     <th>
       <div class="ui right floated small green right labeled icon button" (click)="add('ucastnik')">
-        <i class="right users icon"></i>
+        <i class="right user icon"></i>
         Pridať
       </div>
     </th>

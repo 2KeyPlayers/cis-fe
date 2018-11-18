@@ -1,18 +1,18 @@
 [
   {
-    "$id": "1",
+    "id": "1",
     "nazov": "Zelená klubovňa"
   },
   {
-    "$id": "2",
+    "id": "2",
     "nazov": "Červená klubovňa"
   },
   {
-    "$id": "3",
+    "id": "3",
     "nazov": "Modrá klubovňa"
   },
   {
-    "$id": "4",
+    "id": "4",
     "nazov": "Telocvičňa II. ZŠ"
   }
 ]
