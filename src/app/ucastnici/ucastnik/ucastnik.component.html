@@ -148,10 +148,10 @@
           <div class="item" *ngFor="let kruzok of kruzky; let i = index">
             <div class="header" style="margin-bottom:.5em">{{ kruzok.nazov }}</div>
             <div class="right floated content">
-              <div class="ui icon button"><i class="trash icon"></i></div>
+              <div class="ui icon button" (click)="deleteKruzok(i)"><i class="trash icon"></i></div>
             </div>
             <div class="content">
-              <button type="button" class="ui button" (click)="kruzok.zmenVyskuPoplatu()">{{ kruzok.vyskaPoplatku }}&euro;</button>
+              <button type="button" class="ui basic button" (click)="kruzok.zmenVyskuPoplatu()">{{ kruzok.vyskaPoplatku }}&euro;</button>
               <div class="ui compact buttons">
                 <div [class]="'ui ' + kruzok.farbaPoplatku(0) + ' button'" (click)="kruzok.zmenPoplatok(0)">Okt</div>
                 <div [class]="'ui ' + kruzok.farbaPoplatku(1) + ' button'" (click)="kruzok.zmenPoplatok(1)">Nov</div>
@@ -170,7 +170,7 @@
               <div class="ui icon button" (click)="addKruzok()"><i class="plus icon"></i></div>
             </div>
             <div class="content">
-              <select #utvar class="ui selection dropdown" formControlName="utvar">
+              <select #kruzok class="ui selection dropdown" formControlName="kruzok">
                 <option value="">Záujmový útvary</option>
                 <option value="{{zu.id}}" *ngFor="let zu of zaujmoveUtvary">{{zu.nazov}}</option>
               </select>

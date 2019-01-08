@@ -6,7 +6,7 @@ import { Location } from '@angular/common';
 import { IUcastnik } from '../../domain/ucastnik';
 import { EPohlavie } from './../../domain/ucastnik';
 import { ZaujmovyUtvar } from './../../domain/zaujmovy-utvar';
-import { Kruzok } from './../../domain/kruzok';
+import { Kruzok, IKruzok } from './../../domain/kruzok';
 
 import { DataService } from '../../service/data.service';
 import { Utils } from './../../domain/utils';
@@ -25,7 +25,7 @@ export class UcastnikComponent extends BaseComponent implements OnInit {
   @ViewChild('adresa') adresa: ElementRef;
   @ViewChild('ostatne') ostatne: ElementRef;
   @ViewChild('utvary') utvary: ElementRef;
-  @ViewChild('utvar') utvar: ElementRef;
+  @ViewChild('kruzok') kruzok: ElementRef;
 
   formular: FormGroup;
   submitnuty: boolean;
@@ -34,7 +34,7 @@ export class UcastnikComponent extends BaseComponent implements OnInit {
   datumNarodenia: string;
 
   zaujmoveUtvary: ZaujmovyUtvar[];
-  kruzky: Kruzok[];
+  kruzky: IKruzok[];
 
   constructor(
     protected fb: FormBuilder,
@@ -66,14 +66,14 @@ export class UcastnikComponent extends BaseComponent implements OnInit {
         ),
         zastupca: [null, Validators.required],
         telefon: [null, Validators.required],
-        utvar: [null]
+        kruzok: [null]
       },
       {
         validator: UcastnikValidator.createDuplicateValidator(this.dataService)
       }
     );
 
-    this.kruzky = new Array<Kruzok>();
+    this.kruzky = new Array<IKruzok>();
   }
 
   ngOnInit() {
@@ -121,7 +121,7 @@ export class UcastnikComponent extends BaseComponent implements OnInit {
     jQuery(this.utvary.nativeElement).accordion('open', 0);
 
     // init dropdown
-    jQuery(this.utvar.nativeElement).dropdown({
+    jQuery(this.kruzok.nativeElement).dropdown({
       clearable: true
     });
   }
@@ -154,6 +154,7 @@ export class UcastnikComponent extends BaseComponent implements OnInit {
     if (id != 'plus') {
       ucastnik = this.dataService.findUcastnik(id);
       if (ucastnik) {
+        this.kruzky = ucastnik.kruzky ? ucastnik.kruzky : new Array<IKruzok>();
         this.pohlavie = ucastnik.pohlavie;
         this.datumNarodenia = ucastnik.datumNarodenia;
         this.formular.setValue({
@@ -173,7 +174,7 @@ export class UcastnikComponent extends BaseComponent implements OnInit {
           },
           zastupca: ucastnik.zastupca,
           telefon: ucastnik.telefon,
-          utvar: ''
+          kruzok: ''
         });
       }
     } else {
@@ -204,13 +205,13 @@ export class UcastnikComponent extends BaseComponent implements OnInit {
   }
 
   addKruzok() {
-    if (this.formular.get('utvar').value) {
-      let utvar = this.dataService.findZaujmovyUtvar(this.formular.get('utvar').value);
-      let kruzok = new Kruzok(utvar.id, utvar.nazov);
-      if (!this.kruzky.includes(kruzok)) {
-        this.log('pridavam kruzok: ' + kruzok.nazov);
-        this.kruzky.push(kruzok);
-        jQuery(this.utvar.nativeElement).dropdown('clear');
+    if (this.formular.get('kruzok').value) {
+      let utvar = this.dataService.findZaujmovyUtvar(this.formular.get('kruzok').value);
+      let kruzok = this.kruzky.find(kruzok => kruzok.id == utvar.id);
+      if (!kruzok) {
+        this.log('pridavam kruzok: ' + utvar.nazov);
+        this.kruzky.push(new Kruzok(utvar.id, utvar.nazov));
+        jQuery(this.kruzok.nativeElement).dropdown('clear');
       }
     }
   }
@@ -247,7 +248,7 @@ export class UcastnikComponent extends BaseComponent implements OnInit {
             ' ' +
             this.formular.get('priezvisko').value
         );
-        this.dataService.insertUcastnik(this.formular.value).then(_ => {
+        this.dataService.insertUcastnik(this.formular.value, this.kruzky).then(_ => {
           swal(`Účastník úspešne pridaný.`, {
             icon: 'success'
           }).then(_ => {
@@ -271,9 +272,9 @@ export class UcastnikComponent extends BaseComponent implements OnInit {
               },
               zastupca: '',
               telefon: '',
-              utvar: ''
+              kruzok: ''
             });
-            jQuery(this.utvar.nativeElement).dropdown('clear');
+            jQuery(this.kruzok.nativeElement).dropdown('clear');
             this.submitnuty = false;
           });
         });
@@ -284,7 +285,7 @@ export class UcastnikComponent extends BaseComponent implements OnInit {
             ' ' +
             this.formular.get('priezvisko').value
         );
-        this.dataService.updateUcastnik(this.formular.value).then(_ => {
+        this.dataService.updateUcastnik(this.formular.value, this.kruzky).then(_ => {
           swal('Účastník úspešne upravený.', {
             icon: 'success'
           }).then(_ => {

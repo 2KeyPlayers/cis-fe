@@ -1,3 +1,4 @@
+import { IKruzok } from './../domain/kruzok';
 import { Injectable, OnInit } from '@angular/core';
 // import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of, combineLatest } from 'rxjs';
@@ -360,7 +361,7 @@ export class DataService implements OnInit {
   }
 
   private appendVeducich() {
-    this.zaujmoveUtvary.map(zaujmovyUtvar => {
+    this.zaujmoveUtvary.forEach(zaujmovyUtvar => { //TODO: was .map before
       let veduci = this.findVeduci(zaujmovyUtvar.veduci.id);
       zaujmovyUtvar.veduci = veduci;
     });
@@ -463,7 +464,20 @@ export class DataService implements OnInit {
     }
   }
 
-  public insertUcastnik(ucastnik: Ucastnik): PromiseLike<void> {
+  private getUcastnikoveKruzky(kruzky: IKruzok[]): Array<any> {
+    let ucastnikoveKruzky = null;
+    if (kruzky) {
+      ucastnikoveKruzky = new Array<any>();
+      kruzky.forEach(kruzok => ucastnikoveKruzky.push({
+        id: kruzok.id,
+        vyskaPoplatku: kruzok.vyskaPoplatku,
+        poplatky: kruzok.poplatky
+      }));
+    }
+    return ucastnikoveKruzky;
+  }
+
+  public insertUcastnik(ucastnik: Ucastnik, kruzky: IKruzok[]): PromiseLike<void> {
     return this.ucastniciRef
       .push({
         cislo: ucastnik.cislo,
@@ -480,14 +494,15 @@ export class DataService implements OnInit {
           psc: ucastnik.adresa.psc
         },
         zastupca: ucastnik.zastupca,
-        telefon: ucastnik.telefon
+        telefon: ucastnik.telefon,
+        kruzky: this.getUcastnikoveKruzky(kruzky)
       })
       .then(data => {
         this.log('ucastnik pridany: ' + data.key);
       });
   }
 
-  public async updateUcastnik(ucastnik: Ucastnik): Promise<void> {
+  public async updateUcastnik(ucastnik: Ucastnik, kruzky: IKruzok[]): Promise<void> {
     return this.ucastniciRef.update(ucastnik.id, {
       cislo: ucastnik.cislo,
       pohlavie: ucastnik.pohlavie,
@@ -503,7 +518,8 @@ export class DataService implements OnInit {
         psc: ucastnik.adresa.psc
       },
       zastupca: ucastnik.zastupca,
-      telefon: ucastnik.telefon
+      telefon: ucastnik.telefon,
+      kruzky: this.getUcastnikoveKruzky(kruzky)
     })
     .then(_ => {
       this.log('ucastnik upraveny: ' + ucastnik.id);
@@ -520,10 +536,14 @@ export class DataService implements OnInit {
       .catch(error => this.log(error));
   }
 
-  private appendZaujmoveUtvary() {
-    this.zaujmoveUtvary.map(zaujmovyUtvar => {
-      let veduci = this.findVeduci(zaujmovyUtvar.veduci.id);
-      zaujmovyUtvar.veduci = veduci;
+  private appendNazvyKruzkov() {
+    this.ucastnici.forEach(ucastnik => { //TODO: was .map before
+      if (ucastnik.kruzky) {
+        ucastnik.kruzky.forEach(kruzok => {
+          let zaujmovyUtvar = this.findZaujmovyUtvar(kruzok.id);
+          kruzok.nazov = zaujmovyUtvar.nazov;
+        });
+      }
     });
   }
 
@@ -541,6 +561,7 @@ export class DataService implements OnInit {
       map(() => {
         this.log('pridavam dodatocne data');
         this.appendVeducich();
+        this.appendNazvyKruzkov();
         // this.appendZaujmoveUtvary();
         // this.appendUcastnici();
 

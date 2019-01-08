@@ -1,5 +1,5 @@
+import { Kruzok, IKruzok } from './kruzok';
 import { Utils } from './utils';
-import { ZaujmovyUtvar, IZaujmovyUtvar } from './zaujmovy-utvar';
 
 export interface IUcastnik {
 
@@ -15,7 +15,7 @@ export interface IUcastnik {
   zastupca: string;
   telefon: string;
 
-  zaujmoveUtvary?: IZaujmovyUtvar[];
+  kruzky?: IKruzok[];
 
 }
 
@@ -33,7 +33,7 @@ export class Ucastnik implements IUcastnik {
   zastupca: string;
   telefon: string;
 
-  zaujmoveUtvary: ZaujmovyUtvar[];
+  kruzky: Kruzok[];
 
   constructor(ucastnik: IUcastnik, id?: string) {
     this.id = (id ? id : ucastnik.id);
@@ -47,6 +47,16 @@ export class Ucastnik implements IUcastnik {
     this.adresa = new Adresa(ucastnik.adresa);
     this.zastupca = ucastnik.zastupca;
     this.telefon = ucastnik.telefon;
+
+    if (ucastnik.kruzky) {
+      this.kruzky = new Array<Kruzok>();
+      ucastnik.kruzky.forEach(kruzok => {
+        let k = new Kruzok(kruzok.id);
+        k.vyskaPoplatku = kruzok.vyskaPoplatku;
+        k.poplatky = kruzok.poplatky;
+        this.kruzky.push(k);
+      });
+    }
   }
 
   get vek(): number {
