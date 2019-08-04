@@ -1,6 +1,6 @@
 import { Router } from "@angular/router";
 import { FormGroup } from '@angular/forms';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 
 import { DataService, AppStatus } from './service/data.service';
 
@@ -32,7 +32,7 @@ export abstract class BaseComponent {
 
   get failed(): boolean {
     return this.dataService.failed;
-  }  
+  }
 
   // Title
 
@@ -72,17 +72,22 @@ export abstract class BaseComponent {
   }
 
   delete(id: string) {
-    swal({
-      text: 'Naozaj vymazať?',
-      icon: 'warning',
-      buttons: [ 'Nie', 'Áno' ],
-      dangerMode: true
+    Swal.fire({
+      title: 'Naozaj vymazať?',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Áno',
+      cancelButtonText: 'Nie',
+      focusCancel: true,
+      toast: true
     }).then((confirmed) => {
-      if (confirmed) {
+      if (confirmed.value) {
         this.performDelete(id).then(_ => {
           this.getData();
-          swal('Záznam úspešne vymazaný.', {
-            icon: 'success'
+          Swal.fire({
+            title: 'Záznam úspešne vymazaný.',
+            type: 'success',
+            toast: true
           });
         });
       }

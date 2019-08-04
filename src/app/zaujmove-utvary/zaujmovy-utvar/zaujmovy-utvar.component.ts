@@ -9,6 +9,8 @@ import { BaseComponent } from '../../base.component';
 import { IZaujmovyUtvar } from './../../domain/zaujmovy-utvar';
 import { ZaujmovyUtvarValidator } from 'src/app/validation/zaujmovy-utvar.validator';
 
+import Swal from 'sweetalert2';
+
 declare var jQuery: any;
 
 @Component({
@@ -17,8 +19,8 @@ declare var jQuery: any;
   styleUrls: ['./zaujmovy-utvar.component.scss']
 })
 export class ZaujmovyUtvarComponent extends BaseComponent implements OnInit, AfterViewChecked {
-  @ViewChild('vodca') vodca: ElementRef;
-  
+  @ViewChild('vodca', { static: false }) vodca: ElementRef;
+
   formular: FormGroup;
   submitnuty: boolean;
 
@@ -50,7 +52,7 @@ export class ZaujmovyUtvarComponent extends BaseComponent implements OnInit, Aft
     );
   }
 
-  ngOnInit() {    
+  ngOnInit() {
     this.dataService.sortVeduci();
     this.vodcovia = this.dataService.veduci;
     this.initData();
@@ -100,8 +102,10 @@ export class ZaujmovyUtvarComponent extends BaseComponent implements OnInit, Aft
       ) {
         this.log('pridavam zaujmovy utvar: ' + this.formular.get('nazov').value);
         this.dataService.insertZaujmovyUtvar(this.formular.value).then(_ => {
-          swal(`Záujmový útvar úspešne pridaný.`, {
-            icon: 'success'
+          Swal.fire({
+            title: `Záujmový útvar úspešne pridaný.`,
+            type: 'success',
+            toast: true
           }).then(_ => {
             this.formular.reset();
             this.formular.setValue({
@@ -116,8 +120,10 @@ export class ZaujmovyUtvarComponent extends BaseComponent implements OnInit, Aft
       } else {
         this.log('aktualizujem zaujmovy utvar: ' + this.formular.get('nazov').value);
         this.dataService.updateZaujmovyUtvar(this.formular.value).then(_ => {
-          swal('Záujmový útvar úspešne upravený.', {
-            icon: 'success'
+          Swal.fire({
+            title: 'Záujmový útvar úspešne upravený.',
+            type: 'success',
+            toast: true
           }).then(_ => {
             this.submitnuty = false;
           });

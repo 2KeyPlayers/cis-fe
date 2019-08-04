@@ -13,6 +13,8 @@ import { Utils } from './../../domain/utils';
 import { BaseComponent } from '../../base.component';
 import { UcastnikValidator } from 'src/app/validation/ucastnik.validator';
 
+import Swal from 'sweetalert2';
+
 declare var jQuery: any;
 
 @Component({
@@ -21,11 +23,11 @@ declare var jQuery: any;
   styleUrls: ['./ucastnik.component.scss']
 })
 export class UcastnikComponent extends BaseComponent implements OnInit {
-  @ViewChild('kalendar') kalendar: ElementRef;
-  @ViewChild('adresa') adresa: ElementRef;
-  @ViewChild('ostatne') ostatne: ElementRef;
-  @ViewChild('utvary') utvary: ElementRef;
-  @ViewChild('kruzok') kruzok: ElementRef;
+  @ViewChild('kalendar', { static: false }) kalendar: ElementRef;
+  @ViewChild('adresa', { static: false }) adresa: ElementRef;
+  @ViewChild('ostatne', { static: false }) ostatne: ElementRef;
+  @ViewChild('utvary', { static: false }) utvary: ElementRef;
+  @ViewChild('kruzok', { static: false }) kruzok: ElementRef;
 
   formular: FormGroup;
   submitnuty: boolean;
@@ -217,13 +219,16 @@ export class UcastnikComponent extends BaseComponent implements OnInit {
   }
   deleteKruzok(index: number) {
     this.log('mazem kruzok: ' + index);
-    swal({
-      text: 'Naozaj vymazať?',
-      icon: 'warning',
-      buttons: [ 'Nie', 'Áno' ],
-      dangerMode: true
+    Swal.fire({
+      title: 'Naozaj vymazať?',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Áno',
+      cancelButtonText: 'Nie',
+      focusCancel: true,
+      toast: true
     }).then((confirmed) => {
-      if (confirmed) {
+      if (confirmed.value) {
         this.kruzky.splice(index, 1);
       }
     });
@@ -249,13 +254,14 @@ export class UcastnikComponent extends BaseComponent implements OnInit {
             this.formular.get('priezvisko').value
         );
         this.dataService.insertUcastnik(this.formular.value, this.kruzky).then(_ => {
-          swal(`Účastník úspešne pridaný.`, {
-            icon: 'success'
+          Swal.fire({
+            title: `Účastník úspešne pridaný.`,
+            type: 'success',
+            toast: true
           }).then(_ => {
             this.pohlavie = null;
             this.datumNarodenia = '';
-            this.formular.reset();
-            this.formular.setValue({
+            this.formular.reset({
               id: null,
               cislo: '',
               pohlavie: null,
@@ -286,8 +292,10 @@ export class UcastnikComponent extends BaseComponent implements OnInit {
             this.formular.get('priezvisko').value
         );
         this.dataService.updateUcastnik(this.formular.value, this.kruzky).then(_ => {
-          swal('Účastník úspešne upravený.', {
-            icon: 'success'
+          Swal.fire({
+            title: 'Účastník úspešne upravený.',
+            type: 'success',
+            toast: true
           }).then(_ => {
             this.submitnuty = false;
           });

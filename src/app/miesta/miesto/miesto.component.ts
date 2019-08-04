@@ -8,6 +8,8 @@ import { BaseComponent } from '../../base.component';
 import { IMiesto } from 'src/app/domain/miesto';
 import { MiestoValidator } from 'src/app/validation/miesto.validator';
 
+import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-miesto',
   templateUrl: './miesto.component.html',
@@ -79,8 +81,10 @@ export class MiestoComponent extends BaseComponent implements OnInit {
       ) {
         this.log('pridavam miesto: ' + this.formular.get('nazov').value);
         this.dataService.insertMiesto(this.formular.value).then(_ => {
-          swal(`Miesto úspešne pridané.`, {
-            icon: 'success'
+          Swal.fire({
+            title: `Miesto úspešne pridané.`,
+            type: 'success',
+            toast: true
           }).then(_ => {
             this.formular.reset();
             this.formular.setValue({
@@ -93,8 +97,10 @@ export class MiestoComponent extends BaseComponent implements OnInit {
       } else {
         this.log('aktualizujem miesto: ' + this.formular.get('nazov').value);
         this.dataService.updateMiesto(this.formular.value).then(_ => {
-          swal('Miesto úspešne upravené.', {
-            icon: 'success'
+          Swal.fire({
+            title: 'Miesto úspešne upravené.',
+            type: 'success',
+            toast: true
           }).then(_ => {
             this.submitnuty = false;
           });

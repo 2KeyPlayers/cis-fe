@@ -8,6 +8,8 @@ import { BaseComponent } from '../../base.component';
 import { IVeduci } from './../../domain/veduci';
 import { VeduciValidator } from 'src/app/validation/veduci.validator';
 
+import Swal from 'sweetalert2';
+
 declare var jQuery: any;
 
 @Component({
@@ -16,11 +18,11 @@ declare var jQuery: any;
   styleUrls: ['./vodca.component.scss']
 })
 export class VodcaComponent extends BaseComponent implements OnInit {
-  @ViewChild('titulis') titulis: ElementRef;
-  
+  @ViewChild('titulis', { static: false }) titulis: ElementRef;
+
   formular: FormGroup;
   submitnuty: boolean;
-  
+
   constructor(
     protected fb: FormBuilder,
     protected router: Router,
@@ -90,8 +92,10 @@ export class VodcaComponent extends BaseComponent implements OnInit {
       ) {
         this.log('pridavam veduceho: ' + this.formular.get('titul').value + ' ' + this.formular.get('meno').value + ' ' + this.formular.get('priezvisko').value);
         this.dataService.insertVeduci(this.formular.value).then(_ => {
-          swal(`Vedúci úspešne pridaný.`, {
-            icon: 'success'
+          Swal.fire({
+            title: `Vedúci úspešne pridaný.`,
+            type: 'success',
+            toast: true
           }).then(_ => {
             this.formular.reset();
             this.formular.setValue({
@@ -107,8 +111,10 @@ export class VodcaComponent extends BaseComponent implements OnInit {
       } else {
         this.log('aktualizujem veduceho: ' + this.formular.get('titul').value + ' ' + this.formular.get('meno').value + ' ' + this.formular.get('priezvisko').value);
         this.dataService.updateVeduci(this.formular.value).then(_ => {
-          swal('Vedúci úspešne upravený.', {
-            icon: 'success'
+          Swal.fire({
+            title: 'Vedúci úspešne upravený.',
+            type: 'success',
+            toast: true
           }).then(_ => {
             this.submitnuty = false;
           });
