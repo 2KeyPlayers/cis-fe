@@ -91,12 +91,12 @@ export class VodcaComponent extends BaseComponent implements OnInit {
         this.formular.get('id').value == ''
       ) {
         this.log('pridavam veduceho: ' + this.formular.get('titul').value + ' ' + this.formular.get('meno').value + ' ' + this.formular.get('priezvisko').value);
-        this.dataService.insertVeduci(this.formular.value).then(_ => {
+        this.dataService.insertVeduci(this.formular.value).then(() => {
           Swal.fire({
             title: `Vedúci úspešne pridaný.`,
             type: 'success',
             toast: true
-          }).then(_ => {
+          }).then(() => {
             this.formular.reset();
             this.formular.setValue({
               id: null,
@@ -110,12 +110,12 @@ export class VodcaComponent extends BaseComponent implements OnInit {
         });
       } else {
         this.log('aktualizujem veduceho: ' + this.formular.get('titul').value + ' ' + this.formular.get('meno').value + ' ' + this.formular.get('priezvisko').value);
-        this.dataService.updateVeduci(this.formular.value).then(_ => {
+        this.dataService.updateVeduci(this.formular.value).then(() => {
           Swal.fire({
             title: 'Vedúci úspešne upravený.',
             type: 'success',
             toast: true
-          }).then(_ => {
+          }).then(() => {
             this.submitnuty = false;
           });
         });

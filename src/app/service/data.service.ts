@@ -63,15 +63,15 @@ export class DataService {
   }
 
   get ok(): boolean {
-    return this.status == AppStatus.OK;
+    return this.status === AppStatus.OK;
   }
 
   get loading(): boolean {
-    return this.status == AppStatus.LOADING;
+    return this.status === AppStatus.LOADING;
   }
 
   get failed(): boolean {
-    return this.status == AppStatus.FAILED;
+    return this.status === AppStatus.FAILED;
   }
 
   // Nadpis
@@ -118,8 +118,7 @@ export class DataService {
     const tokenId = params.get('tokenId');
 
     // Confirm the user's email/password account
-    const klient = Stitch.defaultAppClient.auth
-        .getProviderClient(UserPasswordAuthProviderClient.factory);
+    const klient = Stitch.defaultAppClient.auth.getProviderClient(UserPasswordAuthProviderClient.factory);
 
     return klient.confirmUser(token, tokenId);
   }
@@ -144,8 +143,7 @@ export class DataService {
     const tokenId = params.get('tokenId');
 
     // Confirm the user's email/password account
-    const klient = Stitch.defaultAppClient.auth
-      .getProviderClient(UserPasswordAuthProviderClient.factory);
+    const klient = Stitch.defaultAppClient.auth.getProviderClient(UserPasswordAuthProviderClient.factory);
 
     return klient.resetPassword(token, tokenId, heslo);
     // .then(() => {
@@ -158,20 +156,24 @@ export class DataService {
   // Miesta
 
   public getMiesta(aktualizujStatus: boolean = true): Promise<Miesto[]> {
-    if (aktualizujStatus) { this.setStatus(AppStatus.LOADING); }
+    if (aktualizujStatus) {
+      this.setStatus(AppStatus.LOADING);
+    }
 
-    return this.miestaCollection.find({}).asArray()
-        .then(data => data.map(miesto => new Miesto(miesto)))
-        .then(data => {
-          this.log('miesta nacitane');
-          if (aktualizujStatus) {
-            this.setStatus(AppStatus.OK);
-          }
-          this.miesta = data;
-          this.sortMiesta();
-          return this.miesta;
-        });
-        // catchError(this.handleError('getMiesta', []))
+    return this.miestaCollection
+      .find({})
+      .asArray()
+      .then(data => data.map(miesto => new Miesto(miesto)))
+      .then(data => {
+        this.log('miesta nacitane');
+        if (aktualizujStatus) {
+          this.setStatus(AppStatus.OK);
+        }
+        this.miesta = data;
+        this.sortMiesta();
+        return this.miesta;
+      });
+    // catchError(this.handleError('getMiesta', []))
   }
 
   public sortMiesta() {
@@ -203,7 +205,9 @@ export class DataService {
   // let newId: number = Math.max.apply(Math, this.miesta.map(miesto => miesto.id)) + 1;
 
   public insertMiesto(miesto: Miesto): PromiseLike<void> {
-    return this.db.collection('miesta').insertOne(miesto)
+    return this.db
+      .collection('miesta')
+      .insertOne(miesto)
       .then(data => {
         miesto.id = data.insertedId;
         this.log('miesto pridane: ' + data.insertedId);
@@ -211,69 +215,35 @@ export class DataService {
   }
 
   public async updateMiesto(miesto: Miesto): Promise<void> {
-    const query = { "name": "legos" };
+    const query = { _id: miesto.id };
     const update = {
-      "$set": {
-        "name": "blocks",
-        "price": 20.99,
-        "category": "toys"
+      $set: {
+        nazov: miesto.nazov
       }
     };
-    const options = { "upsert": false };
+    const options = { upsert: false };
 
-    this.miestaCollection.updateOne(query, update, options)
-      .then(result => {
-        const { matchedCount, modifiedCount } = result;
-        if(matchedCount && modifiedCount) {
-          console.log(`Successfully updated the item.`)
-        }
-      })
-      .catch(err => console.error(`Failed to update the item: ${err}`))
-          return .updateOne(miesto.id, miesto as IMiesto)
-      .then(data => {
-        miesto.id = data.insertedId;
-        this.log('miesto upravne: ' + data.insertedId);
-      });
-      // .catch(error => this.log(error));
+    this.miestaCollection.updateOne(query, update, options).then(result => {
+      const { matchedCount, modifiedCount } = result;
+      if (matchedCount && modifiedCount) {
+        console.log(`miesto uspesne upravene`);
+      }
+    });
+    // .catch(err => console.error(`Failed to update the item: ${err}`))
   }
 
   public async deleteMiesto(id: string): Promise<void> {
-    // TODO: !!!
-    // this.miesta = this.miesta.filter(miesto => miesto.id != id);
-    // this.log('miesto odstranene: ' + id);
-    // return new Promise((resolve, reject) => {
-    //   setTimeout(() => {
-    //     this.log('prazdny promise');
-    //     resolve();
-    //   }, 500);
-    // });
-    return this.miestaRef
-      .remove(id)
-      .then(_ => {
-        this.miesta = this.miesta.filter(miesto => miesto.id != id);
-        this.log('miesto odstranene: ' + id);
-      })
-      .catch(error => this.log(error));
+    return this.miestaCollection.deleteOne(id).then(() => {
+      this.miesta = this.miesta.filter(miesto => miesto.id !== id);
+      this.log('miesto odstranene: ' + id);
+    });
+    // .catch(error => this.log(error));
   }
 
   // Veduci
 
-  public getVeduci(aktualizujStatus: boolean = true): Observable<Veduci[]> {
-    if (aktualizujStatus) this.setStatus(AppStatus.LOADING);
-
-    // return this.httpClient.get<Veduci[]>('assets/mock/veduci.json').pipe(
-    this.veduciRef = this.db.list<any>('veduci');
-    return this.veduciRef.snapshotChanges().pipe(
-      map(data => (this.veduci = data.map(vodca => new Veduci(vodca.payload.val(), vodca.payload.key)))),
-      tap(_ => {
-        if (aktualizujStatus) {
-          this.setStatus(AppStatus.OK);
-        }
-        this.sortVeduci();
-        this.log('veduci nacitani');
-      })
-      // catchError(this.handleError('getVeduci', []))
-    );
+  public getVeduci(aktualizujStatus: boolean = true): Promise<Veduci[]> {
+    return;
   }
 
   public sortVeduci() {
@@ -300,18 +270,18 @@ export class DataService {
     if (!this.veduci) {
       return null;
     }
-    return this.veduci.find(vodca => vodca.id == id);
+    return this.veduci.find(vodca => vodca.id === id);
   }
 
   public checkVeduci(id: string, meno: string, priezvisko: string): boolean {
     if (!this.veduci) {
       return true;
     }
-    let vodca = this.veduci.find(vodca => vodca.celeMeno == meno + ' ' + priezvisko);
+    const vodca = this.veduci.find(v => v.celeMeno === meno + ' ' + priezvisko);
     if (!vodca) {
       return true;
     } else {
-      return vodca.id == id;
+      return vodca.id === id;
     }
   }
 
@@ -334,7 +304,7 @@ export class DataService {
         meno: veduci.meno,
         priezvisko: veduci.priezvisko
       })
-      .then(_ => {
+      .then(() => {
         this.log('veduci upraveny: ' + veduci.id);
       })
       .catch(error => this.log(error));
@@ -343,7 +313,7 @@ export class DataService {
   public async deleteVeduci(id: string): Promise<void> {
     return this.veduciRef
       .remove(id)
-      .then(_ => {
+      .then(() => {
         this.veduci = this.veduci.filter(vodca => vodca.id != id);
         this.log('veduci odstraneny: ' + id);
       })
@@ -364,7 +334,7 @@ export class DataService {
             zaujmovyUtvar => new ZaujmovyUtvar(zaujmovyUtvar.payload.val(), zaujmovyUtvar.payload.key)
           ))
       ),
-      tap(_ => {
+      tap(() => {
         if (aktualizujStatus) {
           this.setStatus(AppStatus.OK);
         }
@@ -431,7 +401,7 @@ export class DataService {
           id: zaujmovyUtvar.veduci
         }
       })
-      .then(_ => {
+      .then(() => {
         this.log('zaujmovy utvar upraveny: ' + zaujmovyUtvar.id);
       })
       .catch(error => this.log(error));
@@ -440,7 +410,7 @@ export class DataService {
   public async deleteZaujmovyUtvar(id: string): Promise<void> {
     return this.zaujmoveUtvaryRef
       .remove(id)
-      .then(_ => {
+      .then(() => {
         this.zaujmoveUtvary = this.zaujmoveUtvary.filter(zaujmovyUtvar => zaujmovyUtvar.id != id);
         this.log('zaujmovy utvar odstraneny: ' + id);
       })
@@ -464,7 +434,7 @@ export class DataService {
     this.ucastniciRef = this.db.list<any>('ucastnici');
     return this.ucastniciRef.snapshotChanges().pipe(
       map(data => (this.ucastnici = data.map(ucastnik => new Ucastnik(ucastnik.payload.val(), ucastnik.payload.key)))),
-      tap(_ => {
+      tap(() => {
         if (aktualizujStatus) {
           this.setStatus(AppStatus.OK);
         }
@@ -506,7 +476,7 @@ export class DataService {
     if (!this.ucastnici) {
       return '001';
     }
-    let cislo: string = Math.max.apply(Math, this.ucastnici.map(ucastnik => ucastnik.cislo));
+    const cislo: string = Math.max.apply(Math, this.ucastnici.map(ucastnik => ucastnik.cislo));
     return this.zmenCisloUcasnika(cislo, 1);
   }
 
@@ -520,32 +490,32 @@ export class DataService {
     if (!this.ucastnici) {
       return null;
     }
-    return this.ucastnici.find(ucastnik => ucastnik.id == id);
+    return this.ucastnici.find(ucastnik => ucastnik.id === id);
   }
 
   public checkUcastnikoveCislo(id: string, cislo: string): boolean {
     if (!this.ucastnici) {
       return true;
     }
-    let ucastnik = this.ucastnici.find(ucastnik => ucastnik.cislo == cislo);
+    const ucastnik = this.ucastnici.find(u => u.cislo === cislo);
     if (!ucastnik) {
       return true;
     }
-    return ucastnik.id == id;
+    return ucastnik.id === id;
   }
 
   public checkUcastnik(id: string, meno: string, priezvisko: string, datum?: string): boolean {
     if (!this.ucastnici) {
       return true;
     }
-    let ucastnik = this.ucastnici.find(ucastnik => ucastnik.celeMeno == meno + ' ' + priezvisko);
+    const ucastnik = this.ucastnici.find(u => u.celeMeno === meno + ' ' + priezvisko);
     if (!ucastnik) {
       return true;
     } else {
-      if (ucastnik.datumNarodenia != datum) {
+      if (ucastnik.datumNarodenia !== datum) {
         return true;
       }
-      return ucastnik.id == id;
+      return ucastnik.id === id;
     }
   }
 
@@ -609,7 +579,7 @@ export class DataService {
         telefon: ucastnik.telefon,
         kruzky: this.getUcastnikoveKruzky(kruzky)
       })
-      .then(_ => {
+      .then(() => {
         this.log('ucastnik upraveny: ' + ucastnik.id);
       })
       .catch(error => this.log(error));
@@ -618,7 +588,7 @@ export class DataService {
   public async deleteUcastnik(id: string): Promise<void> {
     return this.ucastniciRef
       .remove(id)
-      .then(_ => {
+      .then(() => {
         this.ucastnici = this.ucastnici.filter(ucastnik => ucastnik.id != id);
         this.log('ucastnik odstraneny: ' + id);
       })
@@ -687,49 +657,4 @@ export class DataService {
   private log(message: string) {
     console.log(message);
   }
-
-  // public getAll(): Observable<Array<User>> {
-  //   return this.http.get<Array<User>>('http://localhost:8081/ims-users/resources/users');
-  // }
-
-  // public get(id: number): Observable<User> {
-  //   return this.http.get<User>(`http://localhost:8081/ims-users/resources/users/${id}`);
-  // }
-
-  // public getAll(): Observable<Array<Issue>> {
-  //   return this.http.get<Array<Issue>>('http://localhost:8082/ims-issues/resources/issues', {
-  //       headers: new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('token')}`)
-  //   });
-  // }
-
-  // public get(id: number): Observable<any> {
-  //   return this.http.get(`http://localhost:8082/ims-issues/resources/issues/${id}`);
-  // }
-
-  // public getComments(id: number): Observable<any> {
-  //   return this.http.get(`http://localhost:8083/ims-comments/resources/comments/${id}`);
-  // }
-
-  // public addComment(id: number, comment: Comment) : Observable<any> {
-  //   return this.http.post(`http://localhost:8083/ims-comments/resources/comments/${id}`, comment ,
-  //     { responseType: 'text' }
-  //   );
-  // }
-
-  // public add(issue: Issue): Observable<any> {
-  //   return this.http.post('http://localhost:8082/ims-issues/resources/issues', issue
-  //   // ,
-  //     // { responseType: 'text' }
-  //   );
-  // }
-
-  // public update(issue: Issue): Observable<any> {
-  //   return this.http.put(`http://localhost:8082/ims-issues/resources/issues/${issue.id}`, issue);
-  // }
-
-  // public delete(id: number): Observable<any> {
-  //   return this.http.delete(`http://localhost:8082/ims-issues/resources/issues/${id}`,
-  //     { responseType: 'text' }
-  //   );
-  // }
 }

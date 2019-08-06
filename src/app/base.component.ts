@@ -82,7 +82,7 @@ export abstract class BaseComponent {
       toast: true
     }).then((confirmed) => {
       if (confirmed.value) {
-        this.performDelete(id).then(_ => {
+        this.performDelete(id).then(() => {
           this.getData();
           Swal.fire({
             title: 'Záznam úspešne vymazaný.',

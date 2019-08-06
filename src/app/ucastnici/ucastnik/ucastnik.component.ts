@@ -253,12 +253,12 @@ export class UcastnikComponent extends BaseComponent implements OnInit {
             ' ' +
             this.formular.get('priezvisko').value
         );
-        this.dataService.insertUcastnik(this.formular.value, this.kruzky).then(_ => {
+        this.dataService.insertUcastnik(this.formular.value, this.kruzky).then(() => {
           Swal.fire({
             title: `Účastník úspešne pridaný.`,
             type: 'success',
             toast: true
-          }).then(_ => {
+          }).then(() => {
             this.pohlavie = null;
             this.datumNarodenia = '';
             this.formular.reset({
@@ -291,12 +291,12 @@ export class UcastnikComponent extends BaseComponent implements OnInit {
             ' ' +
             this.formular.get('priezvisko').value
         );
-        this.dataService.updateUcastnik(this.formular.value, this.kruzky).then(_ => {
+        this.dataService.updateUcastnik(this.formular.value, this.kruzky).then(() => {
           Swal.fire({
             title: 'Účastník úspešne upravený.',
             type: 'success',
             toast: true
-          }).then(_ => {
+          }).then(() => {
             this.submitnuty = false;
           });
         });

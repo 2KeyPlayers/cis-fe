@@ -80,12 +80,12 @@ export class MiestoComponent extends BaseComponent implements OnInit {
         this.formular.get('id').value == ''
       ) {
         this.log('pridavam miesto: ' + this.formular.get('nazov').value);
-        this.dataService.insertMiesto(this.formular.value).then(_ => {
+        this.dataService.insertMiesto(this.formular.value).then(() => {
           Swal.fire({
             title: `Miesto úspešne pridané.`,
             type: 'success',
             toast: true
-          }).then(_ => {
+          }).then(() => {
             this.formular.reset();
             this.formular.setValue({
               id: null,
@@ -96,12 +96,12 @@ export class MiestoComponent extends BaseComponent implements OnInit {
         });
       } else {
         this.log('aktualizujem miesto: ' + this.formular.get('nazov').value);
-        this.dataService.updateMiesto(this.formular.value).then(_ => {
+        this.dataService.updateMiesto(this.formular.value).then(() => {
           Swal.fire({
             title: 'Miesto úspešne upravené.',
             type: 'success',
             toast: true
-          }).then(_ => {
+          }).then(() => {
             this.submitnuty = false;
           });
         });

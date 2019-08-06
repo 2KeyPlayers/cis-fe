@@ -101,12 +101,12 @@ export class ZaujmovyUtvarComponent extends BaseComponent implements OnInit, Aft
         this.formular.get('id').value == ''
       ) {
         this.log('pridavam zaujmovy utvar: ' + this.formular.get('nazov').value);
-        this.dataService.insertZaujmovyUtvar(this.formular.value).then(_ => {
+        this.dataService.insertZaujmovyUtvar(this.formular.value).then(() => {
           Swal.fire({
             title: `Záujmový útvar úspešne pridaný.`,
             type: 'success',
             toast: true
-          }).then(_ => {
+          }).then(() => {
             this.formular.reset();
             this.formular.setValue({
               id: null,
@@ -119,12 +119,12 @@ export class ZaujmovyUtvarComponent extends BaseComponent implements OnInit, Aft
         });
       } else {
         this.log('aktualizujem zaujmovy utvar: ' + this.formular.get('nazov').value);
-        this.dataService.updateZaujmovyUtvar(this.formular.value).then(_ => {
+        this.dataService.updateZaujmovyUtvar(this.formular.value).then(() => {
           Swal.fire({
             title: 'Záujmový útvar úspešne upravený.',
             type: 'success',
             toast: true
-          }).then(_ => {
+          }).then(() => {
             this.submitnuty = false;
           });
         });
