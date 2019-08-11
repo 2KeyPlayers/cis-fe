@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Location } from '@angular/common';
 
-import { IUcastnik } from '../../domain/ucastnik';
+import { IUcastnik, Ucastnik } from '../../domain/ucastnik';
 import { EPohlavie } from './../../domain/ucastnik';
 import { ZaujmovyUtvar } from './../../domain/zaujmovy-utvar';
 import { Kruzok, IKruzok } from './../../domain/kruzok';
@@ -36,7 +36,7 @@ export class UcastnikComponent extends BaseComponent implements OnInit {
   datumNarodenia: string;
 
   zaujmoveUtvary: ZaujmovyUtvar[];
-  kruzky: IKruzok[];
+  kruzky: Kruzok[];
 
   constructor(
     protected fb: FormBuilder,
@@ -75,7 +75,7 @@ export class UcastnikComponent extends BaseComponent implements OnInit {
       }
     );
 
-    this.kruzky = new Array<IKruzok>();
+    this.kruzky = new Array<Kruzok>();
   }
 
   ngOnInit() {
@@ -133,9 +133,9 @@ export class UcastnikComponent extends BaseComponent implements OnInit {
   }
 
   protected getData(): any {
-    let id: string = this.activatedRoute.snapshot.paramMap.get('id');
-    let ucastnik: IUcastnik = {
-      id: null,
+    const id: string = this.activatedRoute.snapshot.paramMap.get('id');
+    let ucastnik: Ucastnik = new Ucastnik({
+      _id: null,
       cislo: '',
       pohlavie: null,
       meno: '',
@@ -151,12 +151,12 @@ export class UcastnikComponent extends BaseComponent implements OnInit {
       },
       zastupca: '',
       telefon: ''
-    };
+    });
 
-    if (id != 'plus') {
+    if (id !== 'plus') {
       ucastnik = this.dataService.findUcastnik(id);
       if (ucastnik) {
-        this.kruzky = ucastnik.kruzky ? ucastnik.kruzky : new Array<IKruzok>();
+        this.kruzky = ucastnik.kruzky;
         this.pohlavie = ucastnik.pohlavie;
         this.datumNarodenia = ucastnik.datumNarodenia;
         this.formular.setValue({
@@ -180,7 +180,7 @@ export class UcastnikComponent extends BaseComponent implements OnInit {
         });
       }
     } else {
-      let nasledujuceCislo = this.dataService.getNasledujuceCisloUcastnika();
+      const nasledujuceCislo = this.dataService.getNasledujuceCisloUcastnika();
       this.log('nasledujuce cislo: ' + nasledujuceCislo);
       this.formular.patchValue({
         cislo: nasledujuceCislo
@@ -194,13 +194,13 @@ export class UcastnikComponent extends BaseComponent implements OnInit {
   }
 
   znizCislo() {
-    let cislo: string = this.formular.get('cislo').value;
+    const cislo: string = this.formular.get('cislo').value;
     this.formular.patchValue({
       cislo: this.dataService.zmenCisloUcasnika(cislo, -1)
     });
   }
   pridajCislo() {
-    let cislo: string = this.formular.get('cislo').value;
+    const cislo: string = this.formular.get('cislo').value;
     this.formular.patchValue({
       cislo: this.dataService.zmenCisloUcasnika(cislo, 1)
     });
@@ -208,8 +208,8 @@ export class UcastnikComponent extends BaseComponent implements OnInit {
 
   addKruzok() {
     if (this.formular.get('kruzok').value) {
-      let utvar = this.dataService.findZaujmovyUtvar(this.formular.get('kruzok').value);
-      let kruzok = this.kruzky.find(kruzok => kruzok.id == utvar.id);
+      const utvar = this.dataService.findZaujmovyUtvar(this.formular.get('kruzok').value);
+      const kruzok = this.kruzky.find(k => k.id === utvar.id);
       if (!kruzok) {
         this.log('pridavam kruzok: ' + utvar.nazov);
         this.kruzky.push(new Kruzok(utvar.id, utvar.nazov));
@@ -245,7 +245,7 @@ export class UcastnikComponent extends BaseComponent implements OnInit {
     if (this.formular.valid) {
       if (
         this.formular.get('id').value == null ||
-        this.formular.get('id').value == ''
+        this.formular.get('id').value === ''
       ) {
         this.log(
           'pridavam ucastnika: ' +

@@ -1,9 +1,11 @@
+import { Identifikator } from './identifikator';
+
 export interface IMiesto {
   _id?: string;
   nazov: string;
 }
 
-export class Miesto implements IMiesto {
+export class Miesto implements Identifikator, IMiesto {
   id: string;
   nazov: string;
 

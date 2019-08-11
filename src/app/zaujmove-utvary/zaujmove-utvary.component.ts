@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
 
 import { BaseComponent } from '../base.component';
 import { DataService } from './../service/data.service';
@@ -12,7 +11,6 @@ import { ZaujmovyUtvar } from './../domain/zaujmovy-utvar';
   styleUrls: ['./zaujmove-utvary.component.scss']
 })
 export class ZaujmoveUtvaryComponent extends BaseComponent implements OnInit {
-
   zaujmoveUtvary: ZaujmovyUtvar[];
 
   constructor(protected router: Router, protected dataService: DataService) {
@@ -23,13 +21,12 @@ export class ZaujmoveUtvaryComponent extends BaseComponent implements OnInit {
   ngOnInit() {
     this.getData();
   }
-  
+
   protected getData() {
     this.zaujmoveUtvary = this.dataService.zaujmoveUtvary;
   }
 
-  protected performDelete(id: string): Promise<void> {
-    return this.dataService.deleteZaujmovyUtvar(id);
+  protected performDelete(zaujmovyUtvar: ZaujmovyUtvar): Promise<void> {
+    return this.dataService.deleteZaujmovyUtvar(zaujmovyUtvar);
   }
-
 }

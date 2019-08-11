@@ -6,7 +6,7 @@ import { Location } from '@angular/common';
 
 import { DataService } from '../../service/data.service';
 import { BaseComponent } from '../../base.component';
-import { IZaujmovyUtvar } from './../../domain/zaujmovy-utvar';
+import { IZaujmovyUtvar, ZaujmovyUtvar } from './../../domain/zaujmovy-utvar';
 import { ZaujmovyUtvarValidator } from 'src/app/validation/zaujmovy-utvar.validator';
 
 import Swal from 'sweetalert2';
@@ -70,16 +70,18 @@ export class ZaujmovyUtvarComponent extends BaseComponent implements OnInit, Aft
   }
 
   protected getData(): any {
-    let id: string = this.activatedRoute.snapshot.paramMap.get('id');
-    let zaujmovyUtvar: IZaujmovyUtvar = {
-      id: null,
+    const id: string = this.activatedRoute.snapshot.paramMap.get('id');
+    let zaujmovyUtvar: ZaujmovyUtvar = new ZaujmovyUtvar({
+      _id: null,
       nazov: '',
       veduci: {
-        id: null
+        _id: null,
+        meno: '',
+        priezvisko: ''
       }
-    };
+    });
 
-    if (id != 'plus') {
+    if (id !== 'plus') {
       zaujmovyUtvar = this.dataService.findZaujmovyUtvar(id);
       if (zaujmovyUtvar) {
         this.log('nastavujem veduceho: ' + zaujmovyUtvar.veduci.id);
@@ -98,7 +100,7 @@ export class ZaujmovyUtvarComponent extends BaseComponent implements OnInit, Aft
     if (this.formular.valid) {
       if (
         this.formular.get('id').value == null ||
-        this.formular.get('id').value == ''
+        this.formular.get('id').value === ''
       ) {
         this.log('pridavam zaujmovy utvar: ' + this.formular.get('nazov').value);
         this.dataService.insertZaujmovyUtvar(this.formular.value).then(() => {

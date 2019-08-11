@@ -109,6 +109,10 @@ export class DataService {
     // .catch(err => console.error(`prihlasenie zlyhalo: ${err}`));
   }
 
+  odhlasenie(): Promise<void> {
+    return this.klient.auth.logout();
+  }
+
   potvrdenieEmailu(): Promise<void> {
     Stitch.initializeDefaultAppClient('cvrcek-anlki');
     // Parse the URL query parameters
@@ -149,7 +153,7 @@ export class DataService {
     // .then(() => {
     //   console.log('heslo uspesne zmenene');
     // }).catch(err => {
-    //   console.log("Error resetting password:", err);
+    //   console.log("chyba pri zmene hesla:", err);
     // });
   }
 
@@ -173,7 +177,7 @@ export class DataService {
         this.sortMiesta();
         return this.miesta;
       });
-    // catchError(this.handleError('getMiesta', []))
+    // catchError(this.handleError('getMiesta', []));
   }
 
   public sortMiesta() {
@@ -205,16 +209,16 @@ export class DataService {
   // let newId: number = Math.max.apply(Math, this.miesta.map(miesto => miesto.id)) + 1;
 
   public insertMiesto(miesto: Miesto): PromiseLike<void> {
-    return this.db
-      .collection('miesta')
+    return this.miestaCollection
       .insertOne(miesto)
       .then(data => {
         miesto.id = data.insertedId;
         this.log('miesto pridane: ' + data.insertedId);
       });
+    // .catch(err => console.error(`chyba pri vkladani mesta: ${err}`));
   }
 
-  public async updateMiesto(miesto: Miesto): Promise<void> {
+  public updateMiesto(miesto: Miesto): Promise<void> {
     const query = { _id: miesto.id };
     const update = {
       $set: {
@@ -223,27 +227,44 @@ export class DataService {
     };
     const options = { upsert: false };
 
-    this.miestaCollection.updateOne(query, update, options).then(result => {
+    return this.miestaCollection.updateOne(query, update, options).then(result => {
       const { matchedCount, modifiedCount } = result;
       if (matchedCount && modifiedCount) {
-        console.log(`miesto uspesne upravene`);
+        console.log('miesto uspesne upravene' + miesto.id);
       }
     });
-    // .catch(err => console.error(`Failed to update the item: ${err}`))
+    // .catch(err => console.error(`chyba pri aktualizacii mesta: ${err}`));
   }
 
-  public async deleteMiesto(id: string): Promise<void> {
-    return this.miestaCollection.deleteOne(id).then(() => {
-      this.miesta = this.miesta.filter(miesto => miesto.id !== id);
-      this.log('miesto odstranene: ' + id);
+  public deleteMiesto(miesto: Miesto): Promise<void> {
+    return this.miestaCollection.deleteOne({ _id: miesto.id }).then(() => {
+      this.miesta = this.miesta.filter(m => m.id !== miesto.id);
+      this.log('miesto odstranene: ' + miesto.id);
     });
-    // .catch(error => this.log(error));
+    // .catch(err => console.error(`chyba pri mazani mesta: ${err}`));
   }
 
   // Veduci
 
   public getVeduci(aktualizujStatus: boolean = true): Promise<Veduci[]> {
-    return;
+    if (aktualizujStatus) {
+      this.setStatus(AppStatus.LOADING);
+    }
+
+    return this.veduciCollection
+      .find({})
+      .asArray()
+      .then(data => data.map(veduci => new Veduci(veduci)))
+      .then(data => {
+        this.log('veduci nacitani');
+        if (aktualizujStatus) {
+          this.setStatus(AppStatus.OK);
+        }
+        this.veduci = data;
+        this.sortVeduci();
+        return this.veduci;
+      });
+    // catchError(this.handleError('getVeduci', []));
   }
 
   public sortVeduci() {
@@ -286,63 +307,64 @@ export class DataService {
   }
 
   public insertVeduci(veduci: Veduci): PromiseLike<void> {
-    return this.veduciRef
-      .push({
-        titul: veduci.titul,
-        meno: veduci.meno,
-        priezvisko: veduci.priezvisko
-      })
+    return this.veduciCollection
+      .insertOne(veduci)
       .then(data => {
-        this.log('veduci pridany: ' + data.key);
+        veduci.id = data.insertedId;
+        this.log('veduci pridany: ' + data.insertedId);
       });
+      // .catch(err => console.error(`chyba pri vkladani veduceho: ${err}`));
   }
 
   public async updateVeduci(veduci: Veduci): Promise<void> {
-    return this.veduciRef
-      .update(veduci.id, {
+    const query = { _id: veduci.id };
+    const update = {
+      $set: {
         titul: veduci.titul,
         meno: veduci.meno,
         priezvisko: veduci.priezvisko
-      })
-      .then(() => {
-        this.log('veduci upraveny: ' + veduci.id);
-      })
-      .catch(error => this.log(error));
+      }
+    };
+    const options = { upsert: false };
+
+    return this.veduciCollection.updateOne(query, update, options).then(result => {
+      const { matchedCount, modifiedCount } = result;
+      if (matchedCount && modifiedCount) {
+        console.log('veduci uspesne upraveny' + veduci.id);
+      }
+    });
+    // .catch(err => console.error(`chyba pri aktualizacii veduceho: ${err}`));
   }
 
-  public async deleteVeduci(id: string): Promise<void> {
-    return this.veduciRef
-      .remove(id)
-      .then(() => {
-        this.veduci = this.veduci.filter(vodca => vodca.id != id);
-        this.log('veduci odstraneny: ' + id);
-      })
-      .catch(error => this.log(error));
+  public async deleteVeduci(veduci: Veduci): Promise<void> {
+    return this.veduciCollection.deleteOne({ _id: veduci.id }).then(() => {
+      this.veduci = this.veduci.filter(v => v.id !== veduci.id);
+      this.log('miesto odstranene: ' + veduci.id);
+    });
+    // .catch(err => console.error(`chyba pri mazani veduceho: ${err}`));
   }
 
   // Zaujmove utvary
 
-  public getZaujmoveUtvary(aktualizujStatus: boolean = true): Observable<ZaujmovyUtvar[]> {
-    if (aktualizujStatus) this.setStatus(AppStatus.LOADING);
+  public getZaujmoveUtvary(aktualizujStatus: boolean = true): Promise<ZaujmovyUtvar[]> {
+    if (aktualizujStatus) {
+      this.setStatus(AppStatus.LOADING);
+    }
 
-    // return this.httpClient.get<ZaujmovyUtvar[]>('assets/mock/zaujmove-utvary.json').pipe(
-    this.zaujmoveUtvaryRef = this.db.list<any>('zaujmove-utvary');
-    return this.zaujmoveUtvaryRef.snapshotChanges().pipe(
-      map(
-        data =>
-          (this.zaujmoveUtvary = data.map(
-            zaujmovyUtvar => new ZaujmovyUtvar(zaujmovyUtvar.payload.val(), zaujmovyUtvar.payload.key)
-          ))
-      ),
-      tap(() => {
+    return this.zaujmoveUtvaryCollection
+      .find({})
+      .asArray()
+      .then(data => data.map(utvar => new ZaujmovyUtvar(utvar)))
+      .then(data => {
+        this.log('zaujmove utvary nacitane');
         if (aktualizujStatus) {
           this.setStatus(AppStatus.OK);
         }
+        this.zaujmoveUtvary = data;
         this.sortZaujmoveUtvary();
-        this.log('zaujmove utvary nacitane');
-      })
-      // catchError(this.handleError('getZaujmoveUtvary', []))
-    );
+        return this.zaujmoveUtvary;
+      });
+    // catchError(this.handleError('getZaujmoveUtvary', []));
   }
 
   public sortZaujmoveUtvary() {
@@ -363,86 +385,89 @@ export class DataService {
     if (!this.zaujmoveUtvary) {
       return null;
     }
-    return this.zaujmoveUtvary.find(zaujmovyUtvar => zaujmovyUtvar.id == id);
+    return this.zaujmoveUtvary.find(zaujmovyUtvar => zaujmovyUtvar.id === id);
   }
 
   public checkZaujmovyUtvar(id: string, nazov: string): boolean {
     if (!this.zaujmoveUtvary) {
       return true;
     }
-    let zaujmovyUtvar = this.zaujmoveUtvary.find(zaujmovyUtvar => zaujmovyUtvar.nazov == nazov);
+    const zaujmovyUtvar = this.zaujmoveUtvary.find(zu => zu.nazov === nazov);
     if (!zaujmovyUtvar) {
       return true;
     } else {
-      return zaujmovyUtvar.id == id;
+      return zaujmovyUtvar.id === id;
     }
   }
 
   public insertZaujmovyUtvar(zaujmovyUtvar: ZaujmovyUtvar): PromiseLike<void> {
-    return this.zaujmoveUtvaryRef
-      .push({
-        // ikona: zaujmovyUtvar.ikona,
-        nazov: zaujmovyUtvar.nazov,
-        veduci: {
-          id: zaujmovyUtvar.veduci
-        }
-      })
+    return this.zaujmoveUtvaryCollection
+      .insertOne(zaujmovyUtvar)
       .then(data => {
-        this.log('zaujmovy utvar pridany: ' + data.key);
+        zaujmovyUtvar.id = data.insertedId;
+        this.log('zaujmovy utvar pridany: ' + data.insertedId);
       });
+      // .catch(err => console.error(`chyba pri vkladani zaujmoveho utvaru: ${err}`));
   }
 
   public async updateZaujmovyUtvar(zaujmovyUtvar: ZaujmovyUtvar): Promise<void> {
-    return this.zaujmoveUtvaryRef
-      .update(zaujmovyUtvar.id, {
+    const query = { _id: zaujmovyUtvar.id };
+    const update = {
+      $set: {
         // ikona: zaujmovyUtvar.ikona,
         nazov: zaujmovyUtvar.nazov,
         veduci: {
           id: zaujmovyUtvar.veduci
         }
-      })
-      .then(() => {
-        this.log('zaujmovy utvar upraveny: ' + zaujmovyUtvar.id);
-      })
-      .catch(error => this.log(error));
+      }
+    };
+    const options = { upsert: false };
+
+    return this.veduciCollection.updateOne(query, update, options).then(result => {
+      const { matchedCount, modifiedCount } = result;
+      if (matchedCount && modifiedCount) {
+        console.log('zaujmovy utvar uspesne upraveny' + zaujmovyUtvar.id);
+      }
+    });
   }
 
-  public async deleteZaujmovyUtvar(id: string): Promise<void> {
-    return this.zaujmoveUtvaryRef
-      .remove(id)
-      .then(() => {
-        this.zaujmoveUtvary = this.zaujmoveUtvary.filter(zaujmovyUtvar => zaujmovyUtvar.id != id);
-        this.log('zaujmovy utvar odstraneny: ' + id);
-      })
-      .catch(error => this.log(error));
+  public deleteZaujmovyUtvar(zaujmovyUtvar: ZaujmovyUtvar): Promise<void> {
+    return this.zaujmoveUtvaryCollection.deleteOne({ _id: zaujmovyUtvar.id }).then(() => {
+      this.miesta = this.miesta.filter(zu => zu.id !== zaujmovyUtvar.id);
+      this.log('zaujmovy utvar odstraneny: ' + zaujmovyUtvar.id);
+    });
+    // .catch(err => console.error(`chyba pri mazani zaujmoveho utvaru: ${err}`));
   }
 
   private appendVeducich() {
     this.zaujmoveUtvary.forEach(zaujmovyUtvar => {
       // TODO: was .map before
-      let veduci = this.findVeduci(zaujmovyUtvar.veduci.id);
+      const veduci = this.findVeduci(zaujmovyUtvar.veduci.id);
       zaujmovyUtvar.veduci = veduci;
     });
   }
 
   // Ucastnici
 
-  public getUcastnici(aktualizujStatus: boolean = true): Observable<Ucastnik[]> {
-    if (aktualizujStatus) this.setStatus(AppStatus.LOADING);
+  public getUcastnici(aktualizujStatus: boolean = true): Promise<Ucastnik[]> {
+    if (aktualizujStatus) {
+      this.setStatus(AppStatus.LOADING);
+    }
 
-    // return this.httpClient.get<Ucastnik[]>('assets/mock/ucastnici.json').pipe(
-    this.ucastniciRef = this.db.list<any>('ucastnici');
-    return this.ucastniciRef.snapshotChanges().pipe(
-      map(data => (this.ucastnici = data.map(ucastnik => new Ucastnik(ucastnik.payload.val(), ucastnik.payload.key)))),
-      tap(() => {
+    return this.ucastniciCollection
+      .find({})
+      .asArray()
+      .then(data => data.map(ucastnik => new Ucastnik(ucastnik)))
+      .then(data => {
+        this.log('ucastnici nacitani');
         if (aktualizujStatus) {
           this.setStatus(AppStatus.OK);
         }
+        this.ucastnici = data;
         this.sortUcastnici();
-        this.log('ucastnici nacitani');
-      })
-      // catchError(this.handleError('getUcastnici', []))
-    );
+        return this.ucastnici;
+      });
+    // catchError(this.handleError('getUcastnici', []));
   }
 
   public sortUcastnici() {
@@ -534,34 +559,24 @@ export class DataService {
     return ucastnikoveKruzky;
   }
 
-  public insertUcastnik(ucastnik: Ucastnik, kruzky: IKruzok[]): PromiseLike<void> {
-    return this.ucastniciRef
-      .push({
-        cislo: ucastnik.cislo,
-        pohlavie: ucastnik.pohlavie,
-        meno: ucastnik.meno,
-        priezvisko: ucastnik.priezvisko,
-        datumNarodenia: ucastnik.datumNarodenia,
-        skola: ucastnik.skola,
-        trieda: ucastnik.trieda,
-        adresa: {
-          ulica: ucastnik.adresa.ulica,
-          cislo: ucastnik.adresa.cislo,
-          mesto: ucastnik.adresa.mesto,
-          psc: ucastnik.adresa.psc
-        },
-        zastupca: ucastnik.zastupca,
-        telefon: ucastnik.telefon,
-        kruzky: this.getUcastnikoveKruzky(kruzky)
-      })
+  // public insertUcastnik(ucastnik: Ucastnik, kruzky: IKruzok[]): PromiseLike<void> {
+  public insertUcastnik(ucastnik: Ucastnik): PromiseLike<void> {
+    // ucastnik.kruzky = this.getUcastnikoveKruzky(kruzky);
+    return this.veduciCollection
+      .insertOne(ucastnik)
       .then(data => {
-        this.log('ucastnik pridany: ' + data.key);
+        ucastnik.id = data.insertedId;
+        this.log('ucastnik pridany: ' + data.insertedId);
       });
+      // .catch(err => console.error(`chyba pri vkladani ucastnika: ${err}`));
   }
 
-  public async updateUcastnik(ucastnik: Ucastnik, kruzky: IKruzok[]): Promise<void> {
-    return this.ucastniciRef
-      .update(ucastnik.id, {
+  // public async updateUcastnik(ucastnik: Ucastnik, kruzky: IKruzok[]): Promise<void> {
+  public async updateUcastnik(ucastnik: Ucastnik): Promise<void> {
+    // ucastnik.kruzky = this.getUcastnikoveKruzky(kruzky);
+    const query = { _id: ucastnik.id };
+    const update = {
+      $set: {
         cislo: ucastnik.cislo,
         pohlavie: ucastnik.pohlavie,
         meno: ucastnik.meno,
@@ -569,30 +584,35 @@ export class DataService {
         datumNarodenia: ucastnik.datumNarodenia,
         skola: ucastnik.skola,
         trieda: ucastnik.trieda,
-        adresa: {
-          ulica: ucastnik.adresa.ulica,
-          cislo: ucastnik.adresa.cislo,
-          mesto: ucastnik.adresa.mesto,
-          psc: ucastnik.adresa.psc
-        },
+        adresa: ucastnik.adresa,
+        // adresa: {
+        //   ulica: ucastnik.adresa.ulica,
+        //   cislo: ucastnik.adresa.cislo,
+        //   mesto: ucastnik.adresa.mesto,
+        //   psc: ucastnik.adresa.psc
+        // },
         zastupca: ucastnik.zastupca,
         telefon: ucastnik.telefon,
-        kruzky: this.getUcastnikoveKruzky(kruzky)
-      })
-      .then(() => {
-        this.log('ucastnik upraveny: ' + ucastnik.id);
-      })
-      .catch(error => this.log(error));
+        kruzky: ucastnik.kruzky
+      }
+    };
+    const options = { upsert: false };
+
+    return this.ucastniciCollection.updateOne(query, update, options).then(result => {
+      const { matchedCount, modifiedCount } = result;
+      if (matchedCount && modifiedCount) {
+        console.log('ucastnik uspesne upraveny' + ucastnik.id);
+      }
+    });
+    // .catch(err => console.error(`chyba pri aktualizacii veduceho: ${err}`));
   }
 
-  public async deleteUcastnik(id: string): Promise<void> {
-    return this.ucastniciRef
-      .remove(id)
-      .then(() => {
-        this.ucastnici = this.ucastnici.filter(ucastnik => ucastnik.id != id);
-        this.log('ucastnik odstraneny: ' + id);
-      })
-      .catch(error => this.log(error));
+  public async deleteUcastnik(ucastnik: Ucastnik): Promise<void> {
+    return this.ucastniciCollection.deleteOne({ _id: ucastnik.id }).then(() => {
+      this.miesta = this.miesta.filter(m => m.id !== ucastnik.id);
+      this.log('ucastnik odstraneny: ' + ucastnik.id);
+    });
+    // .catch(err => console.error(`chyba pri mazani ucastnika: ${err}`));
   }
 
   private appendNazvyKruzkov() {
@@ -600,7 +620,7 @@ export class DataService {
       // TODO: was .map before
       if (ucastnik.kruzky) {
         ucastnik.kruzky.forEach(kruzok => {
-          let zaujmovyUtvar = this.findZaujmovyUtvar(kruzok.id);
+          const zaujmovyUtvar = this.findZaujmovyUtvar(kruzok.id);
           kruzok.nazov = zaujmovyUtvar.nazov;
         });
       }

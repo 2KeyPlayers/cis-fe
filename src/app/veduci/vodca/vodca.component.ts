@@ -5,7 +5,7 @@ import { Location } from '@angular/common';
 
 import { DataService } from '../../service/data.service';
 import { BaseComponent } from '../../base.component';
-import { IVeduci } from './../../domain/veduci';
+import { Veduci } from './../../domain/veduci';
 import { VeduciValidator } from 'src/app/validation/veduci.validator';
 
 import Swal from 'sweetalert2';
@@ -61,15 +61,15 @@ export class VodcaComponent extends BaseComponent implements OnInit {
   }
 
   protected getData(): any {
-    let id: string = this.activatedRoute.snapshot.paramMap.get('id');
-    let veduci: IVeduci = {
-      id: null,
+    const id: string = this.activatedRoute.snapshot.paramMap.get('id');
+    let veduci: Veduci = new Veduci({
+      _id: null,
       titul: '',
       meno: '',
       priezvisko: ''
-    };
+    });
 
-    if (id != 'plus') {
+    if (id !== 'plus') {
       veduci = this.dataService.findVeduci(id);
       if (veduci) {
         this.formular.setValue({
@@ -86,11 +86,15 @@ export class VodcaComponent extends BaseComponent implements OnInit {
   submit() {
     this.submitnuty = true;
     if (this.formular.valid) {
-      if (
-        this.formular.get('id').value == null ||
-        this.formular.get('id').value == ''
-      ) {
-        this.log('pridavam veduceho: ' + this.formular.get('titul').value + ' ' + this.formular.get('meno').value + ' ' + this.formular.get('priezvisko').value);
+      if (this.formular.get('id').value == null || this.formular.get('id').value == '') {
+        this.log(
+          'pridavam veduceho: ' +
+            this.formular.get('titul').value +
+            ' ' +
+            this.formular.get('meno').value +
+            ' ' +
+            this.formular.get('priezvisko').value
+        );
         this.dataService.insertVeduci(this.formular.value).then(() => {
           Swal.fire({
             title: `Vedúci úspešne pridaný.`,
@@ -109,7 +113,14 @@ export class VodcaComponent extends BaseComponent implements OnInit {
           });
         });
       } else {
-        this.log('aktualizujem veduceho: ' + this.formular.get('titul').value + ' ' + this.formular.get('meno').value + ' ' + this.formular.get('priezvisko').value);
+        this.log(
+          'aktualizujem veduceho: ' +
+            this.formular.get('titul').value +
+            ' ' +
+            this.formular.get('meno').value +
+            ' ' +
+            this.formular.get('priezvisko').value
+        );
         this.dataService.updateVeduci(this.formular.value).then(() => {
           Swal.fire({
             title: 'Vedúci úspešne upravený.',

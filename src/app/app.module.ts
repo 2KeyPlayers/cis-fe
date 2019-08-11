@@ -15,6 +15,7 @@ import { VeduciComponent } from './veduci/veduci.component';
 import { VodcaComponent } from './veduci/vodca/vodca.component';
 import { UcastniciComponent } from './ucastnici/ucastnici.component';
 import { UcastnikComponent } from './ucastnici/ucastnik/ucastnik.component';
+import { PrihlasenieComponent } from './prihlasenie/prihlasenie.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { UcastnikComponent } from './ucastnici/ucastnik/ucastnik.component';
     MiestoComponent,
     VodcaComponent,
     ZaujmovyUtvarComponent,
-    UcastnikComponent
+    UcastnikComponent,
+    PrihlasenieComponent
   ],
   imports: [
     BrowserModule,

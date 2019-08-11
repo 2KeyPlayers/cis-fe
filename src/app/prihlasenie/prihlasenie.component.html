@@ -1,0 +1,43 @@
+<div class="ui text container">
+  <div class="ui attached message">
+    <!-- <i class="home icon"></i> -->
+  </div>
+  <form [formGroup]="formular" class="ui form attached fluid segment">
+  <!-- [class]="formular.pristine ? 'ui form' : (formular.valid ? 'ui form success' : 'ui form error')"> -->
+    <!-- <input type="hidden" formControlName="id" /> -->
+    <div class="field">
+      <label>E-mail</label>
+      <div class="ui corner labeled input">
+        <input type="text" id="email" formControlName="email" minlength="3" placeholder="E-mail" />
+        <div class="ui corner label">
+          <i class="asterisk icon"></i>
+        </div>
+      </div>
+    </div>
+    <div class="field">
+      <label>Heslo</label>
+      <div class="ui corner labeled input">
+        <input type="password" id="heslo" formControlName="heslo" minlength="3" placeholder="Heslo" />
+        <div class="ui corner label">
+          <i class="asterisk icon"></i>
+        </div>
+      </div>
+    </div>
+    <button class="ui button" type="button" (click)="prihlasit()" [disabled]="loading">
+      Prihlásiť
+    </button>
+    <button class="ui button" type="button" (click)="obnovitHeslo()">
+      Zabudnuté heslo
+    </button>
+  </form>
+  <div class="ui bottom attached error icon message" *ngIf="submitnuty && formular.invalid">
+    <i class="exclamation icon"></i>
+    <div class="content">
+      <ul class="list">
+        <li *ngIf="f.email.errors?.required">E-mail musí byť zadaný.</li>
+        <li *ngIf="f.heslo.errors?.required">Názov musí obsahovať minimálne 3 znaky.</li>
+        <li *ngIf="formular.errors && formular.errors.invalid">Kombinácia e-mailu a hesla je neplatná.</li>
+      </ul>
+    </div>
+  </div>
+</div>

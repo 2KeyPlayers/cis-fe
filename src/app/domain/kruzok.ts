@@ -1,17 +1,16 @@
-export interface IKruzok {
+import { Identifikator } from './identifikator';
 
+export interface IKruzok {
   id: string;
   nazov: string;
   vyskaPoplatku: number;
   poplatky: number;
-  
 }
 
-export class Kruzok implements IKruzok {
-
+export class Kruzok implements Identifikator, IKruzok {
   static BITY = [1, 2, 4, 8, 16, 32, 64, 128, 256];
 
-  id: string;
+  id: any;
   nazov: string;
   vyskaPoplatku: number;
   poplatky: number;
@@ -25,14 +24,14 @@ export class Kruzok implements IKruzok {
 
   zmenVyskuPoplatu() {
     this.vyskaPoplatku = (this.vyskaPoplatku + 3) % 12;
-    if (this.vyskaPoplatku == 0) {
+    if (this.vyskaPoplatku === 0) {
       this.vyskaPoplatku = 3;
     }
   }
 
   skontrolujPoplatok(index: number): boolean {
     if (index >= 0 && index < Kruzok.BITY.length) {
-      return (this.poplatky & Kruzok.BITY[index]) == Kruzok.BITY[index];
+      return (this.poplatky & Kruzok.BITY[index]) === Kruzok.BITY[index];
     }
     console.log('false');
     return false;
@@ -47,5 +46,4 @@ export class Kruzok implements IKruzok {
   farbaPoplatku(index: number): string {
     return this.skontrolujPoplatok(index) ? 'green' : 'basic';
   }
-
 }

@@ -1,21 +1,20 @@
-export interface IVeduci {
+import { Identifikator } from './identifikator';
 
-  id: string;
+export interface IVeduci {
+  _id?: string;
   titul?: string;
   meno: string;
   priezvisko: string;
-
 }
 
-export class Veduci implements IVeduci {
-
+export class Veduci implements Identifikator, IVeduci {
   id: string;
   titul?: string;
   meno: string;
   priezvisko: string;
 
-  constructor(veduci: IVeduci, id?: string) {
-    this.id = (id ? id : veduci.id);
+  constructor(veduci: IVeduci) {
+    this.id = veduci._id;
     this.titul = veduci.titul;
     this.meno = veduci.meno;
     this.priezvisko = veduci.priezvisko;
@@ -24,5 +23,4 @@ export class Veduci implements IVeduci {
   get celeMeno(): string {
     return `${this.meno} ${this.priezvisko}`;
   }
-
 }

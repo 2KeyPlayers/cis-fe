@@ -191,14 +191,14 @@
     <i class="exclamation icon"></i>
     <div class="content">
       <ul class="list">
-        <li *ngIf="f.pohlavie.errors && f.pohlavie.errors.required">Pohlavie musí byť zvolené.</li>
-        <li *ngIf="f.datumNarodenia.errors && f.datumNarodenia.errors.required">Dátum narodenia musí byť zadaný.</li>
-        <li *ngIf="f.meno.errors && f.meno.errors.required">Meno musí byť zadané.</li>
-        <li *ngIf="f.priezvisko.errors && f.priezvisko.errors.required">Priezvisko musí byť zadané.</li>
-        <li *ngIf="f.zastupca.errors && f.zastupca.errors.required">Zástupca musí byť zadané.</li>
-        <li *ngIf="f.telefon.errors && f.telefon.errors.required">Telefón musí byť zadaný.</li>
-        <li *ngIf="formular.errors && formular.errors.duplicateCislo">Zadané číslo už existuje.</li>
-        <li *ngIf="formular.errors && formular.errors.duplicateMeno">Zadaný účastník už existuje.</li>
+        <li *ngIf="f.pohlavie.errors?.required">Pohlavie musí byť zvolené.</li>
+        <li *ngIf="f.datumNarodenia.errors?.required">Dátum narodenia musí byť zadaný.</li>
+        <li *ngIf="f.meno.errors?.required">Meno musí byť zadané.</li>
+        <li *ngIf="f.priezvisko.errors?.required">Priezvisko musí byť zadané.</li>
+        <li *ngIf="f.zastupca.errors?.required">Zástupca musí byť zadané.</li>
+        <li *ngIf="f.telefon.errors?.required">Telefón musí byť zadaný.</li>
+        <li *ngIf="formular.errors?.duplicateCislo">Zadané číslo už existuje.</li>
+        <li *ngIf="formular.errors?.duplicateMeno">Zadaný účastník už existuje.</li>
       </ul>
     </div>
   </div>

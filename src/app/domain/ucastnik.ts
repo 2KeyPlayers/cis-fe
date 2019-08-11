@@ -1,9 +1,28 @@
 import { Kruzok, IKruzok } from './kruzok';
 import { Utils } from './utils';
+import { Identifikator } from './identifikator';
+
+export enum EPohlavie {
+  M,
+  Z
+}
+
+class Adresa {
+  ulica?: string;
+  cislo: number;
+  mesto: string;
+  psc: string;
+
+  constructor(adresa: Adresa) {
+    this.ulica = adresa.ulica;
+    this.cislo = adresa.cislo;
+    this.mesto = adresa.mesto;
+    this.psc = adresa.psc;
+  }
+}
 
 export interface IUcastnik {
-
-  id?: string;
+  _id?: string;
   cislo: string;
   pohlavie: EPohlavie;
   meno: string;
@@ -16,11 +35,9 @@ export interface IUcastnik {
   telefon: string;
 
   kruzky?: IKruzok[];
-
 }
 
-export class Ucastnik implements IUcastnik {
-
+export class Ucastnik implements Identifikator, IUcastnik {
   id: string;
   cislo: string;
   pohlavie: EPohlavie;
@@ -35,8 +52,8 @@ export class Ucastnik implements IUcastnik {
 
   kruzky: Kruzok[];
 
-  constructor(ucastnik: IUcastnik, id?: string) {
-    this.id = (id ? id : ucastnik.id);
+  constructor(ucastnik: IUcastnik) {
+    this.id = ucastnik._id;
     this.cislo = ucastnik.cislo;
     this.pohlavie = ucastnik.pohlavie;
     this.meno = ucastnik.meno;
@@ -51,7 +68,7 @@ export class Ucastnik implements IUcastnik {
     if (ucastnik.kruzky) {
       this.kruzky = new Array<Kruzok>();
       ucastnik.kruzky.forEach(kruzok => {
-        let k = new Kruzok(kruzok.id);
+        const k = new Kruzok(kruzok.id);
         k.vyskaPoplatku = kruzok.vyskaPoplatku;
         k.poplatky = kruzok.poplatky;
         this.kruzky.push(k);
@@ -61,9 +78,9 @@ export class Ucastnik implements IUcastnik {
 
   get vek(): number {
     if (this.datumNarodenia) {
-      let datum: Date = Utils.stringToDate(this.datumNarodenia);
-      let rozdiel: number = Math.abs(Date.now() - datum.getTime());
-      return Math.floor((rozdiel / (1000 * 3600 * 24)) / 365);
+      const datum: Date = Utils.stringToDate(this.datumNarodenia);
+      const rozdiel: number = Math.abs(Date.now() - datum.getTime());
+      return Math.floor(rozdiel / (1000 * 3600 * 24) / 365);
     }
     return null;
   }
@@ -79,28 +96,4 @@ export class Ucastnik implements IUcastnik {
   get celeMeno(): string {
     return `${this.meno} ${this.priezvisko}`;
   }
-
-}
-
-export enum EPohlavie {
-
-  M,
-  Z
-
-}
-
-class Adresa {
-
-  ulica?: string;
-  cislo: number;
-  mesto: string;
-  psc: string;
-
-  constructor(adresa: Adresa) {
-    this.ulica = adresa.ulica;
-    this.cislo = adresa.cislo;
-    this.mesto = adresa.mesto;
-    this.psc = adresa.psc;
-  }
-
 }
