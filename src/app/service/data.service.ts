@@ -90,7 +90,7 @@ export class DataService {
     this.miestaCollection = this.db.collection('miesta');
     this.ucastniciCollection = this.db.collection('ucastnici');
     this.veduciCollection = this.db.collection('veduci');
-    this.zaujmoveUtvaryCollection = this.db.collection('utvary');
+    this.zaujmoveUtvaryCollection = this.db.collection('zaujmove-utvary');
   }
 
   // Autentifikacia
@@ -102,11 +102,6 @@ export class DataService {
   prihlasenie(email: string, heslo: string): Promise<StitchUser> {
     const credential = new UserPasswordCredential(email, heslo);
     return this.klient.auth.loginWithCredential(credential);
-    // .then(authedUser => {
-    //   console.log(`uzivatel uspesne prihlaseny: ${authedUser.id}`);
-    //   this.uzivatel = authedUser;
-    // })
-    // .catch(err => console.error(`prihlasenie zlyhalo: ${err}`));
   }
 
   odhlasenie(): Promise<void> {
@@ -550,7 +545,7 @@ export class DataService {
       ucastnikoveKruzky = new Array<any>();
       kruzky.forEach(kruzok =>
         ucastnikoveKruzky.push({
-          id: kruzok.id,
+          id: kruzok._id,
           vyskaPoplatku: kruzok.vyskaPoplatku,
           poplatky: kruzok.poplatky
         })

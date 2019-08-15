@@ -23,7 +23,7 @@ import { Identifikator } from './identifikator';
 // }
 
 export interface IZaujmovyUtvar {
-  _id?: string;
+  _id?: any;
   ikona?: string;
   nazov: string;
   veduci: IVeduci;
@@ -32,7 +32,7 @@ export interface IZaujmovyUtvar {
 }
 
 export class ZaujmovyUtvar implements Identifikator, IZaujmovyUtvar {
-  id: string;
+  id: any;
   ikona?: string;
   nazov: string;
   veduci: Veduci;
@@ -56,5 +56,13 @@ export class ZaujmovyUtvar implements Identifikator, IZaujmovyUtvar {
     // if (zaujmovyUtvar.kedyKde) {
     //   this.kedyKde = zaujmovyUtvar.kedyKde.map(kk => new KedyKde(kk));
     // }
+  }
+
+  get _id(): any {
+    return this.id;
+  }
+
+  set _id(id: any) {
+    this.id = id;
   }
 }

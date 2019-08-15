@@ -14,34 +14,18 @@ export class PrihlasenieComponent extends BaseComponent implements OnInit {
   formular: FormGroup;
   submitnuty: boolean;
 
-  constructor(
-    protected fb: FormBuilder,
-    protected router: Router,
-    protected dataService: DataService
-  ) {
+  constructor(protected fb: FormBuilder, protected router: Router, protected dataService: DataService) {
     super(router, dataService);
     this.setTitle(null, null);
 
-    this.formular = this.fb.group(
-      {
-        email: [
-          null,
-          [
-            Validators.required,
-          ]
-        ],
-        heslo: [
-          null,
-          [
-            Validators.required,
-          ]
-        ]
-      }
-    );
+    this.formular = this.fb.group({
+      email: [null, [Validators.required]],
+      heslo: [null, [Validators.required]]
+    });
   }
 
   ngOnInit() {
-   this.initData();
+    this.initData();
   }
 
   get f() {
@@ -56,9 +40,16 @@ export class PrihlasenieComponent extends BaseComponent implements OnInit {
     this.submitnuty = true;
     if (this.formular.valid) {
       this.log('prihlasujem...');
-      this.dataService.prihlasenie(this.f.email.value, this.f.heslo.value).then(() => {
-        this.router.navigate(['/menu']);
-      });
+      this.dataService
+        .prihlasenie(this.f.email.value, this.f.heslo.value)
+        .then(authedUser => {
+          console.log(`uzivatel uspesne prihlaseny: ${authedUser.id}`);
+          this.router.navigate(['/menu']);
+        })
+        .catch(err => {
+          console.error(`prihlasenie zlyhalo: ${err}`);
+          this.formular.setErrors({ neplatnaKombinacia: true });
+        });
     }
   }
 

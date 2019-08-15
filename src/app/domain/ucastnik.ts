@@ -22,7 +22,7 @@ class Adresa {
 }
 
 export interface IUcastnik {
-  _id?: string;
+  _id?: any;
   cislo: string;
   pohlavie: EPohlavie;
   meno: string;
@@ -38,7 +38,7 @@ export interface IUcastnik {
 }
 
 export class Ucastnik implements Identifikator, IUcastnik {
-  id: string;
+  id: any;
   cislo: string;
   pohlavie: EPohlavie;
   meno: string;
@@ -68,12 +68,17 @@ export class Ucastnik implements Identifikator, IUcastnik {
     if (ucastnik.kruzky) {
       this.kruzky = new Array<Kruzok>();
       ucastnik.kruzky.forEach(kruzok => {
-        const k = new Kruzok(kruzok.id);
-        k.vyskaPoplatku = kruzok.vyskaPoplatku;
-        k.poplatky = kruzok.poplatky;
-        this.kruzky.push(k);
+        this.kruzky.push(new Kruzok(kruzok));
       });
     }
+  }
+
+  get _id(): any {
+    return this.id;
+  }
+
+  set _id(id: any) {
+    this.id = id;
   }
 
   get vek(): number {

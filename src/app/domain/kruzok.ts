@@ -1,10 +1,10 @@
 import { Identifikator } from './identifikator';
 
 export interface IKruzok {
-  id: string;
+  _id?: any;
   nazov: string;
-  vyskaPoplatku: number;
-  poplatky: number;
+  vyskaPoplatku?: number;
+  poplatky?: number;
 }
 
 export class Kruzok implements Identifikator, IKruzok {
@@ -15,11 +15,19 @@ export class Kruzok implements Identifikator, IKruzok {
   vyskaPoplatku: number;
   poplatky: number;
 
-  constructor(id: string, nazov?: string) {
+  constructor(kruzok: IKruzok) {
+    this.id = kruzok._id;
+    this.nazov = kruzok.nazov;
+    this.vyskaPoplatku = kruzok.vyskaPoplatku ? kruzok.vyskaPoplatku : 3;
+    this.poplatky = kruzok.poplatky ? kruzok.poplatky : 0;
+  }
+
+  get _id(): any {
+    return this.id;
+  }
+
+  set _id(id: any) {
     this.id = id;
-    this.nazov = nazov;
-    this.vyskaPoplatku = 3;
-    this.poplatky = 0;
   }
 
   zmenVyskuPoplatu() {

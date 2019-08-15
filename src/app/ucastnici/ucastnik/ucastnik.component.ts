@@ -212,7 +212,7 @@ export class UcastnikComponent extends BaseComponent implements OnInit {
       const kruzok = this.kruzky.find(k => k.id === utvar.id);
       if (!kruzok) {
         this.log('pridavam kruzok: ' + utvar.nazov);
-        this.kruzky.push(new Kruzok(utvar.id, utvar.nazov));
+        this.kruzky.push(new Kruzok(utvar));
         jQuery(this.kruzok.nativeElement).dropdown('clear');
       }
     }
@@ -253,7 +253,8 @@ export class UcastnikComponent extends BaseComponent implements OnInit {
             ' ' +
             this.formular.get('priezvisko').value
         );
-        this.dataService.insertUcastnik(this.formular.value, this.kruzky).then(() => {
+        // this.dataService.insertUcastnik(this.formular.value, this.kruzky).then(() => {
+        this.dataService.insertUcastnik(this.formular.value).then(() => {
           Swal.fire({
             title: `Účastník úspešne pridaný.`,
             type: 'success',
@@ -291,7 +292,8 @@ export class UcastnikComponent extends BaseComponent implements OnInit {
             ' ' +
             this.formular.get('priezvisko').value
         );
-        this.dataService.updateUcastnik(this.formular.value, this.kruzky).then(() => {
+        // this.dataService.updateUcastnik(this.formular.value, this.kruzky).then(() => {
+        this.dataService.updateUcastnik(this.formular.value).then(() => {
           Swal.fire({
             title: 'Účastník úspešne upravený.',
             type: 'success',

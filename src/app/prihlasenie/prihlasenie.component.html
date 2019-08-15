@@ -36,7 +36,7 @@
       <ul class="list">
         <li *ngIf="f.email.errors?.required">E-mail musí byť zadaný.</li>
         <li *ngIf="f.heslo.errors?.required">Názov musí obsahovať minimálne 3 znaky.</li>
-        <li *ngIf="formular.errors && formular.errors.invalid">Kombinácia e-mailu a hesla je neplatná.</li>
+        <li *ngIf="formular.errors?.neplatnaKombinacia">Kombinácia e-mailu a hesla je neplatná.</li>
       </ul>
     </div>
   </div>
