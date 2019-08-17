@@ -18,7 +18,7 @@ declare var jQuery: any;
   styleUrls: ['./vodca.component.scss']
 })
 export class VodcaComponent extends BaseComponent implements OnInit {
-  @ViewChild('titulis', { static: false }) titulis: ElementRef;
+  @ViewChild('titulis', { static: true }) titulis: ElementRef;
 
   formular: FormGroup;
   submitnuty: boolean;

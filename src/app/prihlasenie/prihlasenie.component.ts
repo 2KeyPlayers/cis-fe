@@ -19,8 +19,8 @@ export class PrihlasenieComponent extends BaseComponent implements OnInit {
     this.setTitle(null, null);
 
     this.formular = this.fb.group({
-      email: [null, [Validators.required]],
-      heslo: [null, [Validators.required]]
+      email: [null, [Validators.required, Validators.email]],
+      heslo: [null, [Validators.required, Validators.minLength(8)]]
     });
   }
 

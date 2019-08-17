@@ -1,6 +1,6 @@
 <div class="ui fixed borderless three item main menu">
   <div class="left item">
-    <a class="logo" href="http://www.cvcmoldava.edu.sk"><img src="assets/img/logo.png" /></a>
+    <a class="logo" href="http://www.cvcmoldava.edu.sk"><img src="assets/img/cvrcek-logo.svg" /></a>
   </div>
   <div class="middle item">
     <h1 class="ui header" *ngIf="!title">
@@ -23,7 +23,8 @@
   </div>
   <div class="right item">
     <!--a class="ui right floated dropdown item" (click)="authService.logout()" *ngIf="authService.authenticated"><i class="fa fa-user"></i></a-->
-    <a class="ui basic icon button" href="#"><i class="big user icon"></i></a>
+    <!-- <a class="ui right floated basic icon button" href="#"><i class="big user icon"></i></a> -->
+    <button class="ui right floated basic icon button" (click)="odhlasit()" [disabled]="!uzivatelPrihlaseny"><i class="large power off icon"></i></button>
   </div>
   <!-- <a href="#" class="ui right floated dropdown item">
       Dropdown <i class="dropdown icon"></i>

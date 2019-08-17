@@ -68,10 +68,12 @@ export abstract class BaseComponent {
   }
 
   edit(type: string, id: string) {
+    console.log('editujem id: ' + id);
     this.router.navigate([`/${type}/${id}`]);
   }
 
   delete(objekt: Identifikator) {
+    console.log('mazem id: ' + objekt.id);
     Swal.fire({
       title: 'Naozaj vymazať?',
       type: 'warning',

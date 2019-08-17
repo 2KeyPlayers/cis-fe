@@ -19,7 +19,7 @@ declare var jQuery: any;
   styleUrls: ['./zaujmovy-utvar.component.scss']
 })
 export class ZaujmovyUtvarComponent extends BaseComponent implements OnInit, AfterViewChecked {
-  @ViewChild('vodca', { static: false }) vodca: ElementRef;
+  @ViewChild('vodca', { static: true }) vodca: ElementRef;
 
   formular: FormGroup;
   submitnuty: boolean;

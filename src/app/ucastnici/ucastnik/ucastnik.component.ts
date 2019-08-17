@@ -23,11 +23,11 @@ declare var jQuery: any;
   styleUrls: ['./ucastnik.component.scss']
 })
 export class UcastnikComponent extends BaseComponent implements OnInit {
-  @ViewChild('kalendar', { static: false }) kalendar: ElementRef;
-  @ViewChild('adresa', { static: false }) adresa: ElementRef;
-  @ViewChild('ostatne', { static: false }) ostatne: ElementRef;
-  @ViewChild('utvary', { static: false }) utvary: ElementRef;
-  @ViewChild('kruzok', { static: false }) kruzok: ElementRef;
+  @ViewChild('kalendar', { static: true }) kalendar: ElementRef;
+  @ViewChild('adresa', { static: true }) adresa: ElementRef;
+  @ViewChild('ostatne', { static: true }) ostatne: ElementRef;
+  @ViewChild('utvary', { static: true }) utvary: ElementRef;
+  @ViewChild('kruzok', { static: true }) kruzok: ElementRef;
 
   formular: FormGroup;
   submitnuty: boolean;

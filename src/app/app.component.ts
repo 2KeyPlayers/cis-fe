@@ -19,4 +19,12 @@ export class AppComponent extends BaseComponent implements OnInit {
   ngOnInit(): void {
     this.dataService.initDB();
   }
+
+  get uzivatelPrihlaseny(): boolean {
+    return this.dataService.uzivatelPrihlaseny;
+  }
+
+  odhlasit() {
+    this.dataService.odhlasenie().then(() => this.router.navigate(['/menu']));
+  }
 }
