@@ -85,6 +85,7 @@ export class DataService {
 
   initDB() {
     this.klient = Stitch.initializeDefaultAppClient('cvrcek-anlki');
+    // test/heslo
     this.db = this.klient.getServiceClient(RemoteMongoClient.factory, 'mongodb-atlas').db('databaza');
 
     this.miestaCollection = this.db.collection('miesta');
