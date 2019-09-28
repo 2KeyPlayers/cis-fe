@@ -1,29 +1,46 @@
 // import { Miesto, IMiesto } from './miesto';
 // import { EDen } from './den';
 import { Veduci, IVeduci } from './veduci';
+import { Identifikator } from './identifikator';
+
+// interface IKedyKde {
+//   id?: string;
+//   den: EDen;
+//   cas: string;
+//   miesto: IMiesto;
+// }
+
+// class KedyKde implements IKedyKde {
+//   den: EDen;
+//   cas: string;
+//   miesto: IMiesto;
+
+//   constructor(data: any) {
+//     this.den = data.den;
+//     this.cas = data.cas;
+//     this.miesto = new Miesto(data.miesto);
+//   }
+// }
 
 export interface IZaujmovyUtvar {
-
-  id: string;
-  ikona?: string;
-  nazov: string;
-  veduci: any;
-  // idVeduceho: string;
-  // kedyKde?: Array<IKedyKde>;
-  
-}
-
-export class ZaujmovyUtvar implements IZaujmovyUtvar {
-
-  id: string;
+  _id?: any;
   ikona?: string;
   nazov: string;
   veduci: IVeduci;
   // idVeduceho: string;
+  // kedyKde?: Array<IKedyKde>;
+}
+
+export class ZaujmovyUtvar implements Identifikator, IZaujmovyUtvar {
+  id: any;
+  ikona?: string;
+  nazov: string;
+  veduci: Veduci;
+  // idVeduceho: string;
   // kedyKde?: Array<KedyKde>;
 
-  constructor(zaujmovyUtvar: IZaujmovyUtvar, id?: string) {
-    this.id = (id ? id : zaujmovyUtvar.id);
+  constructor(zaujmovyUtvar: IZaujmovyUtvar) {
+    this.id = zaujmovyUtvar._id;
     this.ikona = zaujmovyUtvar.ikona;
     this.nazov = zaujmovyUtvar.nazov;
     if (zaujmovyUtvar.veduci) {
@@ -41,27 +58,11 @@ export class ZaujmovyUtvar implements IZaujmovyUtvar {
     // }
   }
 
+  get _id(): any {
+    return this.id;
+  }
+
+  set _id(id: any) {
+    this.id = id;
+  }
 }
-
-// interface IKedyKde {
-
-//   id?: string;
-//   den: EDen;
-//   cas: string;
-//   miesto: IMiesto;
-
-// }
-
-// class KedyKde implements IKedyKde {
-
-//   den: EDen;
-//   cas: string;
-//   miesto: IMiesto;
-
-//   constructor(data: any) {
-//     this.den = data.den;
-//     this.cas = data.cas;
-//     this.miesto = new Miesto(data.miesto);
-//   }
-
-// }

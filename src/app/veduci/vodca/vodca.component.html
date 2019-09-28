@@ -55,9 +55,9 @@
     <i class="exclamation icon"></i>
     <div class="content">
       <ul class="list">
-        <li *ngIf="f.meno.errors && f.meno.errors.required">Meno musí byť zadané.</li>
-        <li *ngIf="f.priezvisko.errors && f.priezvisko.errors.required">Priezvisko musí byť zadané.</li>
-        <li *ngIf="formular.errors && formular.errors.duplicate">Zadaný vedúci už existuje.</li>
+        <li *ngIf="f.meno.errors?.required">Meno musí byť zadané.</li>
+        <li *ngIf="f.priezvisko.errors?.required">Priezvisko musí byť zadané.</li>
+        <li *ngIf="formular.errors?.duplicate">Zadaný vedúci už existuje.</li>
       </ul>
     </div>
   </div>

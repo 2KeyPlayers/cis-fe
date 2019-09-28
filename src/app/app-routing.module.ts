@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
+import { AuthGuard } from './auth/auth.guard';
 import { MenuComponent } from './menu/menu.component';
+import { PrihlasenieComponent } from './prihlasenie/prihlasenie.component';
 
 import { MiestaComponent } from './miesta/miesta.component';
 import { MiestoComponent } from './miesta/miesto/miesto.component';
@@ -17,15 +19,18 @@ import { UcastnikComponent } from './ucastnici/ucastnik/ucastnik.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'menu', pathMatch: 'full' },
-  { path: 'menu',                  component: MenuComponent },
-  { path: 'ucastnici',             component: UcastniciComponent },
-  { path: 'ucastnik/:id',          component: UcastnikComponent },
-  { path: 'zaujmove-utvary',       component: ZaujmoveUtvaryComponent },
-  { path: 'zaujmovy-utvar/:id',    component: ZaujmovyUtvarComponent },
-  { path: 'veduci',                component: VeduciComponent },
-  { path: 'veduci/:id',            component: VodcaComponent },
-  { path: 'miesta',                component: MiestaComponent },
-  { path: 'miesto/:id',            component: MiestoComponent }
+  { path: 'prihlasenie',          component: PrihlasenieComponent },
+  // { path: 'heslo/zmena',          component: HesloZmenaComponent },
+  // { path: 'heslo/obnova',         component: HesloObnovaComponent },
+  { path: 'menu',                 component: MenuComponent, canActivate: [AuthGuard] },
+  { path: 'ucastnici',            component: UcastniciComponent, canActivate: [AuthGuard] },
+  { path: 'ucastnik/:id',         component: UcastnikComponent, canActivate: [AuthGuard] },
+  { path: 'zaujmove-utvary',      component: ZaujmoveUtvaryComponent, canActivate: [AuthGuard] },
+  { path: 'zaujmovy-utvar/:id',   component: ZaujmovyUtvarComponent, canActivate: [AuthGuard] },
+  { path: 'veduci',               component: VeduciComponent, canActivate: [AuthGuard] },
+  { path: 'veduci/:id',           component: VodcaComponent, canActivate: [AuthGuard] },
+  { path: 'miesta',               component: MiestaComponent, canActivate: [AuthGuard] },
+  { path: 'miesto/:id',           component: MiestoComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({

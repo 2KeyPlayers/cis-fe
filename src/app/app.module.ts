@@ -3,9 +3,6 @@ import { NgModule } from '@angular/core';
 // import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AngularFireModule } from 'angularfire2';
-import { AngularFireDatabaseModule } from 'angularfire2/database';
-import { AngularFireAuthModule } from 'angularfire2/auth';
 import { environment } from '../environments/environment';
 
 import { AppComponent } from './app.component';
@@ -18,6 +15,7 @@ import { VeduciComponent } from './veduci/veduci.component';
 import { VodcaComponent } from './veduci/vodca/vodca.component';
 import { UcastniciComponent } from './ucastnici/ucastnici.component';
 import { UcastnikComponent } from './ucastnici/ucastnik/ucastnik.component';
+import { PrihlasenieComponent } from './prihlasenie/prihlasenie.component';
 
 @NgModule({
   declarations: [
@@ -30,16 +28,14 @@ import { UcastnikComponent } from './ucastnici/ucastnik/ucastnik.component';
     MiestoComponent,
     VodcaComponent,
     ZaujmovyUtvarComponent,
-    UcastnikComponent
+    UcastnikComponent,
+    PrihlasenieComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     // HttpClientModule,
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFireDatabaseModule,
-    AngularFireAuthModule,
     AppRoutingModule
   ],
   providers: [],

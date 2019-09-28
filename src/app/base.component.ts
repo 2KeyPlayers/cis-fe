@@ -1,14 +1,14 @@
-import { Router } from "@angular/router";
+import { Router } from '@angular/router';
 import { FormGroup } from '@angular/forms';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 
-import { DataService, AppStatus } from './service/data.service';
+import { DataService } from './service/data.service';
+import { Identifikator } from './domain/identifikator';
 
 export abstract class BaseComponent {
-
   formular: FormGroup;
 
-  constructor(protected router: Router, protected dataService: DataService) { }
+  constructor(protected router: Router, protected dataService: DataService) {}
 
   goTo(location: string) {
     if (this.dataService.ok) {
@@ -32,7 +32,7 @@ export abstract class BaseComponent {
 
   get failed(): boolean {
     return this.dataService.failed;
-  }  
+  }
 
   // Title
 
@@ -51,7 +51,7 @@ export abstract class BaseComponent {
   // data
 
   protected initData() {
-    let data = this.getData();
+    const data = this.getData();
     this.log('initData: ' + data);
     if (!data) {
       this.log('ziadne data, presmeruvavam na /');
@@ -68,28 +68,35 @@ export abstract class BaseComponent {
   }
 
   edit(type: string, id: string) {
+    console.log('editujem id: ' + id);
     this.router.navigate([`/${type}/${id}`]);
   }
 
-  delete(id: string) {
-    swal({
-      text: 'Naozaj vymazať?',
-      icon: 'warning',
-      buttons: [ 'Nie', 'Áno' ],
-      dangerMode: true
-    }).then((confirmed) => {
-      if (confirmed) {
-        this.performDelete(id).then(_ => {
+  delete(objekt: Identifikator) {
+    console.log('mazem id: ' + objekt.id);
+    Swal.fire({
+      title: 'Naozaj vymazať?',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Áno',
+      cancelButtonText: 'Nie',
+      focusCancel: true,
+      toast: true
+    }).then(confirmed => {
+      if (confirmed.value) {
+        this.performDelete(objekt).then(() => {
           this.getData();
-          swal('Záznam úspešne vymazaný.', {
-            icon: 'success'
+          Swal.fire({
+            title: 'Záznam úspešne vymazaný.',
+            type: 'success',
+            toast: true
           });
         });
       }
     });
   }
 
-  protected performDelete(id: string): Promise<void> {
+  protected performDelete(objekt: Identifikator): Promise<void> {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         this.log('defaultny prazdny promise');
@@ -103,5 +110,4 @@ export abstract class BaseComponent {
   log(message: string) {
     console.log(message);
   }
-
 }

@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Location } from '@angular/common';
 
-import { IUcastnik } from '../../domain/ucastnik';
+import { IUcastnik, Ucastnik } from '../../domain/ucastnik';
 import { EPohlavie } from './../../domain/ucastnik';
 import { ZaujmovyUtvar } from './../../domain/zaujmovy-utvar';
 import { Kruzok, IKruzok } from './../../domain/kruzok';
@@ -13,6 +13,8 @@ import { Utils } from './../../domain/utils';
 import { BaseComponent } from '../../base.component';
 import { UcastnikValidator } from 'src/app/validation/ucastnik.validator';
 
+import Swal from 'sweetalert2';
+
 declare var jQuery: any;
 
 @Component({
@@ -21,11 +23,11 @@ declare var jQuery: any;
   styleUrls: ['./ucastnik.component.scss']
 })
 export class UcastnikComponent extends BaseComponent implements OnInit {
-  @ViewChild('kalendar') kalendar: ElementRef;
-  @ViewChild('adresa') adresa: ElementRef;
-  @ViewChild('ostatne') ostatne: ElementRef;
-  @ViewChild('utvary') utvary: ElementRef;
-  @ViewChild('kruzok') kruzok: ElementRef;
+  @ViewChild('kalendar', { static: true }) kalendar: ElementRef;
+  @ViewChild('adresa', { static: true }) adresa: ElementRef;
+  @ViewChild('ostatne', { static: true }) ostatne: ElementRef;
+  @ViewChild('utvary', { static: true }) utvary: ElementRef;
+  @ViewChild('kruzok', { static: true }) kruzok: ElementRef;
 
   formular: FormGroup;
   submitnuty: boolean;
@@ -34,7 +36,7 @@ export class UcastnikComponent extends BaseComponent implements OnInit {
   datumNarodenia: string;
 
   zaujmoveUtvary: ZaujmovyUtvar[];
-  kruzky: IKruzok[];
+  kruzky: Kruzok[];
 
   constructor(
     protected fb: FormBuilder,
@@ -73,7 +75,7 @@ export class UcastnikComponent extends BaseComponent implements OnInit {
       }
     );
 
-    this.kruzky = new Array<IKruzok>();
+    this.kruzky = new Array<Kruzok>();
   }
 
   ngOnInit() {
@@ -131,9 +133,9 @@ export class UcastnikComponent extends BaseComponent implements OnInit {
   }
 
   protected getData(): any {
-    let id: string = this.activatedRoute.snapshot.paramMap.get('id');
-    let ucastnik: IUcastnik = {
-      id: null,
+    const id: string = this.activatedRoute.snapshot.paramMap.get('id');
+    let ucastnik: Ucastnik = new Ucastnik({
+      _id: null,
       cislo: '',
       pohlavie: null,
       meno: '',
@@ -149,12 +151,12 @@ export class UcastnikComponent extends BaseComponent implements OnInit {
       },
       zastupca: '',
       telefon: ''
-    };
+    });
 
-    if (id != 'plus') {
+    if (id !== 'plus') {
       ucastnik = this.dataService.findUcastnik(id);
       if (ucastnik) {
-        this.kruzky = ucastnik.kruzky ? ucastnik.kruzky : new Array<IKruzok>();
+        this.kruzky = ucastnik.kruzky;
         this.pohlavie = ucastnik.pohlavie;
         this.datumNarodenia = ucastnik.datumNarodenia;
         this.formular.setValue({
@@ -178,7 +180,7 @@ export class UcastnikComponent extends BaseComponent implements OnInit {
         });
       }
     } else {
-      let nasledujuceCislo = this.dataService.getNasledujuceCisloUcastnika();
+      const nasledujuceCislo = this.dataService.getNasledujuceCisloUcastnika();
       this.log('nasledujuce cislo: ' + nasledujuceCislo);
       this.formular.patchValue({
         cislo: nasledujuceCislo
@@ -192,13 +194,13 @@ export class UcastnikComponent extends BaseComponent implements OnInit {
   }
 
   znizCislo() {
-    let cislo: string = this.formular.get('cislo').value;
+    const cislo: string = this.formular.get('cislo').value;
     this.formular.patchValue({
       cislo: this.dataService.zmenCisloUcasnika(cislo, -1)
     });
   }
   pridajCislo() {
-    let cislo: string = this.formular.get('cislo').value;
+    const cislo: string = this.formular.get('cislo').value;
     this.formular.patchValue({
       cislo: this.dataService.zmenCisloUcasnika(cislo, 1)
     });
@@ -206,24 +208,27 @@ export class UcastnikComponent extends BaseComponent implements OnInit {
 
   addKruzok() {
     if (this.formular.get('kruzok').value) {
-      let utvar = this.dataService.findZaujmovyUtvar(this.formular.get('kruzok').value);
-      let kruzok = this.kruzky.find(kruzok => kruzok.id == utvar.id);
+      const utvar = this.dataService.findZaujmovyUtvar(this.formular.get('kruzok').value);
+      const kruzok = this.kruzky.find(k => k.id === utvar.id);
       if (!kruzok) {
         this.log('pridavam kruzok: ' + utvar.nazov);
-        this.kruzky.push(new Kruzok(utvar.id, utvar.nazov));
+        this.kruzky.push(new Kruzok(utvar));
         jQuery(this.kruzok.nativeElement).dropdown('clear');
       }
     }
   }
   deleteKruzok(index: number) {
     this.log('mazem kruzok: ' + index);
-    swal({
-      text: 'Naozaj vymazať?',
-      icon: 'warning',
-      buttons: [ 'Nie', 'Áno' ],
-      dangerMode: true
+    Swal.fire({
+      title: 'Naozaj vymazať?',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Áno',
+      cancelButtonText: 'Nie',
+      focusCancel: true,
+      toast: true
     }).then((confirmed) => {
-      if (confirmed) {
+      if (confirmed.value) {
         this.kruzky.splice(index, 1);
       }
     });
@@ -240,7 +245,7 @@ export class UcastnikComponent extends BaseComponent implements OnInit {
     if (this.formular.valid) {
       if (
         this.formular.get('id').value == null ||
-        this.formular.get('id').value == ''
+        this.formular.get('id').value === ''
       ) {
         this.log(
           'pridavam ucastnika: ' +
@@ -248,14 +253,16 @@ export class UcastnikComponent extends BaseComponent implements OnInit {
             ' ' +
             this.formular.get('priezvisko').value
         );
-        this.dataService.insertUcastnik(this.formular.value, this.kruzky).then(_ => {
-          swal(`Účastník úspešne pridaný.`, {
-            icon: 'success'
-          }).then(_ => {
+        // this.dataService.insertUcastnik(this.formular.value, this.kruzky).then(() => {
+        this.dataService.insertUcastnik(this.formular.value).then(() => {
+          Swal.fire({
+            title: `Účastník úspešne pridaný.`,
+            type: 'success',
+            toast: true
+          }).then(() => {
             this.pohlavie = null;
             this.datumNarodenia = '';
-            this.formular.reset();
-            this.formular.setValue({
+            this.formular.reset({
               id: null,
               cislo: '',
               pohlavie: null,
@@ -285,10 +292,13 @@ export class UcastnikComponent extends BaseComponent implements OnInit {
             ' ' +
             this.formular.get('priezvisko').value
         );
-        this.dataService.updateUcastnik(this.formular.value, this.kruzky).then(_ => {
-          swal('Účastník úspešne upravený.', {
-            icon: 'success'
-          }).then(_ => {
+        // this.dataService.updateUcastnik(this.formular.value, this.kruzky).then(() => {
+        this.dataService.updateUcastnik(this.formular.value).then(() => {
+          Swal.fire({
+            title: 'Účastník úspešne upravený.',
+            type: 'success',
+            toast: true
+          }).then(() => {
             this.submitnuty = false;
           });
         });

@@ -3,8 +3,7 @@ import { AbstractControl, FormGroup } from '@angular/forms';
 import { DataService } from './../service/data.service';
 
 export class MiestoValidator {
-
-  static createDuplicateValidator(dataService:  DataService) {
+  static createDuplicateValidator(dataService: DataService) {
     // return (control: FormGroup) => {
     return (control: AbstractControl) => {
       const id = control.get('id');

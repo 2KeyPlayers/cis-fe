@@ -37,9 +37,9 @@
     <i class="exclamation icon"></i>
     <div class="content">
       <ul class="list">
-        <li *ngIf="f.nazov.errors && f.nazov.errors.required">Názov musí byť zadaný.</li>
-        <li *ngIf="f.nazov.errors && f.nazov.touched && f.nazov.errors.minlength">Názov musí obsahovať minimálne 3 znaky.</li>
-        <li *ngIf="formular.errors && formular.errors.duplicate">Zadaný názov už existuje.</li>
+        <li *ngIf="f.nazov.errors?.required">Názov musí byť zadaný.</li>
+        <li *ngIf="f.nazov.touched && f.nazov.errors?.minlength">Názov musí obsahovať minimálne 3 znaky.</li>
+        <li *ngIf="formular.errors?.duplicate">Zadaný názov už existuje.</li>
       </ul>
     </div>
   </div>

@@ -5,8 +5,10 @@ import { Location } from '@angular/common';
 
 import { DataService } from '../../service/data.service';
 import { BaseComponent } from '../../base.component';
-import { IMiesto } from 'src/app/domain/miesto';
+import { Miesto } from 'src/app/domain/miesto';
 import { MiestoValidator } from 'src/app/validation/miesto.validator';
+
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-miesto',
@@ -44,7 +46,7 @@ export class MiestoComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit() {
-   this.initData();
+    this.initData();
   }
 
   get f() {
@@ -52,13 +54,13 @@ export class MiestoComponent extends BaseComponent implements OnInit {
   }
 
   protected getData(): any {
-    let id: string = this.activatedRoute.snapshot.paramMap.get('id');
-    let miesto: IMiesto = {
-      id: null,
+    const id: string = this.activatedRoute.snapshot.paramMap.get('id');
+    let miesto: Miesto = new Miesto({
+      _id: null,
       nazov: ''
-    };
+    });
 
-    if (id != 'plus') {
+    if (id !== 'plus') {
       miesto = this.dataService.findMiesto(id);
       if (miesto) {
         this.formular.setValue({
@@ -73,15 +75,14 @@ export class MiestoComponent extends BaseComponent implements OnInit {
   submit() {
     this.submitnuty = true;
     if (this.formular.valid) {
-      if (
-        this.formular.get('id').value == null ||
-        this.formular.get('id').value == ''
-      ) {
+      if (this.formular.get('id').value == null || this.formular.get('id').value === '') {
         this.log('pridavam miesto: ' + this.formular.get('nazov').value);
-        this.dataService.insertMiesto(this.formular.value).then(_ => {
-          swal(`Miesto úspešne pridané.`, {
-            icon: 'success'
-          }).then(_ => {
+        this.dataService.insertMiesto(this.formular.value).then(() => {
+          Swal.fire({
+            title: `Miesto úspešne pridané.`,
+            type: 'success',
+            toast: true
+          }).then(() => {
             this.formular.reset();
             this.formular.setValue({
               id: null,
@@ -92,10 +93,12 @@ export class MiestoComponent extends BaseComponent implements OnInit {
         });
       } else {
         this.log('aktualizujem miesto: ' + this.formular.get('nazov').value);
-        this.dataService.updateMiesto(this.formular.value).then(_ => {
-          swal('Miesto úspešne upravené.', {
-            icon: 'success'
-          }).then(_ => {
+        this.dataService.updateMiesto(this.formular.value).then(() => {
+          Swal.fire({
+            title: 'Miesto úspešne upravené.',
+            type: 'success',
+            toast: true
+          }).then(() => {
             this.submitnuty = false;
           });
         });

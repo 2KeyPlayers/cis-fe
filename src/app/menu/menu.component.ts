@@ -10,17 +10,15 @@ import { BaseComponent } from '../base.component';
   styleUrls: ['./menu.component.scss']
 })
 export class MenuComponent extends BaseComponent implements OnInit {
-
   constructor(protected router: Router, protected dataService: DataService) {
     super(router, dataService);
     this.setTitle(null, null);
   }
-  
+
   ngOnInit() {
     // this.log('MenuComponent.ngOnInit');
     this.dataService.loadData().subscribe(ok => {
       this.log('data nacitane, ok: ' + ok + ', status: ' + this.dataService.status);
     });
   }
-
 }

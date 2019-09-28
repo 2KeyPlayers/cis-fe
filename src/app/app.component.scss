@@ -1,5 +1,5 @@
 body {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
 }
 // .main.container {
 //   margin-top: 2em;
@@ -10,21 +10,18 @@ body {
   border-radius: 0;
   border: none;
   box-shadow: none;
-  transition:
-    box-shadow 0.5s ease,
-    padding 0.5s ease
-  ;
+  transition: box-shadow 0.5s ease, padding 0.5s ease;
 }
-.main.menu .left {
-  justify-content: left;
+.main.menu > .left {
+  justify-content: flex-start;
   padding-left: 2em !important;
 }
-.main.menu .middle {
+.main.menu > .middle {
   flex-direction: column;
   justify-content: center;
 }
-.main.menu .right {
-  justify-content: right;
+.main.menu > .right {
+  justify-content: flex-end;
   padding-right: 2em !important;
 }
 .ui.header {
@@ -45,8 +42,8 @@ body {
 }
 
 .main.menu.fixed {
-  background-color: #FFFFFF;
-  border: 1px solid #DDD;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
   box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2);
 }
 .overlay.fixed .menu {
@@ -54,7 +51,7 @@ body {
 }
 
 .main.container {
-  margin-top: 10em;
+  padding-top: 10em;
 }
 
 .text.container .left.floated.image {
