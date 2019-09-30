@@ -1,57 +1,46 @@
-import { Identifikator } from './identifikator';
-
-export interface IKruzok {
-  _id?: any;
-  nazov: string;
-  vyskaPoplatku?: number;
-  poplatky?: number;
+export interface Platba {
+  suma: number;
+  datum: string;
+  uzivatel: number; // ID Uzivatela
 }
 
-export class Kruzok implements Identifikator, IKruzok {
-  static BITY = [1, 2, 4, 8, 16, 32, 64, 128, 256];
-
-  id: any;
+export class Kruzok {
+  id: number;
   nazov: string;
-  vyskaPoplatku: number;
-  poplatky: number;
+  poplatok: number;
+  stav: string;
+  platby: Platba[];
 
-  constructor(kruzok: IKruzok) {
-    this.id = kruzok._id;
+  constructor(kruzok: Kruzok) {
+    this.id = kruzok.id;
     this.nazov = kruzok.nazov;
-    this.vyskaPoplatku = kruzok.vyskaPoplatku ? kruzok.vyskaPoplatku : 3;
-    this.poplatky = kruzok.poplatky ? kruzok.poplatky : 0;
+    this.poplatok = kruzok.poplatok;
+    this.stav = kruzok.stav;
+    this.platby = kruzok.platby;
   }
 
-  get _id(): any {
-    return this.id;
-  }
+  // zmenVyskuPoplatu() {
+  //   this.vyskaPoplatku = (this.vyskaPoplatku + 3) % 12;
+  //   if (this.vyskaPoplatku === 0) {
+  //     this.vyskaPoplatku = 3;
+  //   }
+  // }
 
-  set _id(id: any) {
-    this.id = id;
-  }
+  // skontrolujPoplatok(index: number): boolean {
+  //   if (index >= 0 && index < Kruzok.BITY.length) {
+  //     return (this.poplatky & Kruzok.BITY[index]) === Kruzok.BITY[index];
+  //   }
+  //   console.log('false');
+  //   return false;
+  // }
 
-  zmenVyskuPoplatu() {
-    this.vyskaPoplatku = (this.vyskaPoplatku + 3) % 12;
-    if (this.vyskaPoplatku === 0) {
-      this.vyskaPoplatku = 3;
-    }
-  }
+  // zmenPoplatok(index: number) {
+  //   if (index >= 0 && index < Kruzok.BITY.length) {
+  //     this.poplatky = this.poplatky ^ Kruzok.BITY[index];
+  //   }
+  // }
 
-  skontrolujPoplatok(index: number): boolean {
-    if (index >= 0 && index < Kruzok.BITY.length) {
-      return (this.poplatky & Kruzok.BITY[index]) === Kruzok.BITY[index];
-    }
-    console.log('false');
-    return false;
-  }
-
-  zmenPoplatok(index: number) {
-    if (index >= 0 && index < Kruzok.BITY.length) {
-      this.poplatky = this.poplatky ^ Kruzok.BITY[index];
-    }
-  }
-
-  farbaPoplatku(index: number): string {
-    return this.skontrolujPoplatok(index) ? 'green' : 'basic';
-  }
+  // farbaPoplatku(index: number): string {
+  //   return this.skontrolujPoplatok(index) ? 'green' : 'basic';
+  // }
 }

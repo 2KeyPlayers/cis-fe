@@ -17,7 +17,7 @@ import { Miesto, IMiesto } from './../domain/miesto';
 import { Kruzok, IKruzok } from './../domain/kruzok';
 import { Ucastnik, IUcastnik } from './../domain/ucastnik';
 import { ZaujmovyUtvar, IZaujmovyUtvar } from './../domain/zaujmovy-utvar';
-import { Veduci, IVeduci } from '../domain/veduci';
+import { Veduci, IVeduci } from '../domain/uzivatel';
 
 // const httpOptions = {
 //   headers: new HttpHeaders({ 'Content-Type': 'application/json' })

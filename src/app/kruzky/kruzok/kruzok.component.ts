@@ -1,4 +1,4 @@
-import { Veduci } from './node_modules/src/app/domain/uzivatel';
+import { Veduci } from 'src/app/domain/uzivatel';
 import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
@@ -7,7 +7,7 @@ import { Location } from '@angular/common';
 import { DataService } from '../../service/data.service';
 import { BaseComponent } from '../../base.component';
 import { IZaujmovyUtvar, ZaujmovyUtvar } from './../../domain/zaujmovy-utvar';
-import { ZaujmovyUtvarValidator } from './node_modules/src/app/validation/zaujmovy-utvar.validator';
+import { ZaujmovyUtvarValidator } from 'src/app/validation/zaujmovy-utvar.validator';
 
 import Swal from 'sweetalert2';
 

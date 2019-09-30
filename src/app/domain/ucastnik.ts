@@ -1,67 +1,61 @@
-import { Kruzok, IKruzok } from './kruzok';
+import { Kruzok } from './kruzok';
 import { Utils } from './utils';
-import { Identifikator } from './identifikator';
 
 export enum EPohlavie {
   M,
   Z
 }
 
-class Adresa {
-  ulica?: string;
-  cislo: number;
-  mesto: string;
-  psc: string;
+// class Adresa {
+//   ulica?: string;
+//   cislo: number;
+//   mesto: string;
+//   psc: string;
 
-  constructor(adresa: Adresa) {
-    this.ulica = adresa.ulica;
-    this.cislo = adresa.cislo;
-    this.mesto = adresa.mesto;
-    this.psc = adresa.psc;
-  }
-}
+//   constructor(adresa: Adresa) {
+//     this.ulica = adresa.ulica;
+//     this.cislo = adresa.cislo;
+//     this.mesto = adresa.mesto;
+//     this.psc = adresa.psc;
+//   }
+// }
 
-export interface IUcastnik {
-  _id?: any;
-  cislo: string;
+export class Ucastnik {
+  id: number;
+  // tslint:disable-next-line: variable-name
+  cislo_roznodnutia: number;
   pohlavie: EPohlavie;
   meno: string;
   priezvisko: string;
   datumNarodenia: string;
+  // tslint:disable-next-line: variable-name
+  mesto_obec: string;
+  // tslint:disable-next-line: variable-name
+  ulica_cislo: string;
+
+  // adresa: Adresa;
+
   skola?: string;
   trieda?: string;
-  adresa: Adresa;
-  zastupca: string;
-  telefon: string;
-
-  kruzky?: IKruzok[];
-}
-
-export class Ucastnik implements Identifikator, IUcastnik {
-  id: any;
-  cislo: string;
-  pohlavie: EPohlavie;
-  meno: string;
-  priezvisko: string;
-  datumNarodenia: string;
-  skola?: string;
-  trieda?: string;
-  adresa: Adresa;
-  zastupca: string;
-  telefon: string;
+  zastupca?: string;
+  telefon?: string;
 
   kruzky: Kruzok[];
 
-  constructor(ucastnik: IUcastnik) {
-    this.id = ucastnik._id;
-    this.cislo = ucastnik.cislo;
+  constructor(ucastnik: Ucastnik) {
+    this.id = ucastnik.id;
+    this.cislo_roznodnutia = ucastnik.cislo_roznodnutia;
     this.pohlavie = ucastnik.pohlavie;
     this.meno = ucastnik.meno;
     this.priezvisko = ucastnik.priezvisko;
     this.datumNarodenia = ucastnik.datumNarodenia;
+    this.mesto_obec = ucastnik.mesto_obec;
+    this.ulica_cislo = ucastnik.ulica_cislo;
+
+    // this.adresa = new Adresa(ucastnik.adresa);
+
     this.skola = ucastnik.skola;
     this.trieda = ucastnik.trieda;
-    this.adresa = new Adresa(ucastnik.adresa);
     this.zastupca = ucastnik.zastupca;
     this.telefon = ucastnik.telefon;
 
@@ -73,12 +67,28 @@ export class Ucastnik implements Identifikator, IUcastnik {
     }
   }
 
-  get _id(): any {
-    return this.id;
+  get cisloRozhodnutia(): number {
+    return this.cislo_roznodnutia;
   }
 
-  set _id(id: any) {
-    this.id = id;
+  set cisloRozhodnutia(cisloRozhodnutia: number) {
+    this.cislo_roznodnutia = cisloRozhodnutia;
+  }
+
+  get mestoObec(): string {
+    return this.mesto_obec;
+  }
+
+  set mestoObec(mestoObec: string) {
+    this.mesto_obec = mestoObec;
+  }
+
+  get ulicaCislo(): string {
+    return this.ulica_cislo;
+  }
+
+  set ulicaCislo(ulicaCislo: string) {
+    this.ulica_cislo = ulicaCislo;
   }
 
   get vek(): number {
