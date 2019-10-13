@@ -1,4 +1,42 @@
-<div class="ui fixed borderless three item main menu">
+<div id="app" class="kontakt pusher">
+  <div class="ui top segment">
+    <div class="ui container">
+      <img class="logo" src="obrazky/cvrcek.svg" alt="CVrČek" />
+      <h1 class="ui header">
+        <span class="cvrcek">
+          <span class="centrum">C</span>
+          <span class="volneho">V</span>
+          <span>r</span>
+          <span class="casu">Č</span>
+          <span>e</span>
+          <span>k</span>
+        </span>
+        <span class="cvc">Centrum voľného času</span>
+      </h1>
+      <img class="logo zadok" src="obrazky/cvrcek-zadok.svg" alt="CVrČek" />
+    </div>
+  </div>
+
+  <div class="ui big borderless main menu">
+    <div class="ui container">
+      <a class="first item" href="/ucastnici" routerLinkActive="active"><i class="calendar alternate icon"></i><span>Účastníci</span></a>
+      <a class="second item" routerLink="/kruzky" routerLinkActive="active"><i class="info icon"></i><span>Krúžky</span></a>
+      <div class="right menu">
+        <a class="third item" routerLink="/kruzky" routerLinkActive="active"><i class="power off icon"></i><span>Odhlásiť</span></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ui vertical stripe main segment">
+    <router-outlet></router-outlet>
+  </div>
+
+  <div class="ui center aligned hore container">
+    <a href="javascript:hore()"><i class="angle up icon"></i> Hore <i class="angle up icon"></i></a>
+  </div>
+</div>
+
+<!-- <div class="ui fixed borderless three item main menu">
   <div class="left item">
     <a class="logo" href="http://www.cvcmoldava.edu.sk"><img src="assets/img/cvrcek-logo.svg" /></a>
   </div>
@@ -13,39 +51,14 @@
       <div class="ui pink horizontal label">v</div>
     </h1>
     <div class="ui horizontal label" style="margin-left:0;padding-left:15px;padding-right:8px;letter-spacing:8px" *ngIf="!title">INFORMAČNÝ SYSTÉM</div>
-    <!-- <h1 class="ui header" *ngIf="title">
-      <div [class]="'ui huge horizontal label'">{{ title | uppercase }}</div>
-    </h1> -->
     <button class="ui labeled icon button" routerLink="/menu" *ngIf="title">
       <i class="up arrow icon"></i>
       {{ title | uppercase }}
     </button>
   </div>
   <div class="right item">
-    <!--a class="ui right floated dropdown item" (click)="authService.logout()" *ngIf="authService.authenticated"><i class="fa fa-user"></i></a-->
-    <!-- <a class="ui right floated basic icon button" href="#"><i class="big user icon"></i></a> -->
+    <a class="ui right floated dropdown item" (click)="authService.logout()" *ngIf="authService.authenticated"><i class="fa fa-user"></i></a>
+    <a class="ui right floated basic icon button" href="#"><i class="big user icon"></i></a>
     <button class="ui right floated basic icon button" (click)="odhlasit()" [disabled]="!uzivatelPrihlaseny"><i class="large power off icon"></i></button>
   </div>
-  <!-- <a href="#" class="ui right floated dropdown item">
-      Dropdown <i class="dropdown icon"></i>
-      <div class="menu">
-        <div class="item">Link Item</div>
-        <div class="item">Link Item</div>
-        <div class="divider"></div>
-        <div class="header">Header Item</div>
-        <div class="item">
-          <i class="dropdown icon"></i>
-          Sub Menu
-          <div class="menu">
-            <div class="item">Link Item</div>
-            <div class="item">Link Item</div>
-          </div>
-        </div>
-        <div class="item">Link Item</div>
-      </div>
-    </a> -->
-</div>
-
-<div class="ui main container">
-  <router-outlet></router-outlet>
-</div>
+</div> -->

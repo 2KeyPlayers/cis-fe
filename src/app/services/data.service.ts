@@ -1,23 +1,7 @@
 import { Injectable } from '@angular/core';
-// import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of, combineLatest } from 'rxjs';
 import { catchError, tap, map } from 'rxjs/operators';
-import {
-  Stitch,
-  RemoteMongoClient,
-  RemoteMongoDatabase,
-  StitchAppClient,
-  UserPasswordCredential,
-  StitchUser,
-  UserPasswordAuthProviderClient,
-  RemoteMongoCollection
-} from 'mongodb-stitch-browser-sdk';
-
-import { Miesto, IMiesto } from './../domain/miesto';
-import { Kruzok, IKruzok } from './../domain/kruzok';
-import { Ucastnik, IUcastnik } from './../domain/ucastnik';
-import { ZaujmovyUtvar, IZaujmovyUtvar } from './../domain/zaujmovy-utvar';
-import { Veduci, IVeduci } from '../domain/uzivatel';
 
 // const httpOptions = {
 //   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -34,23 +18,6 @@ export enum AppStatus {
 })
 export class DataService {
   status: AppStatus;
-
-  nadpis: string;
-  typNadpisu: string;
-
-  uzivatel: StitchUser;
-  klient: StitchAppClient;
-  db: RemoteMongoDatabase;
-
-  miestaCollection: RemoteMongoCollection<IMiesto>;
-  ucastniciCollection: RemoteMongoCollection<IUcastnik>;
-  veduciCollection: RemoteMongoCollection<IVeduci>;
-  zaujmoveUtvaryCollection: RemoteMongoCollection<IZaujmovyUtvar>;
-
-  miesta: Miesto[];
-  ucastnici: Ucastnik[];
-  veduci: Veduci[];
-  zaujmoveUtvary: ZaujmovyUtvar[];
 
   constructor() {
     this.status = AppStatus.OK;

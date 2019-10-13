@@ -1,24 +1,24 @@
-import { Kruzok } from './kruzok';
-import { Utils } from './utils';
+import { Kruzok } from './kruzok.model';
+import { Utils } from '../services/utils';
 
 export enum EPohlavie {
   M,
   Z
 }
 
-// class Adresa {
-//   ulica?: string;
-//   cislo: number;
-//   mesto: string;
-//   psc: string;
+export interface Adresa {
+  mesto: string;
+  ulica?: string;
+  cislo: number;
+  psc?: string;
 
-//   constructor(adresa: Adresa) {
-//     this.ulica = adresa.ulica;
-//     this.cislo = adresa.cislo;
-//     this.mesto = adresa.mesto;
-//     this.psc = adresa.psc;
-//   }
-// }
+  // constructor(adresa: Adresa) {
+  //   this.ulica = adresa.ulica;
+  //   this.cislo = adresa.cislo;
+  //   this.mesto = adresa.mesto;
+  //   this.psc = adresa.psc;
+  // }
+}
 
 export class Ucastnik {
   id: number;
@@ -27,13 +27,10 @@ export class Ucastnik {
   pohlavie: EPohlavie;
   meno: string;
   priezvisko: string;
-  datumNarodenia: string;
   // tslint:disable-next-line: variable-name
-  mesto_obec: string;
-  // tslint:disable-next-line: variable-name
-  ulica_cislo: string;
+  datum_narodenia: string;
 
-  // adresa: Adresa;
+  adresa: Adresa;
 
   skola?: string;
   trieda?: string;
@@ -48,11 +45,9 @@ export class Ucastnik {
     this.pohlavie = ucastnik.pohlavie;
     this.meno = ucastnik.meno;
     this.priezvisko = ucastnik.priezvisko;
-    this.datumNarodenia = ucastnik.datumNarodenia;
-    this.mesto_obec = ucastnik.mesto_obec;
-    this.ulica_cislo = ucastnik.ulica_cislo;
+    this.datum_narodenia = ucastnik.datum_narodenia;
 
-    // this.adresa = new Adresa(ucastnik.adresa);
+    this.adresa = ucastnik.adresa;
 
     this.skola = ucastnik.skola;
     this.trieda = ucastnik.trieda;
@@ -75,25 +70,17 @@ export class Ucastnik {
     this.cislo_roznodnutia = cisloRozhodnutia;
   }
 
-  get mestoObec(): string {
-    return this.mesto_obec;
+  get datumNarodenia(): string {
+    return this.datum_narodenia;
   }
 
-  set mestoObec(mestoObec: string) {
-    this.mesto_obec = mestoObec;
-  }
-
-  get ulicaCislo(): string {
-    return this.ulica_cislo;
-  }
-
-  set ulicaCislo(ulicaCislo: string) {
-    this.ulica_cislo = ulicaCislo;
+  set datumNarodenia(datumNarodenia: string) {
+    this.datum_narodenia = datumNarodenia;
   }
 
   get vek(): number {
-    if (this.datumNarodenia) {
-      const datum: Date = Utils.stringToDate(this.datumNarodenia);
+    if (this.datum_narodenia) {
+      const datum: Date = Utils.stringToDate(this.datum_narodenia);
       const rozdiel: number = Math.abs(Date.now() - datum.getTime());
       return Math.floor(rozdiel / (1000 * 3600 * 24) / 365);
     }

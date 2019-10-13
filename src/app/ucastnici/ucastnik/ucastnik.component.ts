@@ -8,10 +8,10 @@ import { EPohlavie } from './../../domain/ucastnik';
 import { ZaujmovyUtvar } from './../../domain/zaujmovy-utvar';
 import { Kruzok, IKruzok } from './../../domain/kruzok';
 
-import { DataService } from '../../service/data.service';
+import { DataService } from '../../services/data.service';
 import { Utils } from './../../domain/utils';
 import { BaseComponent } from '../../base.component';
-import { UcastnikValidator } from 'src/app/validation/ucastnik.validator';
+import { UcastnikValidator } from 'src/app/validators/ucastnik.validator';
 
 import Swal from 'sweetalert2';
 

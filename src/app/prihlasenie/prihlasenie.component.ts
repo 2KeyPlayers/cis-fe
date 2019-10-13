@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { BaseComponent } from '../base.component';
-import { DataService } from '../service/data.service';
+import { DataService } from '../services/data.service';
 
 @Component({
   selector: 'app-prihlasenie',

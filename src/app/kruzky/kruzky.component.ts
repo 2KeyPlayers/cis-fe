@@ -1,21 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 import { BaseComponent } from '../base.component';
-import { DataService } from '../service/data.service';
-import { ZaujmovyUtvar } from './../domain/zaujmovy-utvar';
+import { Kruzok } from '../models/kruzok.model';
+import { DataService } from '../services/data.service';
 
 @Component({
-  selector: 'app-zaujmove-utvary',
-  templateUrl: './zaujmove-utvary.component.html',
-  styleUrls: ['./zaujmove-utvary.component.scss']
+  selector: 'app-kruzky',
+  templateUrl: './kruzky.component.html',
+  styleUrls: ['./kruzky.component.scss']
 })
-export class ZaujmoveUtvaryComponent extends BaseComponent implements OnInit {
-  zaujmoveUtvary: ZaujmovyUtvar[];
+export class KruzkyComponent extends BaseComponent implements OnInit {
+  kruzky: Kruzok[];
 
   constructor(protected router: Router, protected dataService: DataService) {
     super(router, dataService);
-    this.setTitle('Záujmové útvary', 'red');
+    this.setTitle('Krúžky', 'red');
   }
 
   ngOnInit() {
@@ -23,10 +24,12 @@ export class ZaujmoveUtvaryComponent extends BaseComponent implements OnInit {
   }
 
   protected getData() {
-    this.zaujmoveUtvary = this.dataService.zaujmoveUtvary;
+    this.dataService.getKruzky().subscribe((kruzky: Kruzok[]) => {
+      this.kruzky = kruzky;
+    });
   }
 
-  protected performDelete(zaujmovyUtvar: ZaujmovyUtvar): Promise<void> {
-    return this.dataService.deleteZaujmovyUtvar(zaujmovyUtvar);
+  protected performDelete(id: number): Observable<boolean> {
+    return this.dataService.deleteKruzok(id);
   }
 }

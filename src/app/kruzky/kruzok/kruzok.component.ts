@@ -1,30 +1,30 @@
-import { Veduci } from 'src/app/domain/uzivatel';
 import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Location } from '@angular/common';
 
-import { DataService } from '../../service/data.service';
-import { BaseComponent } from '../../base.component';
-import { IZaujmovyUtvar, ZaujmovyUtvar } from './../../domain/zaujmovy-utvar';
-import { ZaujmovyUtvarValidator } from 'src/app/validation/zaujmovy-utvar.validator';
-
 import Swal from 'sweetalert2';
+
+import { BaseComponent } from '../../base.component';
+import { Uzivatel } from 'src/app/models/uzivatel.model';
+import { DataService } from '../../services/data.service';
+import { Kruzok } from 'src/app/models/kruzok.model';
+import { KruzokValidator } from 'src/app/validators/kruzok.validator';
 
 declare var jQuery: any;
 
 @Component({
-  selector: 'app-miesto',
-  templateUrl: './zaujmovy-utvar.component.html',
-  styleUrls: ['./zaujmovy-utvar.component.scss']
+  selector: 'app-kruzok',
+  templateUrl: './kruzok.component.html',
+  styleUrls: ['./kruzok.component.scss']
 })
-export class ZaujmovyUtvarComponent extends BaseComponent implements OnInit, AfterViewChecked {
+export class KruzokComponent extends BaseComponent implements OnInit, AfterViewChecked {
   @ViewChild('vodca', { static: true }) vodca: ElementRef;
 
   formular: FormGroup;
   submitnuty: boolean;
 
-  vodcovia: Veduci[];
+  veduci: Uzivatel[];
 
   constructor(
     protected fb: FormBuilder,
@@ -34,7 +34,7 @@ export class ZaujmovyUtvarComponent extends BaseComponent implements OnInit, Aft
     protected dataService: DataService
   ) {
     super(router, dataService);
-    this.setTitle('Záujmový útvar', 'red');
+    this.setTitle('Krúžok', 'red');
 
     this.formular = this.fb.group(
       {
@@ -48,14 +48,14 @@ export class ZaujmovyUtvarComponent extends BaseComponent implements OnInit, Aft
         ],
         veduci: [null, Validators.required]
       },
-      { validator: ZaujmovyUtvarValidator.createDuplicateValidator(this.dataService) }
+      { validator: KruzokValidator.createDuplicateValidator(this.dataService) }
     );
   }
 
   ngOnInit() {
-    this.dataService.sortVeduci();
-    this.vodcovia = this.dataService.veduci;
-    this.initData();
+    this.dataService.getVeduci().subscribe((veduci: Veduci) => {
+      this.veduci = veduci;
+    });
 
     // init dropdown
     jQuery(this.vodca.nativeElement).dropdown();
@@ -71,7 +71,7 @@ export class ZaujmovyUtvarComponent extends BaseComponent implements OnInit, Aft
 
   protected getData(): any {
     const id: string = this.activatedRoute.snapshot.paramMap.get('id');
-    let zaujmovyUtvar: ZaujmovyUtvar = new ZaujmovyUtvar({
+    let kruzok: Kruzok = new Kruzok({
       _id: null,
       nazov: '',
       veduci: {
@@ -82,17 +82,17 @@ export class ZaujmovyUtvarComponent extends BaseComponent implements OnInit, Aft
     });
 
     if (id !== 'plus') {
-      zaujmovyUtvar = this.dataService.findZaujmovyUtvar(id);
-      if (zaujmovyUtvar) {
-        this.log('nastavujem veduceho: ' + zaujmovyUtvar.veduci.id);
+      kruzok = this.dataService.findKruzok(id);
+      if (kruzok) {
+        this.log('nastavujem veduceho: ' + kruzok.veduci.id);
         this.formular.setValue({
-          id: zaujmovyUtvar.id,
-          nazov: zaujmovyUtvar.nazov,
-          veduci: zaujmovyUtvar.veduci.id ? zaujmovyUtvar.veduci.id : ''
+          id: kruzok.id,
+          nazov: kruzok.nazov,
+          veduci: kruzok.veduci.id ? kruzok.veduci.id : ''
         });
       }
     }
-    return zaujmovyUtvar;
+    return kruzok;
   }
 
   submit() {
@@ -103,9 +103,9 @@ export class ZaujmovyUtvarComponent extends BaseComponent implements OnInit, Aft
         this.formular.get('id').value === ''
       ) {
         this.log('pridavam zaujmovy utvar: ' + this.formular.get('nazov').value);
-        this.dataService.insertZaujmovyUtvar(this.formular.value).then(() => {
+        this.dataService.insertKruzok(this.formular.value).then(() => {
           Swal.fire({
-            title: `Záujmový útvar úspešne pridaný.`,
+            title: `Krúžok úspešne pridaný.`,
             type: 'success',
             toast: true
           }).then(() => {
@@ -121,9 +121,9 @@ export class ZaujmovyUtvarComponent extends BaseComponent implements OnInit, Aft
         });
       } else {
         this.log('aktualizujem zaujmovy utvar: ' + this.formular.get('nazov').value);
-        this.dataService.updateZaujmovyUtvar(this.formular.value).then(() => {
+        this.dataService.updateKruzok(this.formular.value).then(() => {
           Swal.fire({
-            title: 'Záujmový útvar úspešne upravený.',
+            title: 'Krúžok úspešne upravený.',
             type: 'success',
             toast: true
           }).then(() => {

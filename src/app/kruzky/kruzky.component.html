@@ -15,9 +15,9 @@
   </thead>
   <tbody>
     <tr>
-      <td colspan="4" class="center aligned text" *ngIf="zaujmoveUtvary?.length == 0">Žiadne záujmové útvary</td>
+      <td colspan="4" class="center aligned text" *ngIf="kruzky?.length == 0">Žiadne záujmové útvary</td>
     </tr>
-    <tr *ngFor="let zaujmovyUtvar of zaujmoveUtvary; let i = index" [attr.data-index]="i" class="table-light">
+    <tr *ngFor="let zaujmovyUtvar of kruzky; let i = index" [attr.data-index]="i" class="table-light">
       <td class="collapsing">{{ (i + 1) }}</td>
       <!--td><i class="fa fa-{{ zaujmovyUtvar.ikona ? zaujmovyUtvar.ikona : 'star-o' }}"></i></td-->
       <td>{{ zaujmovyUtvar.nazov }}</td>
@@ -32,7 +32,7 @@
   </tbody>
   <tfoot>
     <th colspan="3">
-      Počet: {{ zaujmoveUtvary?.length }}
+      Počet: {{ kruzky?.length }}
     </th>
     <th>
       <div class="ui right floated small red right labeled icon button" (click)="add('zaujmovy-utvar')">

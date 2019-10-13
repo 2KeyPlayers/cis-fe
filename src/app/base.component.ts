@@ -1,9 +1,9 @@
-import { Router } from '@angular/router';
 import { FormGroup } from '@angular/forms';
-import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
 
-import { DataService } from './service/data.service';
-import { Identifikator } from './domain/identifikator';
+import { DataService } from './services/data.service';
+import Swal from 'sweetalert2';
 
 export abstract class BaseComponent {
   formular: FormGroup;
@@ -34,30 +34,7 @@ export abstract class BaseComponent {
     return this.dataService.failed;
   }
 
-  // Title
-
-  setTitle(nadpis: string, typ: string) {
-    this.dataService.setNadpis(nadpis, typ);
-  }
-
-  get title(): string {
-    return this.dataService.nadpis;
-  }
-
-  get titleType(): string {
-    return this.dataService.typNadpisu;
-  }
-
-  // data
-
-  protected initData() {
-    const data = this.getData();
-    this.log('initData: ' + data);
-    if (!data) {
-      this.log('ziadne data, presmeruvavam na /');
-      this.router.navigate(['/']);
-    }
-  }
+  // Data
 
   protected getData(): any {
     return null;
@@ -72,8 +49,8 @@ export abstract class BaseComponent {
     this.router.navigate([`/${type}/${id}`]);
   }
 
-  delete(objekt: Identifikator) {
-    console.log('mazem id: ' + objekt.id);
+  delete(id: number) {
+    console.log('mazem id: ' + id);
     Swal.fire({
       title: 'Naozaj vymazať?',
       type: 'warning',
@@ -84,10 +61,10 @@ export abstract class BaseComponent {
       toast: true
     }).then(confirmed => {
       if (confirmed.value) {
-        this.performDelete(objekt).then(() => {
+        this.performDelete(id).subscribe(() => {
           this.getData();
           Swal.fire({
-            title: 'Záznam úspešne vymazaný.',
+            title: 'Záznam úspešne vymazaný',
             type: 'success',
             toast: true
           });
@@ -96,13 +73,8 @@ export abstract class BaseComponent {
     });
   }
 
-  protected performDelete(objekt: Identifikator): Promise<void> {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        this.log('defaultny prazdny promise');
-        resolve();
-      }, 500);
-    });
+  protected performDelete(id: number): Observable<boolean> {
+    return of(true);
   }
 
   // Log

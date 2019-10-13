@@ -1,3 +1,5 @@
+import { Uzivatel } from './uzivatel.model';
+
 export interface Platba {
   suma: number;
   datum: string;
@@ -10,6 +12,7 @@ export class Kruzok {
   poplatok: number;
   stav: string;
   platby: Platba[];
+  veduci: Uzivatel;
 
   constructor(kruzok: Kruzok) {
     this.id = kruzok.id;

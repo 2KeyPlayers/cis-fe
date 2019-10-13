@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { BaseComponent } from './base.component';
-import { DataService } from './service/data.service';
+import { DataService } from './services/data.service';
 
 // import * as $ from 'jquery';
 

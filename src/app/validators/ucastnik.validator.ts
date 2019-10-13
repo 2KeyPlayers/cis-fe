@@ -1,6 +1,6 @@
 import { AbstractControl, FormGroup } from '@angular/forms';
 
-import { DataService } from '../service/data.service';
+import { DataService } from '../services/data.service';
 
 export class UcastnikValidator {
   static createDuplicateValidator(dataService: DataService) {
